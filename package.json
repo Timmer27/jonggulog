@@ -2,10 +2,11 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "next dev",
-    "start": "next start"
+    "dev": "next dev --port 3002",
+    "start": "next start --port 3002"
   },
   "dependencies": {
+    "@material-tailwind/react": "^2.1.5",
     "axios": "^1.6.2",
     "next": "latest",
     "react": "18.2.0",

@@ -1,15 +1,16 @@
 import type { AppProps } from "next/app";
+import { ThemeProvider } from "@material-tailwind/react";
 import "../styles/globals.css";
-import PageHeader from "../components/PageHeader";
 import PageFooter from "../components/pageFooter";
+import PageHeader from "../components/pageHeader";
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
-    <div>
+    <ThemeProvider>
       <PageHeader />
-      <Component className="mt-12" {...pageProps} />
+      <Component {...pageProps} />
       <PageFooter />
-    </div>
+    </ThemeProvider>
   );
 };
 
