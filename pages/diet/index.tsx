@@ -119,32 +119,28 @@ function index() {
   //   var last = first + 6; // last day is the first day + 6
   return (
     monthDate?.last && (
-      <section>
+      <section onClick={() => {if(openPopover){setOpenPopover(false)}}}>
         <article className="flex flex-row overflow-auto">
           {Array.from({ length: monthDate?.last }, (_, index) => {
             return (
-              <Card className="mt-6 mx-3 w-96">
+              <Card className="mt-8 mb-5 mx-3 min-w-[14rem]">
+                {/* min-w-[10rem] */}
                 <CardBody>
                   <Typography variant="h5" color="blue-gray" className="mb-2">
-                    date:{monthDate.month}월 {index + 1}일
+                    {monthDate.month}월 {index + 1}일
                   </Typography>
+                  {participants.map((val) => (
                   <Typography
                     variant="small"
                     color="blue-gray"
                     className="mb-2"
                   >
-                    content1
+                    [{val}]데일리 kg: 
                   </Typography>
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="mb-2"
-                  >
-                    content2
-                  </Typography>
+                  ))}
                 </CardBody>
                 <CardFooter className="pt-0">
-                  <Button>Read More</Button>
+                  <Button>하루 자세히 보기</Button>
                 </CardFooter>
               </Card>
             );
