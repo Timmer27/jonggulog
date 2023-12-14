@@ -1,5 +1,5 @@
 import React, { createRef, useEffect, useRef, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQueries, useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 
 import {
@@ -32,24 +32,13 @@ interface postObj {
   dt: Date;
 }
 
-// 📌 useQueries -> useQuery를 하나로 묶기 가능
-// const result = useQueries([
-//     {
-//       queryKey: ["data"],
-//       queryFn: getData,
-//       staleTime: 10000,
-//       cacheTime: 50000,
-//     },
-//     {
-//       queryKey: ["dummy"],
-//       queryFn: getDummyData,
-//       staleTime: 10000,
-//       cacheTime: 50000,
-//     },
-//   ]);
-
 const fetchPostData = async () => {
   const { data } = await axios.get("http://localhost:8084/post");
+  return data;
+};
+
+const fetchLatestPostData = async () => {
+  const { data } = await axios.get("http://localhost:8084/post/latest");
   return data;
 };
 
@@ -61,7 +50,6 @@ const addPost = async (dataObj: postObj) => {
 
 function index() {
   const participants = ["이종호", "이재빈"];
-
   const [monthDate, setMonthDate] = useState<monthDateObj>();
   const [selectedDate, setSelectedDate] = useState<Number>();
   const [savedPostInfo, setSavedPostInfo] = useState<postObj[]>();
@@ -69,10 +57,31 @@ function index() {
   const [openPopover, setOpenPopover] = useState<boolean>(false);
   const queryClient = useQueryClient();
 
-  const { isLoading, data, error } = useQuery<postObj[]>(
-    "fetch-postData",
-    fetchPostData
-  );
+  // 📌 useQueries -> useQuery를 하나로 묶기 가능
+  const postDates = useQueries<postObj[]>([
+    {
+      queryKey: ["fetchPostData"],
+      queryFn: fetchPostData,
+      staleTime: 10000,
+      cacheTime: 50000
+    },
+    {
+      queryKey: ["fetchLatestPostData"],
+      queryFn: fetchLatestPostData,
+      staleTime: 10000,
+      cacheTime: 50000
+      // enabled: openPopover,
+    }
+  ]);
+  // const { isLoading, data, error } = useQuery<postObj[]>(
+  //   "fetch-postData",
+  //   fetchPostData
+  // );
+
+  // const { isLoading, latestData, error } = useQuery<postObj[]>(
+  //   "fetch-postData",
+  //   fetchPostData
+  // );
   // 📌 useMutation
   const { mutate, isError, isSuccess } = useMutation(addPost, {
     onMutate: (dataObj) => {
@@ -113,36 +122,63 @@ function index() {
     setSelectedDate(date.getDate());
   }, []);
 
-  console.log(isLoading, data, error);
+  console.log("postDates", postDates);
+  // useEffect(() => {
+  //   const date = new Date();
+  //   const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+  //   const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  //   const dateObj = {
+  //     month: date.getMonth() + 1,
+  //     first: firstDay.getDate(),
+  //     last: lastDay.getDate()
+  //   };
+  //   setMonthDate(dateObj);
+  //   setSelectedDate(date.getDate());
+  // }, [postDates]);
 
   //   var first = date.getDate() - date.getDay(); // First day is the day of the month - the day of the week
   //   var last = first + 6; // last day is the first day + 6
   return (
     monthDate?.last && (
-      <section onClick={() => {if(openPopover){setOpenPopover(false)}}}>
+      <section
+        onClick={() => {
+          // if (openPopover) {
+          //   setOpenPopover(false);
+          // }
+        }}
+      >
         <article className="flex flex-row overflow-auto">
           {Array.from({ length: monthDate?.last }, (_, index) => {
+            postDates[1].data.map((el) =>
+            );
             return (
-              <Card className="mt-8 mb-5 mx-3 min-w-[14rem]">
-                {/* min-w-[10rem] */}
-                <CardBody>
-                  <Typography variant="h5" color="blue-gray" className="mb-2">
-                    {monthDate.month}월 {index + 1}일
-                  </Typography>
-                  {participants.map((val) => (
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="mb-2"
-                  >
-                    [{val}]데일리 kg: 
-                  </Typography>
-                  ))}
-                </CardBody>
-                <CardFooter className="pt-0">
-                  <Button>하루 자세히 보기</Button>
-                </CardFooter>
-              </Card>
+              postDates[1].status === "success" && (
+                <Card className="mt-8 mb-5 mx-3 min-w-[14rem]">
+                  {/* min-w-[10rem] */}
+                  <CardBody>
+                    <Typography variant="h5" color="blue-gray" className="mb-2">
+                      {monthDate.month}월 {index + 1}일
+                    </Typography>
+                    {participants.map((val) => {
+                      // postDates.filter((val) => val;)
+                      // const matchedDate =
+                      // const [year, month, day] =
+                      return (
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="mb-2"
+                        >
+                          [{val}]데일리 kg:
+                        </Typography>
+                      );
+                    })}
+                  </CardBody>
+                  <CardFooter className="pt-0">
+                    <Button>하루 자세히 보기</Button>
+                  </CardFooter>
+                </Card>
+              )
             );
           })}
         </article>
@@ -159,7 +195,6 @@ function index() {
             <Popover placement="bottom" open={openPopover}>
               <PopoverHandler
                 onClick={() => {
-                  console.log("뭐니");
                   setOpenPopover(!openPopover);
                 }}
               >
@@ -280,7 +315,11 @@ function index() {
                 </Button>
               </PopoverContent>
             </Popover>
-            <div>main content here</div>
+            <div>
+              <title>avatar who:?</title>
+              <div>한 일?</div>
+              <figure>picture?</figure>
+            </div>
           </div>
           {/* <aside>aside posting and editing?</aside> */}
         </article>
