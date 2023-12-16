@@ -6,88 +6,91 @@ import {
   Button,
   IconButton
 } from "@material-tailwind/react";
+import Link from "next/link";
 
 type Props = {};
-const navList = (
-  <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-4 px-4">
-    <Typography
-      as="li"
-      variant="small"
-      color="blue-gray"
-      className="p-1 font-normal"
-    >
-      <a href="#" className="flex items-center">
-        HOME
-      </a>
-    </Typography>
-    <Typography
-      as="li"
-      variant="small"
-      color="blue-gray"
-      className="p-1 font-normal"
-    >
-      <a href="/diet" className="flex items-center">
-        프로그램 공유
-      </a>
-    </Typography>    
-    <Typography
-      as="li"
-      variant="small"
-      color="blue-gray"
-      className="p-1 font-normal"
-    >
-      <a href="/about" className="flex items-center">
-        ABOUT
-      </a>
-    </Typography>
-    <Typography
-      as="li"
-      variant="small"
-      color="blue-gray"
-      className="p-1 font-normal"
-    >
-      <a href="/about" className="flex items-center">
-        CONTACT
-      </a>
-    </Typography>
-    
-    {/* <Typography
-      as="li"
-      variant="small"
-      color="blue-gray"
-      className="p-1 font-normal"
-    >
-      <a href="#" className="flex items-center">
-        Docs
-      </a>
-    </Typography> */}
-  </ul>
-);
 const PageHeader = (props: Props) => {
-  const [openNav, setOpenNav] = useState(false);
+  const [openNav, setOpenNav] = useState<boolean>(false);
+  const [selectedIdx, setSelectedIdx] = useState<Number>(0);
+
+  const navItems = [
+    {
+      href: "/",
+      color: "blue-gray",
+      className: "p-1 text-lg",
+      name: "HOME"
+    },
+    {
+      href: "/daily",
+      color: "blue-gray",
+      className: "p-1 text-lg",
+      name: "일상"
+    },
+    {
+      href: "/programs",
+      color: "blue-gray",
+      className: "p-1 text-lg",
+      name: "프로그램 공유"
+    },
+    {
+      href: "/about",
+      color: "blue-gray",
+      className: "p-1 text-lg",
+      name: "ABOUT"
+    },
+    {
+      href: "/contact",
+      color: "blue-gray",
+      className: "p-1 text-lg",
+      name: "CONTACT"
+    }
+  ];
+  const navList = (
+    <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-4 px-4">
+      {navItems.map((val, idx) => {
+        const classNames = `${val.className} ${
+          idx === selectedIdx ? "font-bold font-[#27738f]" : "font-normal"
+        }`
+        console.log(classNames)
+        return (
+          <Link
+            href={val.href}
+            color={val.href}
+            className={classNames}
+            onClick={() => {
+              setSelectedIdx(idx)
+            }}
+          >
+            {val.name}
+          </Link>
+        );
+      })}
+    </ul>
+  );
 
   return (
     <div className="mt-3 -m-6 max-h-[768px] w-[calc(100%+48px)]">
       {/* overflow-scroll */}
       <Navbar className="sticky top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4 shadow-none border-b-[#e3e3e3cf]">
         <div className="flex items-center justify-between text-blue-gray-900 px-4">
-          <a href="#" className="w-28">
+          <Link href="/" className="w-28">
             {/* <p>종구공방</p> */}
             <img src="/test.png" alt="tmp" />
-          </a>
+          </Link>
           <div className="flex items-center gap-4">
+            {/* navList */}
             <div className="mr-4 hidden lg:block">{navList}</div>
             <div className="flex items-center gap-x-1">
               <Button
                 variant="text"
-                size="sm"
+                size="lg"
                 className="hidden lg:inline-block"
               >
                 <span>Log In</span>
               </Button>
               <Button
                 variant="gradient"
-                size="sm"
+                size="lg"
                 className="hidden lg:inline-block"
               >
                 <span>Sign in</span>
@@ -135,10 +138,10 @@ const PageHeader = (props: Props) => {
         <MobileNav open={openNav}>
           {navList}
           <div className="flex items-center gap-x-1 px-4">
-            <Button fullWidth variant="text" size="sm" className="">
+            <Button fullWidth variant="text" size="lg" className="">
               <span>Log In</span>
             </Button>
-            <Button fullWidth variant="gradient" size="sm" className="">
+            <Button fullWidth variant="gradient" size="lg" className="">
               <span>Sign in</span>
             </Button>
           </div>
