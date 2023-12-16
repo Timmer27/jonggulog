@@ -149,8 +149,8 @@ function index() {
       >
         <article className="flex flex-row overflow-auto">
           {Array.from({ length: monthDate?.last }, (_, index) => {
-            postDates[1].data.map((el) =>
-            );
+            // postDates[1].data.map((el) =>
+            // );
             return (
               postDates[1].status === "success" && (
                 <Card className="mt-8 mb-5 mx-3 min-w-[14rem]">

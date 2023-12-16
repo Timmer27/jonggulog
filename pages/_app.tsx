@@ -15,7 +15,7 @@ const App = ({ Component, pageProps }: AppProps) => {
       <ThemeProvider>
         <PageHeader />
         <Component {...pageProps} />
-        <PageFooter />
+        {/* <PageFooter /> */}
       </ThemeProvider>
     </QueryClientProvider>
   );
