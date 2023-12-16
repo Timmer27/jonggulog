@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, Orbit-Regular, sans-serif;
+}
+
+@font-face {
+  font-family: "DoHyeon";
+  font-weight: 200;
+  src: url("/fonts/DoHyeon-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: 'Orbit-Regular';
+  src: url('/fonts/Orbit-Regular') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}

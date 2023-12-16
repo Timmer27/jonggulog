@@ -9,7 +9,13 @@ module.exports = withMT({
     "./src/**/*.{js,ts,jsx,tsx,mdx}"
   ],
   theme: {
-    extend: {}
+    extend: {},
+    fontFamily: {
+      // sans: ['DoHyeon', 'sans-serif'],
+      sans: ['Orbit-Regular', 'sans-serif'],
+      
+      // serif: ['Merriweather', 'serif'],
+    }
   },
   plugins: []
 });
