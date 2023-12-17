@@ -3,11 +3,13 @@ import {
   Card,
   CardBody,
   CardFooter,
-  Typography
+  Typography,
 } from "@material-tailwind/react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Delayed from "../components/delayed";
+import { redirect } from "next/navigation";
+import { useRouter } from "next/router";
 
 export type imgFile = {
   src: string;
@@ -17,47 +19,49 @@ export type imgFile = {
 
 const cardShadowStyle =
   "shadow-[0px_0px_9px_-1px_#b3b3b347] ease-in-out duration-500 hover:-translate-y-1.5 hover:shadow-[0px_0px_11px_3px_#49494947]";
-// .your-component {
-//   opacity: 0; /* Initially invisible */
-//   transform: translateY(20px); /* Initially moved down 20px */
-//   transition: opacity 0.5s ease, transform 0.5s ease; /* Add smooth transition */
-// }
+
 const fadeOut = "opacity-100 translate-y-0";
 const fadeIn = "opacity-0 translate-y-10 transition-all ease-in-out";
 const MainPage = () => {
   const asideItems = [
     {
       key: 0,
-      title: "사이드1",
-      content: "내용1",
+      title: "트레이딩 봇",
+      content: "힘든 트레이딩, 자동화 봇으로 편하게 수익내자!",
       src: "img",
-      alt: "alt"
+      alt: "alt",
     },
     {
       key: 1,
-      title: "사이드2",
-      content: "내용2",
+      title: "서이추 봇",
+      content: "귀찮은 서로이웃추가, 봇으로 편하게 추가하자!",
       src: "img",
-      alt: "alt"
+      alt: "alt",
     },
     {
       key: 2,
       title: "사이드3",
       content: "내용3",
       src: "img",
-      alt: "alt"
+      alt: "alt",
     },
     {
       key: 3,
       title: "사이드4",
       content: "내용4",
       src: "img",
-      alt: "alt"
-    }
+      alt: "alt",
+    },
   ];
 
   const [mounted, setMounted] = useState<boolean>(false);
-  
+
+  const router = useRouter();
+
+  const routeToPagesHandler = (link) => {
+    router.push(link);
+  };
+
   useEffect(() => {
     // Set mounted to true after the component is mounted
     setMounted(true);
@@ -112,6 +116,7 @@ const MainPage = () => {
             className={`flex-1 cursor-pointer ${cardShadowStyle} bg-[#022b3a]  ${
               mounted ? `${fadeOut}` : `delay-[400ms] ${fadeIn}`
             }`}
+            onClick={() => routeToPagesHandler("/daily")}
           >
             <CardBody>
               <Typography variant="h3" color="white" className="mb-2 pb-2">
@@ -129,6 +134,7 @@ const MainPage = () => {
             className={`flex-1 cursor-pointer ${cardShadowStyle} bg-[cadetblue] ${
               mounted ? `${fadeOut}` : `delay-[600ms] ${fadeIn}`
             }`}
+            onClick={() => routeToPagesHandler("/contact")}
           >
             {/* [#1f7a8c] [#bfdbf7] */}
             <CardBody>
@@ -141,7 +147,6 @@ const MainPage = () => {
             </CardBody>
             <CardFooter className="pt-0">
               <p className="self-end text-end text-white font-bold">바로가기</p>
-              {/* <Button>Read More</Button> */}
             </CardFooter>
           </Card>
         </div>
@@ -149,19 +154,20 @@ const MainPage = () => {
       <section className="flex-1 flex gap-5 flex-row m-auto">
         <aside className="flex flex-wrap gap-6 w-full">
           {asideItems.map((val, idx) => {
-            const delay = `delay-[${400 + (idx + 1) * 100}ms]`
+            const delay = `delay-[${400 + (idx + 1) * 100}ms]`;
             return (
               <Card
-              key={idx} // Add a key prop for optimization
-              className={`mt-6 flex-[1_0_21%] ${cardShadowStyle} ${
-                mounted ? `delay-100 ${fadeOut}` : `${fadeIn}`
-              }`}
+                key={idx}
+                className={`mt-6 flex-[1_0_21%] cursor-pointer ${cardShadowStyle} ${
+                  mounted ? `delay-100 ${fadeOut}` : `${fadeIn}`
+                }`}
+                onClick={() => routeToPagesHandler("/bots")}
               >
                 <CardBody>
                   <Typography variant="h5" color="blue-gray" className="mb-2">
                     {val.title}
                   </Typography>
-                  <Typography>{val.content}</Typography>
+                  <Typography className="text-xs">{val.content}</Typography>
                 </CardBody>
               </Card>
             );
