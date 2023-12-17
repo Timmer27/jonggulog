@@ -3,12 +3,10 @@ import {
   Card,
   CardBody,
   CardFooter,
-  Typography,
+  Typography
 } from "@material-tailwind/react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import Delayed from "../components/delayed";
-import { redirect } from "next/navigation";
 import { useRouter } from "next/router";
 
 export type imgFile = {
@@ -29,35 +27,33 @@ const MainPage = () => {
       title: "트레이딩 봇",
       content: "힘든 트레이딩, 자동화 봇으로 편하게 수익내자!",
       src: "img",
-      alt: "alt",
+      alt: "alt"
     },
     {
       key: 1,
       title: "서이추 봇",
       content: "귀찮은 서로이웃추가, 봇으로 편하게 추가하자!",
       src: "img",
-      alt: "alt",
+      alt: "alt"
     },
     {
       key: 2,
       title: "사이드3",
       content: "내용3",
       src: "img",
-      alt: "alt",
+      alt: "alt"
     },
     {
       key: 3,
       title: "사이드4",
       content: "내용4",
       src: "img",
-      alt: "alt",
-    },
+      alt: "alt"
+    }
   ];
 
   const [mounted, setMounted] = useState<boolean>(false);
-
   const router = useRouter();
-
   const routeToPagesHandler = (link) => {
     router.push(link);
   };
@@ -81,7 +77,7 @@ const MainPage = () => {
                 {/* 종구공방 */}에 오신 것을 환영합니다
               </Typography>
               <Typography className="font-bold text-[2vh]">
-                자동화 프로그램 무료배포 플랫폼
+                {/* 자동화 프로그램 무료배포  */} 플랫폼
               </Typography>
               {/* <Typography>유튜브 구독 좋아요 감사감사</Typography> */}
             </CardBody>
@@ -113,7 +109,7 @@ const MainPage = () => {
         </div>
         <div className="gap-4 flex flex-col w-[40%]">
           <Card
-            className={`flex-1 cursor-pointer ${cardShadowStyle} bg-[#022b3a]  ${
+            className={`flex-1 cursor-pointer ${cardShadowStyle} bg-[#337f9b]  ${
               mounted ? `${fadeOut}` : `delay-[400ms] ${fadeIn}`
             }`}
             onClick={() => routeToPagesHandler("/daily")}
@@ -131,7 +127,7 @@ const MainPage = () => {
             </CardFooter>
           </Card>
           <Card
-            className={`flex-1 cursor-pointer ${cardShadowStyle} bg-[cadetblue] ${
+            className={`flex-1 cursor-pointer ${cardShadowStyle} bg-[#82cdcf] ${
               mounted ? `${fadeOut}` : `delay-[600ms] ${fadeIn}`
             }`}
             onClick={() => routeToPagesHandler("/contact")}
@@ -161,7 +157,7 @@ const MainPage = () => {
                 className={`mt-6 flex-[1_0_21%] cursor-pointer ${cardShadowStyle} ${
                   mounted ? `delay-100 ${fadeOut}` : `${fadeIn}`
                 }`}
-                onClick={() => routeToPagesHandler("/bots")}
+                onClick={() => routeToPagesHandler("/programs")}
               >
                 <CardBody>
                   <Typography variant="h5" color="blue-gray" className="mb-2">

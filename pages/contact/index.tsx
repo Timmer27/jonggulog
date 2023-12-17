@@ -17,7 +17,7 @@ export default function Contact({}: Props) {
   };
 
   return (
-    <div className="mt-24 mb-10 w-[68%] m-auto shadow-[0px_0px_5px_0px_#d4d4d4] rounded-xl bg-clip-border h-fit p-[3rem_1rem]">
+    <div className="mt-24 mb-10 lg:w-[68%] md:w-[68%] sm:w-[90%] m-auto shadow-[0px_0px_5px_0px_#d4d4d4] rounded-xl bg-clip-border h-fit p-[3rem_1rem]">
       <h6 className="block text-2xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
         문의하기
       </h6>

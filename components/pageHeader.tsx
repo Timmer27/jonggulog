@@ -7,11 +7,12 @@ import {
   IconButton
 } from "@material-tailwind/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 type Props = {};
 const PageHeader = (props: Props) => {
+  const { asPath, pathname } = useRouter();
   const [openNav, setOpenNav] = useState<boolean>(false);
-  const [selectedIdx, setSelectedIdx] = useState<Number>(0);
 
   const navItems = [
     {
@@ -49,17 +50,13 @@ const PageHeader = (props: Props) => {
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-4 px-4">
       {navItems.map((val, idx) => {
         const classNames = `${val.className} ${
-          idx === selectedIdx ? "font-bold font-[#27738f]" : "font-normal"
+          '/' + asPath.split('/')[1] === val.href ? "font-bold font-[#27738f]" : "font-normal"
         }`
-        console.log(classNames)
         return (
           <Link
             href={val.href}
             color={val.href}
             className={classNames}
-            onClick={() => {
-              setSelectedIdx(idx)
-            }}
           >
             {val.name}
           </Link>
@@ -81,20 +78,9 @@ const PageHeader = (props: Props) => {
             {/* navList */}
             <div className="mr-4 hidden lg:block">{navList}</div>
             <div className="flex items-center gap-x-1">
-              <Button
-                variant="text"
-                size="lg"
-                className="hidden lg:inline-block"
-              >
-                <span>Log In</span>
-              </Button>
-              <Button
-                variant="gradient"
-                size="lg"
-                className="hidden lg:inline-block"
-              >
-                <span>Sign in</span>
-              </Button>
+            <Link href={'/admin'} className="text-[12px] font-bold">
+              <span>관리자</span>
+            </Link>
             </div>
             <IconButton
               variant="text"
@@ -138,11 +124,8 @@ const PageHeader = (props: Props) => {
         <MobileNav open={openNav}>
           {navList}
           <div className="flex items-center gap-x-1 px-4">
-            <Button fullWidth variant="text" size="lg" className="">
+            <Button fullWidth variant="text" size="sm" className="">
               <span>Log In</span>
-            </Button>
-            <Button fullWidth variant="gradient" size="lg" className="">
-              <span>Sign in</span>
             </Button>
           </div>
         </MobileNav>
