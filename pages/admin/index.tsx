@@ -10,18 +10,19 @@ interface postObj {
 }
 
 export default function MyEditor({ props }: any) {
-  const editorRef = useRef();
-  const titleRef = useRef();
+  const editorRef = useRef<ClassicEditor>(null);
+  const titleRef = useRef<HTMLInputElement>(null);
   const [contentData, setContentData] = useState<string>();
   const [editorLoaded, setEditorLoaded] = useState(false);
-  const { CKEditor, ClassicEditor } = editorRef.current || {};
+  const { CKEditor, ClassicEditors } = editorRef.current || ClassicEditor;
 
   useEffect(() => {
-    editorRef.current = {
-      // CKEditor: require('@ckeditor/ckeditor5-react'), // depricated in v3
-      CKEditor: require("@ckeditor/ckeditor5-react").CKEditor, // v3+
-      ClassicEditor: require("@ckeditor/ckeditor5-build-classic")
-    };
+    editorRef.current =
+      {
+        // CKEditor: require('@ckeditor/ckeditor5-react'), // depricated in v3
+        CKEditor: require("@ckeditor/ckeditor5-react").CKEditor, // v3+
+        ClassicEditors: require("@ckeditor/ckeditor5-build-classic")
+      } || "";
     setEditorLoaded(true);
   }, []);
 
@@ -29,10 +30,8 @@ export default function MyEditor({ props }: any) {
     if (!titleRef.current?.value || !contentData) {
       alert("글 입력 ㄱ");
     } else {
-      const title = titleRef.current?.value;
+      const title = titleRef.current.value;
       console.log(contentData, title);
-      // const title = titleRef.current.value
-      // console.log
     }
   };
 
