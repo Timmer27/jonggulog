@@ -11,7 +11,7 @@ import {
   UserCircleIcon,
   Cog6ToothIcon,
 } from "@heroicons/react/24/solid";
-import { BookingCard } from "./naverProgram";
+// import { BookingCard } from "./naverProgram";
 
 type Props = {};
 
@@ -21,7 +21,7 @@ const Programs = (Props) => {
       label: "네이버 서이추 프로그램",
       value: "naverProgram",
       icon: Square3Stack3DIcon,
-      desc: <BookingCard />,
+      desc: "test",
     },
     {
       label: "트레이딩봇",
