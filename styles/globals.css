@@ -7,6 +7,9 @@ body {
   margin: 0;
   font-family: -apple-system, Orbit-Regular, sans-serif;
 }
+.ck-editor__editable {
+  min-height: 40rem;
+}
 
 @font-face {
   font-family: "DoHyeon";

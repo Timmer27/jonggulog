@@ -45,7 +45,7 @@ const Programs = (Props) => {
       orientation="vertical"
       className="w-[68%] m-auto mt-12"
     >
-      <TabsHeader className="w-50">
+      <TabsHeader className="w-72">
         {data.map(({ label, value, icon }) => (
           <Tab key={value} value={value} className="place-items-start">
             <div className="flex items-center gap-2">

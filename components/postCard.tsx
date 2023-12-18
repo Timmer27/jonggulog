@@ -19,7 +19,7 @@ export function PostCard({ postCardInfo }) {
     <Card
       className="lg:w-[95%] lg:max-w-[24rem] md:w-[95%] md:max-w-[24rem] sm:w-[97%] overflow-hidden h-fit hover:scale-105 transition-all ease-in-out duration-400 cursor-pointer"
       onClick={() => {
-        routeToPagesHandler(`/daily/post/`);
+        routeToPagesHandler(`/daily/post?no=${_key}`);
         // ${_key}\
       }}
     >
