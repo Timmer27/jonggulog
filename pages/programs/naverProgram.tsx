@@ -9,7 +9,7 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 
-export function BookingCard() {
+export default function BookingCard() {
   return (
     // shadow-[0px_0px_9px_-1px_#b3b3b347]
     <div className="w-full  p-4 border-[#d0d0d0] rounded-xl">
