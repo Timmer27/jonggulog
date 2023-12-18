@@ -1,5 +1,3 @@
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import React, { useState, useEffect, useRef } from "react";
 import { Button, Input, Typography } from "@material-tailwind/react";
 
@@ -10,32 +8,22 @@ interface postObj {
 }
 
 export default function MyEditor({ props }: any) {
-  const editorRef = useRef<ClassicEditor>(null);
-  const titleRef = useRef<HTMLInputElement>(null);
+  const titleRef = useRef<HTMLInputElement>();
   const [contentData, setContentData] = useState<string>();
-  const [editorLoaded, setEditorLoaded] = useState(false);
-  const { CKEditor, ClassicEditors } = editorRef.current || ClassicEditor;
-
-  useEffect(() => {
-    editorRef.current =
-      {
-        // CKEditor: require('@ckeditor/ckeditor5-react'), // depricated in v3
-        CKEditor: require("@ckeditor/ckeditor5-react").CKEditor, // v3+
-        ClassicEditors: require("@ckeditor/ckeditor5-build-classic")
-      } || "";
-    setEditorLoaded(true);
-  }, []);
 
   const savePostHandler = () => {
-    if (!titleRef.current?.value || !contentData) {
+    const targetvalue = titleRef.current.value || "";
+    if (!targetvalue || !contentData) {
       alert("글 입력 ㄱ");
     } else {
       const title = titleRef.current.value;
       console.log(contentData, title);
+      // const title = titleRef.current.value
+      // console.log
     }
   };
 
-  return editorLoaded ? (
+  return (
     <div className="mt-12 m-auto w-[80%]">
       <div className="mb-5 flex justify-between">
         <Typography variant="h2" className="mb-5">
@@ -50,24 +38,24 @@ export default function MyEditor({ props }: any) {
           저장
         </Button>
       </div>
-      <p className="mb-5">
+      <div className="mb-5">
         <Input
           label="타이틀"
           crossOrigin={{}}
           inputRef={titleRef}
           className="mb-4"
         />
-      </p>
-      <p className="mb-5">
+      </div>
+      <div className="mb-5">
         <Input
           label="태그. comma 로 구분"
           crossOrigin={{}}
           inputRef={titleRef}
           className="mb-4"
         />
-      </p>
+      </div>
 
-      <CKEditor
+      {/* <CKEditor
         editor={ClassicEditor}
         data=""
         // onInit={(editor) => {
@@ -78,9 +66,7 @@ export default function MyEditor({ props }: any) {
           const data = editor.getData();
           setContentData(data);
         }}
-      />
+      /> */}
     </div>
-  ) : (
-    <div>Editor loading</div>
-  );
+  )
 }
