@@ -1,5 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import "react-quill/dist/quill.snow.css";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Button, Input, Typography } from "@material-tailwind/react";
+import Link from "next/link";
+// import transactionHandler from "../db/pool";
+// import selectFetchHandler from "../db/pool";
 
 interface postObj {
   type: string;
@@ -9,19 +15,26 @@ interface postObj {
 
 export default function MyEditor({ props }: any) {
   const titleRef = useRef<HTMLInputElement>();
+  const tagRef = useRef<HTMLInputElement>();
   const [contentData, setContentData] = useState<string>();
 
-  const savePostHandler = () => {
-    const targetvalue = titleRef.current.value || "";
-    if (!targetvalue || !contentData) {
+  const savePostHandler = async () => {
+    const titleValue = titleRef.current.value || "";
+    const tagValue = tagRef.current.value || "";
+    if (!titleValue || !tagValue || !contentData) {
       alert("글 입력 ㄱ");
     } else {
-      const title = titleRef.current.value;
-      console.log(contentData, title);
+      // const result = handleMySql()
+
+      // selectFetchHandler()
+      // transactionHandler()
+      // console.log(result, titleValue, tagValue, contentData);
       // const title = titleRef.current.value
       // console.log
     }
   };
+  
+
 
   return (
     <div className="mt-12 m-auto w-[80%]">
@@ -37,6 +50,7 @@ export default function MyEditor({ props }: any) {
         >
           저장
         </Button>
+        <Link href={"/api/test"}> test </Link>
       </div>
       <div className="mb-5">
         <Input
@@ -50,23 +64,16 @@ export default function MyEditor({ props }: any) {
         <Input
           label="태그. comma 로 구분"
           crossOrigin={{}}
-          inputRef={titleRef}
+          inputRef={tagRef}
           className="mb-4"
         />
       </div>
-
-      {/* <CKEditor
-        editor={ClassicEditor}
-        data=""
-        // onInit={(editor) => {
-        // You can store the "editor" and use when it is needed.
-        //   console.log("Editor is ready to use!", editor);
-        // }}
-        onChange={(event, editor) => {
-          const data = editor.getData();
-          setContentData(data);
+      <ReactQuill
+        value={contentData}
+        onChange={(val) => {
+          setContentData(val);
         }}
-      /> */}
+      />
     </div>
-  )
+  );
 }

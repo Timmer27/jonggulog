@@ -7,7 +7,7 @@ body {
   margin: 0;
   font-family: -apple-system, Orbit-Regular, sans-serif;
 }
-.ck-editor__editable {
+.ql-editor {
   min-height: 40rem;
 }
 
