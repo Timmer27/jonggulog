@@ -4,6 +4,8 @@ import "react-quill/dist/quill.snow.css";
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Button, Input, Typography } from "@material-tailwind/react";
 import Link from "next/link";
+import axios from "axios";
+import { useRouter } from "next/router";
 // import transactionHandler from "../db/pool";
 // import selectFetchHandler from "../db/pool";
 
@@ -14,6 +16,7 @@ interface postObj {
 }
 
 export default function MyEditor({ props }: any) {
+  const router = useRouter();
   const titleRef = useRef<HTMLInputElement>();
   const tagRef = useRef<HTMLInputElement>();
   const [contentData, setContentData] = useState<string>();
@@ -24,17 +27,25 @@ export default function MyEditor({ props }: any) {
     if (!titleValue || !tagValue || !contentData) {
       alert("글 입력 ㄱ");
     } else {
-      // const result = handleMySql()
+      axios
+        .post("/api/post/new", {
+          title: titleValue,
+          content: contentData,
+          tags: tagValue,
+          owner: "이종호"
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            alert("저장 완료");
+            router.push('/admin');
 
-      // selectFetchHandler()
-      // transactionHandler()
-      // console.log(result, titleValue, tagValue, contentData);
-      // const title = titleRef.current.value
-      // console.log
+          } else {
+            alert("에러");
+            console.log("result", res);
+          }
+        });
     }
   };
-  
-
 
   return (
     <div className="mt-12 m-auto w-[80%]">
@@ -50,7 +61,6 @@ export default function MyEditor({ props }: any) {
         >
           저장
         </Button>
-        <Link href={"/api/test"}> test </Link>
       </div>
       <div className="mb-5">
         <Input

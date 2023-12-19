@@ -11,16 +11,13 @@ import { useRouter } from "next/router";
 
 export function PostCard({ postCardInfo }) {
   const router = useRouter();
-  const { _key, title, sub, content, publishedDate } = postCardInfo;
-  const routeToPagesHandler = (link) => {
-    router.push(link);
-  };
+  const { id, tags, title, content, publishedDate, owner } = postCardInfo;
+
   return (
     <Card
       className="lg:w-[95%] lg:max-w-[24rem] md:w-[95%] md:max-w-[24rem] sm:w-[97%] overflow-hidden h-fit hover:scale-105 transition-all ease-in-out duration-400 cursor-pointer"
       onClick={() => {
-        routeToPagesHandler(`/daily/post?no=${_key}`);
-        // ${_key}\
+        router.push(`/daily/post?no=${id}`);
       }}
     >
       <CardHeader
@@ -48,9 +45,9 @@ export function PostCard({ postCardInfo }) {
           </Tooltip>
           <div className="">
             <Typography variant="h5" color="blue-gray">
-              제목
+              {title}
             </Typography>
-            <p color="blue-gray">부제목</p>
+            <p color="blue-gray">{owner}</p>
           </div>
         </div>
         <p
@@ -58,11 +55,11 @@ export function PostCard({ postCardInfo }) {
           color="gray"
           className="mt-3 font-normal text-sm overflow-hidden whitespace-nowrap text-ellipsis max-h-[4rem]"
         >
-          설명
+          {content}
         </p>
       </CardBody>
       <CardFooter className="flex items-center justify-between pt-1 self-end">
-        <Typography className="text-base">January 10</Typography>
+        <Typography className="text-base">{publishedDate}</Typography>
       </CardFooter>
     </Card>
   );

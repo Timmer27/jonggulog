@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Tabs,
   TabsHeader,
@@ -9,66 +9,41 @@ import {
   Input
 } from "@material-tailwind/react";
 import { PostCard } from "../../components/postCard";
+import axios from "axios";
 
 export interface postInfo {
-  _key: Number;
+  id: Number;
   title: string;
-  sub: string;
+  tags: Array<string>;
   content: string;
   publishedDate: Date;
+  owner: string;
 }
 
 export default function Daily({}) {
   const [activeTab, setActiveTab] = React.useState<string>("latest");
-  const [postCardInfo, setPostCardInfo] = useState<postInfo[] | undefined>([
-    {
-      _key: 1,
-      title: "string",
-      sub: "string",
-      content: "string",
-      publishedDate: new Date()
-    },
-    {
-      _key: 2,
-      title: "string",
-      sub: "string",
-      content: "string",
-      publishedDate: new Date()
-    },
-    {
-      _key: 3,
-      title: "string",
-      sub: "string",
-      content: "string",
-      publishedDate: new Date()
-    },
-    {
-      _key: 4,
-      title: "string",
-      sub: "string",
-      content: "string",
-      publishedDate: new Date()
-    },
-    {
-      _key: 5,
-      title: "string",
-      sub: "string",
-      content: "string",
-      publishedDate: new Date()
-    },
-    {
-      _key: 6,
-      title: "string",
-      sub: "string",
-      content: "string",
-      publishedDate: new Date()
-    },
-  ]);
-  const data = [
+  const [postCardInfo, setPostCardInfo] = useState<postInfo[] | undefined>([]);
+
+  useEffect(() => {
+    axios.get('/api/post/all').then((res) => {
+      const data = res.data.map((val) => {
+        return({
+          id: val.id,
+          title: val.title,
+          tags: val.tags.split(','),
+          content: val.content,
+          publishedDate: val.p_date,
+          owner: val.owner
+        })
+      })
+      setPostCardInfo(data)
+    })
+  }, []);
+  const headerSelectionData = [
     {
       label: "최신",
       value: "latest",
-      desc: postCardInfo.map((val) => {
+      desc: postCardInfo && postCardInfo.map((val) => {
         return <PostCard postCardInfo={val} />;
       })
     },
@@ -79,6 +54,7 @@ export default function Daily({}) {
       to follow my dreams and inspire other people to follow their dreams, too.`
     }
   ];
+
   return (
     <Tabs value={activeTab} className="mt-10 ml-7">
       <div className="flex gap-5 px-4 pt-4 pb-5">
@@ -89,7 +65,7 @@ export default function Daily({}) {
               "bg-transparent border-b-2 border-gray-900 shadow-none rounded-none"
           }}
         >
-          {data.map(({ label, value }) => (
+          {headerSelectionData.map(({ label, value }) => (
             <Tab
               key={value}
               value={value}
@@ -142,7 +118,7 @@ export default function Daily({}) {
         </div>
       </div>
       <TabsBody>
-        {data.map(({ value, desc }) => (
+        {headerSelectionData.map(({ value, desc }) => (
           <TabPanel
             key={value}
             value={value}
