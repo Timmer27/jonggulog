@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Tabs,
   TabsHeader,
@@ -21,39 +21,61 @@ export interface postInfo {
 }
 
 export default function Daily({}) {
+  const inputRef = useRef<HTMLInputElement>();
   const [activeTab, setActiveTab] = React.useState<string>("latest");
   const [postCardInfo, setPostCardInfo] = useState<postInfo[] | undefined>([]);
+  const [filteredInfo, setFilteredInfo] = useState<postInfo[] | undefined>([]);
+  // const [postCardInfo, setPostCardInfo] = useState<postInfo[] | undefined>([]);
 
-  useEffect(() => {
-    axios.get('/api/post/all').then((res) => {
-      const data = res.data.map((val) => {
-        return({
-          id: val.id,
-          title: val.title,
-          tags: val.tags.split(','),
-          content: val.content,
-          publishedDate: val.p_date,
-          owner: val.owner
-        })
-      })
-      setPostCardInfo(data)
-    })
-  }, []);
   const headerSelectionData = [
     {
       label: "최신",
       value: "latest",
-      desc: postCardInfo && postCardInfo.map((val) => {
-        return <PostCard postCardInfo={val} />;
-      })
+      desc:
+        filteredInfo &&
+        filteredInfo.map((val) => {
+          return <PostCard postCardInfo={val} />;
+        })
     },
     {
       label: "업데이트",
       value: "update",
-      desc: `Because it's about motivating the doers. Because I'm here
-      to follow my dreams and inspire other people to follow their dreams, too.`
+      desc:
+        filteredInfo &&
+        filteredInfo
+          .filter((val) => val.tags.includes("업데이트"))
+          .map((val) => {
+            return <PostCard postCardInfo={val} />;
+          })
     }
   ];
+
+  useEffect(() => {
+    axios.get("/api/post/all").then((res) => {
+      const data = res.data.map((val) => {
+        return {
+          id: val.id,
+          title: val.title,
+          tags: val.tags.split(","),
+          content: val.content,
+          publishedDate: val.p_date,
+          owner: val.owner
+        };
+      });
+      setPostCardInfo(data);
+      setFilteredInfo(data);
+    });
+  }, []);
+
+  const searchHandler = (searchKey: string) => {
+    const loweredCase = searchKey.toLowerCase();
+    const filteredData = postCardInfo.filter((val) =>
+      val.title.includes(loweredCase)
+    );
+
+    console.log("filteredData", filteredData);
+    setFilteredInfo(filteredData);
+  };
 
   return (
     <Tabs value={activeTab} className="mt-10 ml-7">
@@ -69,7 +91,10 @@ export default function Daily({}) {
             <Tab
               key={value}
               value={value}
-              onClick={() => setActiveTab(value)}
+              onClick={() => {
+                setActiveTab(value);
+                setFilteredInfo(postCardInfo);
+              }}
               className={activeTab === value ? "text-gray-800 font-bold" : ""}
             >
               {label}
@@ -80,6 +105,7 @@ export default function Daily({}) {
           <div className="relative flex w-full gap-2 md:w-max">
             <Input
               crossOrigin={{}}
+              inputRef={inputRef}
               type="search"
               placeholder="Search"
               containerProps={{
@@ -88,6 +114,15 @@ export default function Daily({}) {
               className=" !border-t-blue-gray-300 pl-9 placeholder:text-blue-gray-300 focus:!border-blue-gray-300"
               labelProps={{
                 className: "before:content-none after:content-none"
+              }}
+              onKeyDown={(e) => {
+                const key = e.code;
+                switch (key) {
+                  case "Enter":
+                    searchHandler(inputRef.current.value);
+                    break;
+                  default:
+                }
               }}
             />
             <div className="!absolute left-3 top-[13px]">
@@ -112,7 +147,11 @@ export default function Daily({}) {
               </svg>
             </div>
           </div>
-          <Button size="md" className="rounded-lg bg-blue-gray-500">
+          <Button
+            onClick={() => searchHandler(inputRef.current.value)}
+            size="md"
+            className="rounded-lg bg-blue-gray-500"
+          >
             검색
           </Button>
         </div>

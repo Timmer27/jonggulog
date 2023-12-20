@@ -49,7 +49,18 @@ export default function fetchPostData(
       db.query(
         `
         WITH tmp AS (SELECT id, GROUP_CONCAT(tags) tags FROM posting_tags GROUP BY id)
-          SELECT p.id, p.title, p.content, p.p_date, p.owner, t.tags FROM posting p LEFT JOIN tmp t ON p.id = t.id;`,
+          SELECT
+            p.id,
+            p.title,
+            p.content,
+            CASE
+              WHEN INSTR(DATE_FORMAT(p.p_date, '%Y-%m-%d %p %h:%i'), 'PM') > 0
+              THEN REPLACE(DATE_FORMAT(p.p_date, '%Y-%m-%d %p %h:%i'), 'PM', '오후')
+              ELSE REPLACE(DATE_FORMAT(p.p_date, '%Y-%m-%d %p %h:%i'), 'AM', '오전')    
+            END AS p_date,
+            p.owner,
+            t.tags
+          FROM posting p LEFT JOIN tmp t ON p.id = t.id;`,
         function (err: any, result: any) {
           if (err) {
             console.error(err);
@@ -63,8 +74,19 @@ export default function fetchPostData(
     } else {
       db.query(
         `WITH tmp AS (SELECT id, GROUP_CONCAT(tags) tags FROM posting_tags GROUP BY id)
-          SELECT p.id, p.title, p.content, p.p_date, p.owner, t.tags FROM posting p LEFT JOIN tmp t ON p.id = t.id
-          WHERE t.id = ?  
+        SELECT
+          p.id,
+          p.title,
+          p.content,
+          CASE
+            WHEN INSTR(DATE_FORMAT(p.p_date, '%Y-%m-%d %p %h:%i'), 'PM') > 0
+            THEN REPLACE(DATE_FORMAT(p.p_date, '%Y-%m-%d %p %h:%i'), 'PM', '오후')
+            ELSE REPLACE(DATE_FORMAT(p.p_date, '%Y-%m-%d %p %h:%i'), 'AM', '오전')    
+          END AS p_date,
+          p.owner,
+          t.tags
+        FROM posting p LEFT JOIN tmp t ON p.id = t.id
+          WHERE t.id = ?
         ;`,
         [id],
         function (err: any, result: any) {

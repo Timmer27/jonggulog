@@ -8,6 +8,7 @@ import {
   Tooltip
 } from "@material-tailwind/react";
 import { useRouter } from "next/router";
+import EllipsisText from "react-ellipsis-text";
 
 export function PostCard({ postCardInfo }) {
   const router = useRouter();
@@ -17,6 +18,7 @@ export function PostCard({ postCardInfo }) {
     <Card
       className="lg:w-[95%] lg:max-w-[24rem] md:w-[95%] md:max-w-[24rem] sm:w-[97%] overflow-hidden h-fit hover:scale-105 transition-all ease-in-out duration-400 cursor-pointer"
       onClick={() => {
+        // router.push(`/daily/post/${id}`);
         router.push(`/daily/post?no=${id}`);
       }}
     >
@@ -32,8 +34,8 @@ export function PostCard({ postCardInfo }) {
           className="w-full"
         />
       </CardHeader>
-      <CardBody className="p-3 lg:min-h-[10rem] md:min-h-[7rem]">
-        <div className="flex gap-2 items-center">
+      <CardBody className="p-3 lg:min-h-[12rem] lg:max-h-[10rem] md:min-h-[7rem] md:max-h-[7rem]">
+        <div className="flex gap-2 items-center min-h-[5rem]">
           <Tooltip content="설명">
             <Avatar
               size="sm"
@@ -45,7 +47,7 @@ export function PostCard({ postCardInfo }) {
           </Tooltip>
           <div className="">
             <Typography variant="h5" color="blue-gray">
-              {title}
+              <EllipsisText text={title} length={"18"} />
             </Typography>
             <p color="blue-gray">{owner}</p>
           </div>
@@ -55,7 +57,7 @@ export function PostCard({ postCardInfo }) {
           color="gray"
           className="mt-3 font-normal text-sm overflow-hidden whitespace-nowrap text-ellipsis max-h-[4rem]"
         >
-          {content}
+          <div className="" dangerouslySetInnerHTML={{ __html: content }} />
         </p>
       </CardBody>
       <CardFooter className="flex items-center justify-between pt-1 self-end">
