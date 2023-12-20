@@ -72,8 +72,6 @@ export default function Daily({}) {
     const filteredData = postCardInfo.filter((val) =>
       val.title.includes(loweredCase)
     );
-
-    console.log("filteredData", filteredData);
     setFilteredInfo(filteredData);
   };
 

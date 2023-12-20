@@ -11,24 +11,33 @@ import {
   UserCircleIcon,
   Cog6ToothIcon,
 } from "@heroicons/react/24/solid";
-// import { BookingCard } from "./naverProgram";
+import dynamic from "next/dynamic";
 
-type Props = {};
+
+// next js -> ssr 개별 세팅 
+const CandleChart = dynamic(() => import("./candleChart"), {
+  ssr: false,
+});
+
+// 참고
+// https://github.com/react-financial/react-financial-charts
+// https://codesandbox.io/p/sandbox/react-financial-charts-demo-forked-96uyw?file=%2Fsrc%2Findex.js%3A203%2C15
+// https://velog.io/@turtlemana/React-financial-charts-%EC%82%AC%EC%9A%A9-%EC%84%A4%EB%AA%85%EC%84%9C
 
 const Programs = (Props) => {
   const data = [
     {
-      label: "네이버 서이추 프로그램",
+      label: "트레이딩 봇",
+      value: "tradingBot",
+      icon: UserCircleIcon,
+      // <Image src={'/bot.png'} alt="bot" width={30} height={30} />
+      desc: <CandleChart />,
+    },
+    {
+      label: "서이추 봇",
       value: "naverProgram",
       icon: Square3Stack3DIcon,
       desc: "test",
-    },
-    {
-      label: "트레이딩봇",
-      value: "tradingBot",
-      icon: UserCircleIcon,
-      desc: `Because it's about motivating the doers. Because I'm here
-      to follow my dreams and inspire other people to follow their dreams, too.`,
     },
     {
       label: "Settings",
@@ -41,13 +50,13 @@ const Programs = (Props) => {
   ];
   return (
     <Tabs
-      value="dashboard"
+      value="tradingBot"
       orientation="vertical"
       className="w-[68%] m-auto mt-12"
     >
-      <TabsHeader className="w-72">
+      <TabsHeader className="w-64">
         {data.map(({ label, value, icon }) => (
-          <Tab key={value} value={value} className="place-items-start">
+          <Tab key={value} value={value} className="justify-start">
             <div className="flex items-center gap-2">
               {React.createElement(icon, { className: "w-5 h-5" })}
               {label}

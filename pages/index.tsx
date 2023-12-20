@@ -8,6 +8,7 @@ import {
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 export type imgFile = {
   src: string;
@@ -25,30 +26,38 @@ const MainPage = () => {
     {
       key: 0,
       title: "트레이딩 봇",
-      content: "힘든 트레이딩, 자동화 봇으로 편하게 수익내자!",
-      src: "img",
-      alt: "alt"
+      sub: "비트코인",
+      content: "트레이딩 자동화 봇",
+      src: "/bot.png",
+      alt: "bot",
+      status: 1
     },
     {
       key: 1,
       title: "서이추 봇",
-      content: "귀찮은 서로이웃추가, 봇으로 편하게 추가하자!",
-      src: "img",
-      alt: "alt"
+      sub: "네이버",
+      content: "블로그 서이추 자동화 봇",
+      src: "/blog.png",
+      alt: "alt",
+      status: 1
     },
     {
       key: 2,
-      title: "사이드3",
-      content: "내용3",
-      src: "img",
-      alt: "alt"
+      title: "준비 중",
+      sub: "",
+      content: "",
+      src: "/question.png",
+      alt: "alt",
+      status: 0
     },
     {
       key: 3,
-      title: "사이드4",
-      content: "내용4",
-      src: "img",
-      alt: "alt"
+      title: "준비 중",
+      sub: "",
+      content: "",
+      src: "/question.png",
+      alt: "alt",
+      status: 0
     }
   ];
 
@@ -109,7 +118,7 @@ const MainPage = () => {
         </div>
         <div className="gap-4 flex flex-col w-[40%]">
           <Card
-            className={`flex-1 cursor-pointer ${cardShadowStyle} bg-[#337f9b]  ${
+            className={`flex-1 cursor-pointer ${cardShadowStyle} bg-[#193e4b]  ${
               mounted ? `${fadeOut}` : `delay-[400ms] ${fadeIn}`
             }`}
             onClick={() => routeToPagesHandler("/daily")}
@@ -127,7 +136,7 @@ const MainPage = () => {
             </CardFooter>
           </Card>
           <Card
-            className={`flex-1 cursor-pointer ${cardShadowStyle} bg-[#82cdcf] ${
+            className={`flex-1 cursor-pointer ${cardShadowStyle} bg-[#73babc] ${
               mounted ? `${fadeOut}` : `delay-[600ms] ${fadeIn}`
             }`}
             onClick={() => routeToPagesHandler("/contact")}
@@ -147,23 +156,40 @@ const MainPage = () => {
           </Card>
         </div>
       </section>
+      {/* <section className="flex-1 flex flex-col m-auto items-center mt-12">
+        <div>
+        <strong className="text-xl text-blue-gray-800">취미로 개발해둔</strong>
+        </div>
+        <div>
+        <strong className="text-3xl">공방 무료 컨텐츠</strong>
+        </div>
+      </section> */}
       <section className="flex-1 flex gap-5 flex-row m-auto">
         <aside className="flex flex-wrap gap-6 w-full">
           {asideItems.map((val, idx) => {
-            const delay = `delay-[${400 + (idx + 1) * 100}ms]`;
+            const isReady = val.status === 1 ? "cursor-pointer" : "cursor-not-allowed opacity-80 pointer-events-none"
             return (
               <Card
                 key={idx}
-                className={`mt-6 flex-[1_0_21%] cursor-pointer ${cardShadowStyle} ${
-                  mounted ? `delay-100 ${fadeOut}` : `${fadeIn}`
+                className={`mt-6 flex-[1_0_21%] min-h-[12rem] ${isReady} ${cardShadowStyle} ${
+                  mounted ? `${fadeOut}` : `${fadeIn}`
                 }`}
                 onClick={() => routeToPagesHandler("/programs")}
               >
-                <CardBody>
-                  <Typography variant="h5" color="blue-gray" className="mb-2">
-                    {val.title}
-                  </Typography>
-                  <Typography className="text-xs">{val.content}</Typography>
+                <CardBody className="h-full flex flex-col justify-between ${isReady}">
+                  <div className="flex justify-between">
+                    <div className="flex flex-col">
+                      <p className="mb-2">{val.sub}</p>
+                      <div className="text-2xl font-bold text-black">{val.title}</div>
+                    </div>
+                    <Image
+                      src={val.src}
+                      alt={val.alt}
+                      width={65}
+                      height={65}
+                    ></Image>
+                  </div>
+                  <Typography className="text-md">{val.content}</Typography>
                 </CardBody>
               </Card>
             );

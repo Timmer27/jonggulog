@@ -27,8 +27,8 @@ export default function Post({}) {
   }, [id]);
   return (
     postCardInfo && (
-      <div className="mt-24 lg:w-[60%] md:w-[60%] sm:w-[80%] m-auto h-full flex flex-col">
-        <Link href={"/daily"}>
+      <div className="p-7 lg:w-[65%] md:w-[65%] sm:w-[80%] m-auto h-full flex flex-col bg-white">
+        <Link href={"/daily"} className="mt-7">
           <Button className="w-28 mb-10">뒤로 가기</Button>
         </Link>
         <header>
@@ -41,7 +41,7 @@ export default function Post({}) {
             size="md"
             variant="circular"
             alt="tania andrew"
-            src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+            src="/profile.png"
             className="border-2 border-white mr-4"
           />
           <div className="flex flex-row gap-2">
@@ -54,8 +54,11 @@ export default function Post({}) {
           </div>
         </sub>
         <nav className="flex gap-3 p-3">
-          <Chip size="md" className="text-sm" color="teal" value="업데이트" />
-          <Chip size="md" className="text-sm" color="teal" value="잡다구리" />
+          {postCardInfo.tags.map((val) => {
+            return (
+              <Chip size="md" className="text-sm" color="teal" value={val} />
+            );
+          })}
         </nav>
         <section className="p-3 mt-5 leading-[2rem]">
           <div dangerouslySetInnerHTML={{ __html: postCardInfo.content }} />
