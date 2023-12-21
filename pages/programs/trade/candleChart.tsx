@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import ReactDOM from "react-dom";
 import { format } from "d3-format";
 import { timeFormat } from "d3-time-format";
@@ -27,12 +27,15 @@ import {
   withDeviceRatio,
   withSize
 } from "react-financial-charts";
-import { initialData } from "./tmp.js";
+import { initialData } from "./tmpdata2.js";
 
 const CandleChart = () => {
-  const ScaleProvider = discontinuousTimeScaleProviderBuilder().inputDateAccessor(
-    (d) => new Date(d.date)
-  );
+  const windowSize = useRef([window.innerWidth, window.innerHeight]);
+
+  const ScaleProvider =
+    discontinuousTimeScaleProviderBuilder().inputDateAccessor(
+      (d) => new Date(d.date)
+    );
   const height = 700;
   const width = 900;
   const margin = { left: 0, right: 48, top: 0, bottom: 24 };
@@ -56,9 +59,8 @@ const CandleChart = () => {
   const elder = elderRay();
 
   const calculatedData = elder(ema26(ema12(initialData)));
-  const { data, xScale, xAccessor, displayXAccessor } = ScaleProvider(
-    initialData
-  );
+  const { data, xScale, xAccessor, displayXAccessor } =
+    ScaleProvider(initialData);
   const pricesDisplayFormat = format(".2f");
   const max = xAccessor(data[data.length - 1]);
   const min = xAccessor(data[Math.max(0, data.length - 100)]);
@@ -105,9 +107,9 @@ const CandleChart = () => {
 
   return (
     <ChartCanvas
-      height={height}
       ratio={3}
-      width={width}
+      width={windowSize.current[0] * 0.9}
+      height={windowSize.current[1] * 0.7}
       margin={margin}
       data={data}
       displayXAccessor={displayXAccessor}
@@ -180,7 +182,7 @@ const CandleChart = () => {
         origin={elderRayOrigin}
         padding={{ top: 8, bottom: 8 }}
       >
-                <ElderRaySeries yAccessor={elder.accessor()} />
+        <ElderRaySeries yAccessor={elder.accessor()} />
 
         <XAxis showGridLines gridLinesStrokeStyle="#e0e3eb" />
         <YAxis ticks={4} tickFormat={pricesDisplayFormat} />
@@ -190,7 +192,6 @@ const CandleChart = () => {
           rectWidth={margin.right}
           displayFormat={pricesDisplayFormat}
         />
-
 
         <SingleValueTooltip
           yAccessor={elder.accessor()}
@@ -208,4 +209,4 @@ const CandleChart = () => {
   );
 };
 
-export default CandleChart
+export default CandleChart;

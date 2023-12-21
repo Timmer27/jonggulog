@@ -28,6 +28,7 @@ const MainPage = () => {
       title: "트레이딩 봇",
       sub: "비트코인",
       content: "트레이딩 자동화 봇",
+      href: "/programs/trade",
       src: "/bot.png",
       alt: "bot",
       status: 1
@@ -37,6 +38,7 @@ const MainPage = () => {
       title: "서이추 봇",
       sub: "네이버",
       content: "블로그 서이추 자동화 봇",
+      href: "/programs/blog",
       src: "/blog.png",
       alt: "alt",
       status: 1
@@ -46,6 +48,7 @@ const MainPage = () => {
       title: "준비 중",
       sub: "",
       content: "",
+      href: "/programs/tmp",
       src: "/question.png",
       alt: "alt",
       status: 0
@@ -55,6 +58,7 @@ const MainPage = () => {
       title: "준비 중",
       sub: "",
       content: "",
+      href: "/programs/tmp",
       src: "/question.png",
       alt: "alt",
       status: 0
@@ -174,7 +178,7 @@ const MainPage = () => {
                 className={`mt-6 flex-[1_0_21%] min-h-[12rem] ${isReady} ${cardShadowStyle} ${
                   mounted ? `${fadeOut}` : `${fadeIn}`
                 }`}
-                onClick={() => routeToPagesHandler("/programs")}
+                onClick={() => routeToPagesHandler(`${val.href}`)}
               >
                 <CardBody className="h-full flex flex-col justify-between ${isReady}">
                   <div className="flex justify-between">
