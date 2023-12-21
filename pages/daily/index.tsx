@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Tabs,
   TabsHeader,
@@ -9,76 +9,72 @@ import {
   Input
 } from "@material-tailwind/react";
 import { PostCard } from "../../components/postCard";
+import axios from "axios";
 
 export interface postInfo {
-  _key: Number;
+  id: Number;
   title: string;
-  sub: string;
+  tags: Array<string>;
   content: string;
   publishedDate: Date;
+  owner: string;
 }
 
 export default function Daily({}) {
+  const inputRef = useRef<HTMLInputElement>();
   const [activeTab, setActiveTab] = React.useState<string>("latest");
-  const [postCardInfo, setPostCardInfo] = useState<postInfo[] | undefined>([
-    {
-      _key: 1,
-      title: "string",
-      sub: "string",
-      content: "string",
-      publishedDate: new Date()
-    },
-    {
-      _key: 2,
-      title: "string",
-      sub: "string",
-      content: "string",
-      publishedDate: new Date()
-    },
-    {
-      _key: 3,
-      title: "string",
-      sub: "string",
-      content: "string",
-      publishedDate: new Date()
-    },
-    {
-      _key: 4,
-      title: "string",
-      sub: "string",
-      content: "string",
-      publishedDate: new Date()
-    },
-    {
-      _key: 5,
-      title: "string",
-      sub: "string",
-      content: "string",
-      publishedDate: new Date()
-    },
-    {
-      _key: 6,
-      title: "string",
-      sub: "string",
-      content: "string",
-      publishedDate: new Date()
-    },
-  ]);
-  const data = [
+  const [postCardInfo, setPostCardInfo] = useState<postInfo[] | undefined>([]);
+  const [filteredInfo, setFilteredInfo] = useState<postInfo[] | undefined>([]);
+  // const [postCardInfo, setPostCardInfo] = useState<postInfo[] | undefined>([]);
+
+  const headerSelectionData = [
     {
       label: "최신",
       value: "latest",
-      desc: postCardInfo.map((val) => {
-        return <PostCard postCardInfo={val} />;
-      })
+      desc:
+        filteredInfo &&
+        filteredInfo.map((val) => {
+          return <PostCard postCardInfo={val} />;
+        })
     },
     {
       label: "업데이트",
       value: "update",
-      desc: `Because it's about motivating the doers. Because I'm here
-      to follow my dreams and inspire other people to follow their dreams, too.`
+      desc:
+        filteredInfo &&
+        filteredInfo
+          .filter((val) => val.tags.includes("업데이트"))
+          .map((val) => {
+            return <PostCard postCardInfo={val} />;
+          })
     }
   ];
+
+  useEffect(() => {
+    axios.get("/api/post/all").then((res) => {
+      const data = res.data.map((val) => {
+        return {
+          id: val.id,
+          title: val.title,
+          tags: val.tags.split(","),
+          content: val.content,
+          publishedDate: val.p_date,
+          owner: val.owner
+        };
+      });
+      setPostCardInfo(data);
+      setFilteredInfo(data);
+    });
+  }, []);
+
+  const searchHandler = (searchKey: string) => {
+    const loweredCase = searchKey.toLowerCase();
+    const filteredData = postCardInfo.filter((val) =>
+      val.title.includes(loweredCase)
+    );
+    setFilteredInfo(filteredData);
+  };
+
   return (
     <Tabs value={activeTab} className="mt-10 ml-7">
       <div className="flex gap-5 px-4 pt-4 pb-5">
@@ -89,11 +85,14 @@ export default function Daily({}) {
               "bg-transparent border-b-2 border-gray-900 shadow-none rounded-none"
           }}
         >
-          {data.map(({ label, value }) => (
+          {headerSelectionData.map(({ label, value }) => (
             <Tab
               key={value}
               value={value}
-              onClick={() => setActiveTab(value)}
+              onClick={() => {
+                setActiveTab(value);
+                setFilteredInfo(postCardInfo);
+              }}
               className={activeTab === value ? "text-gray-800 font-bold" : ""}
             >
               {label}
@@ -104,6 +103,7 @@ export default function Daily({}) {
           <div className="relative flex w-full gap-2 md:w-max">
             <Input
               crossOrigin={{}}
+              inputRef={inputRef}
               type="search"
               placeholder="Search"
               containerProps={{
@@ -112,6 +112,15 @@ export default function Daily({}) {
               className=" !border-t-blue-gray-300 pl-9 placeholder:text-blue-gray-300 focus:!border-blue-gray-300"
               labelProps={{
                 className: "before:content-none after:content-none"
+              }}
+              onKeyDown={(e) => {
+                const key = e.code;
+                switch (key) {
+                  case "Enter":
+                    searchHandler(inputRef.current.value);
+                    break;
+                  default:
+                }
               }}
             />
             <div className="!absolute left-3 top-[13px]">
@@ -136,13 +145,17 @@ export default function Daily({}) {
               </svg>
             </div>
           </div>
-          <Button size="md" className="rounded-lg bg-blue-gray-500">
+          <Button
+            onClick={() => searchHandler(inputRef.current.value)}
+            size="md"
+            className="rounded-lg bg-blue-gray-500"
+          >
             검색
           </Button>
         </div>
       </div>
       <TabsBody>
-        {data.map(({ value, desc }) => (
+        {headerSelectionData.map(({ value, desc }) => (
           <TabPanel
             key={value}
             value={value}

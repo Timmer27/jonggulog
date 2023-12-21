@@ -41,7 +41,7 @@ const PageHeader = (props: Props) => {
       href: "/programs",
       color: "blue-gray",
       className: "p-1 text-lg",
-      name: "프로그램 공유"
+      name: "프로그램"
     },
     {
       href: "/about",
@@ -79,7 +79,7 @@ const PageHeader = (props: Props) => {
   };
 
   return (
-    <div className="mt-3 -m-6 max-h-[768px] w-[calc(100%+48px)]">
+    <div className="-m-6 max-h-[768px] w-[calc(100%+48px)]">
       {/* overflow-scroll */}
       <Navbar className="sticky top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4 shadow-none border-b-[#e3e3e3cf]">
         <div className="flex items-center justify-between text-blue-gray-900 px-4">

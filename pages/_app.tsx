@@ -3,7 +3,6 @@ import { ThemeProvider } from "@material-tailwind/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import "../styles/globals.css";
-import PageFooter from "../components/pageFooter";
 import PageHeader from "../components/pageHeader";
 
 // 인스턴스 생성
