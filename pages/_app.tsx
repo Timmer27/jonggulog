@@ -6,7 +6,17 @@ import "../styles/globals.css";
 import PageHeader from "../components/pageHeader";
 
 // 인스턴스 생성
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: true,
+      retry: false,
+      staleTime: Infinity,
+      cacheTime: Infinity
+    }
+  }
+});
 const App = ({ Component, pageProps }: AppProps) => {
   return (
     <QueryClientProvider client={queryClient}>

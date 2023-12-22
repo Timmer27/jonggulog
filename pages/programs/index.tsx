@@ -5,63 +5,57 @@ import {
   TabsBody,
   Tab,
   TabPanel,
+  Card,
+  CardBody
 } from "@material-tailwind/react";
 import {
   Square3Stack3DIcon,
   UserCircleIcon,
-  Cog6ToothIcon,
+  Cog6ToothIcon
 } from "@heroicons/react/24/solid";
 import Description from "./desciption";
+import { useRouter } from "next/router";
 
 const Programs = (Props) => {
+  const cardShadowStyle =
+    "shadow-[0px_0px_9px_-1px_#b3b3b347] ease-in-out duration-500 hover:-translate-y-1.5 hover:shadow-[0px_0px_11px_3px_#49494947]";
+  const router = useRouter();
+
   const data = [
     {
       label: "트레이딩 봇",
       value: "tradingBot",
-      icon: UserCircleIcon,
-      // <Image src={'/bot.png'} alt="bot" width={30} height={30} />
-      desc: <Description />,
+      href: "/programs/trade"
     },
     {
       label: "서이추 봇",
       value: "naverProgram",
-      icon: Square3Stack3DIcon,
-      desc: "test",
+      href: "/programs/blog"
     },
     {
       label: "Settings",
       value: "settings",
-      icon: Cog6ToothIcon,
-      desc: `We're not always in the position that we want to be at.
-      We're constantly growing. We're constantly making mistakes. We're
-      constantly trying to express ourselves and actualize our dreams.`,
-    },
+      href: "/setting"
+    }
   ];
   return (
-    <Tabs
-      value="tradingBot"
-      orientation="vertical"
-      className="w-[68%] m-auto mt-12"
-    >
-      <TabsHeader className="w-64">
-        {data.map(({ label, value, icon }) => (
-          <Tab key={value} value={value} className="justify-start">
-            <div className="flex items-center gap-2">
-              {React.createElement(icon, { className: "w-5 h-5" })}
-              {label}
+    <>
+      {data.map((val, idx) => (
+        <Card
+          key={idx}
+          className={`mt-6 flex-[1_0_21%] min-h-[12rem] ${cardShadowStyle}`}
+          onClick={() => router.push(`${val.href}`)}
+        >
+          <CardBody className={`h-full flex flex-col justify-between`}>
+            <div className="flex justify-between">
+              <div className="flex flex-col">
+                <div className="text-2xl font-bold text-black">{val.label}</div>
+              </div>
             </div>
-          </Tab>
-        ))}
-      </TabsHeader>
-      <TabsBody>
-        {data.map(({ value, desc }) => (
-          <TabPanel key={value} value={value} className="py-0">
-            {desc}
-          </TabPanel>
-        ))}
-      </TabsBody>
-    </Tabs>
+          </CardBody>
+        </Card>
+      ))}
+    </>
   );
 };
-
 export default Programs;
