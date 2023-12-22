@@ -25,9 +25,6 @@ const CandleChart = dynamic(() => import("./candleChart"), {
 // https://apexcharts.com/react-chart-demos/candlestick-charts/category-x-axis/
 
 const Programs = (Props) => {
-  const intervals = ["1d", "8h", "4h", "1h", "30m", "15m", "5m", "1m"];
-  const ticker = ["BTCUSDT"];
-
   const { isLoading, error, data } = useQuery({
     queryKey: ["repoData"],
     queryFn: () =>
@@ -35,7 +32,16 @@ const Programs = (Props) => {
         const result = res.json();
         return result;
       })
+      // fetch(`/api/trade/${}/${}`).then((res) => {
+      //   const result = res.json();
+      //   return result;
+      // })
   });
+
+  const selecteTickerIntervalHandler = (selectedData) => {
+    console.log('selectedData', selectedData)
+
+  }
 
   const calculateSignalHandler = () => {
     if (data) {
@@ -53,7 +59,7 @@ const Programs = (Props) => {
       // 결국 indicatort table에서 적용을 누르면 
       // setSelectedIndicator에 담은 값으로(함수) 아래 adj를 계산해서 나한테 던져주고
       // 난 아래 실행해서 signal다시 받아서 차트에 넣어주면 됨
-      
+
       const adjAnnotation = adj
         .filter((val) => val.signal !== -1)
         .map((val, idx) => {
@@ -92,10 +98,9 @@ const Programs = (Props) => {
         <div className="flex flex-col">
           {!isLoading && (
             <CandleChart
-              ticker={ticker}
-              interval={intervals}
               initialData={data}
               calculateSignalHandler={calculateSignalHandler}
+              selecteTickerIntervalHandler={selecteTickerIntervalHandler}
             />
           )}
           <Typography variant="h4" className="mt-4 mb-2">

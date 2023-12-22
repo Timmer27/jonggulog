@@ -6,15 +6,22 @@ import { dummy } from "../../../data/dummy";
 import { Button, Option, Select } from "@material-tailwind/react";
 
 const CandlisticChart = ({
-  ticker,
-  interval,
   initialData,
-  calculateSignalHandler
+  calculateSignalHandler,
+  selecteTickerIntervalHandler
 }) => {
   const ReactApexChart = dynamic(() => import("react-apexcharts"), {
     ssr: false
   });
+
+  const intervals = ["1d", "8h", "4h", "1h", "30m", "15m", "5m", "1m"];
+  const ticker = ["BTCUSDT"];
+
   const [annotation, setAnnotation] = useState();
+  const [selectedData, setSelectedData] = useState({
+    ticker: ticker[0],
+    interval: intervals[0]
+  });
   const seriesBar = [
     {
       name: "volume"
@@ -147,9 +154,14 @@ const CandlisticChart = ({
 
   const series = [
     {
-      data: !initialData ? dummy : initialData?.chartData.slice(0, 100)
+      data: !initialData ? dummy : initialData?.chartData?.slice(0, 100)
+      // data: dummy
     }
   ];
+
+  useEffect(() => {
+    selecteTickerIntervalHandler(selectedData)
+  }, [selectedData])
 
   return (
     <div id="chart">
@@ -163,7 +175,18 @@ const CandlisticChart = ({
       </Button>
       <div className="flex w-full gap-3 ml-3 mb-4 mt-2">
         <div>
-          <Select variant="outlined" label="ticker" value={ticker[0]}>
+          <Select
+            variant="outlined"
+            label="ticker"
+            value={ticker[0]}
+            onChange={(value) => {
+              setSelectedData((prevState) => ({
+                ...prevState,
+                ticker: value
+              }));
+            }}
+          >
+            {/*  */}
             {ticker.map((val, idx) => {
               return (
                 <Option key={val} value={val}>
@@ -174,8 +197,19 @@ const CandlisticChart = ({
           </Select>
         </div>
         <div>
-          <Select variant="outlined" label="interval" value={interval[0]}>
-            {interval.map((val, idx) => {
+          <Select
+            variant="outlined"
+            label="interval"
+            value={intervals[0]}
+            onChange={(value) => {
+              setSelectedData((prevState) => ({
+                ...prevState,
+                interval: value
+              }));
+            }}
+          >
+            {/*  */}
+            {intervals.map((val, idx) => {
               return (
                 <Option key={val} value={val}>
                   {val}
