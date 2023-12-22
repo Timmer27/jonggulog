@@ -14,23 +14,75 @@ import {
 } from "@heroicons/react/24/solid";
 import { IndicatorTable } from "../../../components/indicatorTable";
 import dynamic from "next/dynamic";
+import { useQuery } from "react-query";
+import { fetchRsi } from "../../../stretegy/strategies";
 // import LineChart from "./test";
-const LineChart = dynamic(() => import("./candleChart"), {
+const CandleChart = dynamic(() => import("./candleChart"), {
   ssr: false
 });
 
 // 참고
-// https://github.com/react-financial/react-financial-charts
-// https://codesandbox.io/p/sandbox/react-financial-charts-demo-forked-96uyw?file=%2Fsrc%2Findex.js%3A203%2C15
-// https://velog.io/@turtlemana/React-financial-charts-%EC%82%AC%EC%9A%A9-%EC%84%A4%EB%AA%85%EC%84%9C
+// https://apexcharts.com/react-chart-demos/candlestick-charts/category-x-axis/
 
 const Programs = (Props) => {
-  // next js -> ssr 개별 세팅
-  // const CandleChart = dynamic(() => import("./candleChart"), {
-  //   ssr: false
-  // });
-  // next js -> ssr 개별 세팅
-  const data = [
+  const intervals = ["1d", "8h", "4h", "1h", "30m", "15m", "5m", "1m"];
+  const ticker = ["BTCUSDT"];
+
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["repoData"],
+    queryFn: () =>
+      fetch("/api/trade/BTCUSDT/1d").then((res) => {
+        const result = res.json();
+        return result;
+      })
+  });
+
+  const calculateSignalHandler = () => {
+    if (data) {
+      const test = data?.originData.slice(0, 100);
+      const [rsiData, rsiResult] = fetchRsi(test, 70, "up");
+
+      const adj = test.map((val, idx) => {
+        return {
+          ...val,
+          rsi: rsiData[idx],
+          signal: rsiResult[idx]
+        };
+      });
+
+      // 결국 indicatort table에서 적용을 누르면 
+      // setSelectedIndicator에 담은 값으로(함수) 아래 adj를 계산해서 나한테 던져주고
+      // 난 아래 실행해서 signal다시 받아서 차트에 넣어주면 됨
+      
+      const adjAnnotation = adj
+        .filter((val) => val.signal !== -1)
+        .map((val, idx) => {
+          return {
+            x: val.Open_time,
+            y: val.signal === 1 ? val.Low : val.High,
+            marker: {
+              size: 4,
+              fillColor: "white",
+              strokeColor: val.signal === 1 ? "#FF4560" : "#3033FF",
+              radius: 2,
+              cssClass: "apexcharts-custom-class"
+            },
+            label: {
+              borderColor: val.signal === 1 ? "#FF4560" : "#3033FF",
+              offsetY: 0,
+              style: {
+                color: "#fff",
+                background: val.signal === 1 ? "#FF4560" : "#3033FF"
+              },
+              text: val.signal === 1 ? "LONG" : "SHORT"
+            }
+          };
+        });
+      return adjAnnotation;
+    }
+  };
+
+  const headerData = [
     {
       label: "백테스팅",
       value: "backtest",
@@ -38,7 +90,14 @@ const Programs = (Props) => {
       // <Image src={'/bot.png'} alt="bot" width={30} height={30} />
       desc: (
         <div className="flex flex-col">
-          <LineChart />
+          {!isLoading && (
+            <CandleChart
+              ticker={ticker}
+              interval={intervals}
+              initialData={data}
+              calculateSignalHandler={calculateSignalHandler}
+            />
+          )}
           <Typography variant="h4" className="mt-4 mb-2">
             backtesting
           </Typography>
@@ -69,7 +128,7 @@ const Programs = (Props) => {
       className="w-[95%] m-auto mt-12"
     >
       <TabsHeader className="w-64">
-        {data.map(({ label, value, icon }) => (
+        {headerData.map(({ label, value, icon }) => (
           <Tab key={value} value={value} className="justify-start">
             <div className="flex items-center gap-2">
               {React.createElement(icon, { className: "w-5 h-5" })}
@@ -79,7 +138,7 @@ const Programs = (Props) => {
         ))}
       </TabsHeader>
       <TabsBody>
-        {data.map(({ value, desc }) => (
+        {headerData.map(({ value, desc }) => (
           <TabPanel key={value} value={value} className="py-0">
             {desc}
           </TabPanel>

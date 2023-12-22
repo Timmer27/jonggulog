@@ -1,29 +1,22 @@
 import { PencilIcon } from "@heroicons/react/24/solid";
-import {
-  ArrowDownTrayIcon,
-  MagnifyingGlassIcon
-} from "@heroicons/react/24/outline";
+import { ArrowDownTrayIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import {
   Card,
   CardHeader,
   Typography,
   Button,
   CardBody,
-  Chip,
-  CardFooter,
-  Avatar,
-  IconButton,
   Tooltip,
   Input,
-  DialogBody,
   Dialog,
   DialogHeader,
-  Select,
-  Checkbox
+  Checkbox,
+  IconButton
 } from "@material-tailwind/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Dropdown from "./dropdown";
+// import type { Testtest } from "../interfaces/indicator_interface";
 
 const TABLE_NAV = [
   {
@@ -34,8 +27,10 @@ const TABLE_NAV = [
   }
 ];
 
-const TABLE_HEAD = ["지표명", "", ""];
+const TABLE_HEAD = ["지표명", "", "", ""];
+const MODAL_TABLE_HEAD = ["지표명", "", ""];
 
+// export function IndicatorTable(indicatorData: Testtest[], postSelectedIndicatorHandler) {
 export function IndicatorTable() {
   const [open, setOpen] = useState<boolean>(false);
   const [indicators, setIndicators] = useState([
@@ -48,25 +43,29 @@ export function IndicatorTable() {
           <Input crossOrigin={{}} color="blue" label="ema" />
           <Input crossOrigin={{}} color="blue" label="ema" />
         </div>
-      )
+      ),
+      icon: XMarkIcon
     },
     {
       key: 1,
       name: "지표2",
       desc: "이러한 지표다",
-      params: <Input crossOrigin={{}} color="blue" label="ema" />
+      params: <Input crossOrigin={{}} color="blue" label="ema" />,
+      icon: XMarkIcon
     },
     {
       key: 2,
       name: "지표3",
       desc: "이러한 지표다",
-      params: <Input crossOrigin={{}} color="blue" label="ema" />
+      params: <Input crossOrigin={{}} color="blue" label="ema" />,
+      icon: XMarkIcon
     },
     {
       key: 3,
       name: "지표4",
       desc: "이러한 지표다",
-      params: <Input crossOrigin={{}} color="blue" label="ema" />
+      params: <Input crossOrigin={{}} color="blue" label="ema" />,
+      icon: XMarkIcon
     }
   ]);
   const [filteredIndicator, setFilteredIndicator] = useState([]);
@@ -86,7 +85,7 @@ export function IndicatorTable() {
 
   return (
     indicators && (
-      <Card className="flex w-full m-auto mt-4">
+      <Card className="flex w-full m-auto mt-4 mb-4">
         <CardHeader floated={false} shadow={false} className="rounded-none">
           <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
             {TABLE_NAV.map((val) => {
@@ -106,7 +105,7 @@ export function IndicatorTable() {
                 </div>
               );
             })}
-            <Button>적용</Button>
+            <Button variant="text">적용</Button>
           </ul>
           <Dialog open={open} size="xl" handler={handleOpen}>
             <DialogHeader>
@@ -120,7 +119,7 @@ export function IndicatorTable() {
               <table className="w-full min-w-max table-auto text-left">
                 <thead>
                   <tr>
-                    {TABLE_HEAD.map((head) => (
+                    {MODAL_TABLE_HEAD.map((head) => (
                       <th
                         key={head}
                         className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
@@ -185,7 +184,7 @@ export function IndicatorTable() {
             </Card>
           </Dialog>
         </CardHeader>
-        <CardBody className="overflow-y-scroll px-0">
+        <CardBody className="overflow-y-scroll px-0 min-h-48">
           <table className="w-full min-w-max table-auto text-left">
             <thead>
               <tr>
@@ -237,10 +236,20 @@ export function IndicatorTable() {
                     <td className={classes}>
                       {params}
                       {/* <Tooltip content="Edit User">
-                        <IconButton variant="text">
-                          <PencilIcon className="h-4 w-4" />
-                        </IconButton>
                       </Tooltip> */}
+                    </td>
+                    <td className={classes}>
+                      <IconButton
+                        variant="text"
+                        onClick={(e) => {
+                          const filtered = selectedIndicator.filter(
+                            (val) => val.key !== key
+                          );
+                          setSelectedIndicator(filtered);
+                        }}
+                      >
+                        <XMarkIcon className="h-4 w-4" />
+                      </IconButton>
                     </td>
                   </tr>
                 );
