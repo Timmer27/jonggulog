@@ -11,19 +11,7 @@ import {
   UserCircleIcon,
   Cog6ToothIcon,
 } from "@heroicons/react/24/solid";
-import dynamic from "next/dynamic";
 import Description from "./desciption";
-
-
-// next js -> ssr 개별 세팅 
-const CandleChart = dynamic(() => import("./trade/candleChart"), {
-  ssr: false,
-});
-
-// 참고
-// https://github.com/react-financial/react-financial-charts
-// https://codesandbox.io/p/sandbox/react-financial-charts-demo-forked-96uyw?file=%2Fsrc%2Findex.js%3A203%2C15
-// https://velog.io/@turtlemana/React-financial-charts-%EC%82%AC%EC%9A%A9-%EC%84%A4%EB%AA%85%EC%84%9C
 
 const Programs = (Props) => {
   const data = [
@@ -32,7 +20,6 @@ const Programs = (Props) => {
       value: "tradingBot",
       icon: UserCircleIcon,
       // <Image src={'/bot.png'} alt="bot" width={30} height={30} />
-      // desc: <CandleChart />,
       desc: <Description />,
     },
     {

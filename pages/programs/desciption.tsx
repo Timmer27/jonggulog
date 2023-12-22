@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Avatar, Button, Chip } from "@material-tailwind/react";
-import axios from "axios";
-import { useSearchParams } from "next/navigation";
-import Link from "next/link";
 
 export default function Description({}) {
 //   const searchParams = useSearchParams();
