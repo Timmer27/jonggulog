@@ -12,12 +12,10 @@ import {
   UserCircleIcon,
   Cog6ToothIcon
 } from "@heroicons/react/24/solid";
-import dynamic from "next/dynamic";
-import Description from "../desciption";
 import { IndicatorTable } from "./indicatorTable";
-
-// next js -> ssr 개별 세팅
-const CandleChart = dynamic(() => import("./candleChart"), {
+import dynamic from "next/dynamic";
+// import LineChart from "./test";
+const LineChart = dynamic(() => import("./candleChart"), {
   ssr: false
 });
 
@@ -27,6 +25,11 @@ const CandleChart = dynamic(() => import("./candleChart"), {
 // https://velog.io/@turtlemana/React-financial-charts-%EC%82%AC%EC%9A%A9-%EC%84%A4%EB%AA%85%EC%84%9C
 
 const Programs = (Props) => {
+  // next js -> ssr 개별 세팅
+  // const CandleChart = dynamic(() => import("./candleChart"), {
+  //   ssr: false
+  // });
+  // next js -> ssr 개별 세팅
   const data = [
     {
       label: "백테스팅",
@@ -35,7 +38,7 @@ const Programs = (Props) => {
       // <Image src={'/bot.png'} alt="bot" width={30} height={30} />
       desc: (
         <div className="flex flex-col">
-          <CandleChart />
+          <LineChart />
           <Typography variant="h4" className="mt-4 mb-2">
             backtesting
           </Typography>
