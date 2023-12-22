@@ -12,7 +12,7 @@ import {
   UserCircleIcon,
   Cog6ToothIcon
 } from "@heroicons/react/24/solid";
-import { IndicatorTable } from "./indicatorTable";
+import { IndicatorTable } from "../../../components/indicatorTable";
 import dynamic from "next/dynamic";
 // import LineChart from "./test";
 const LineChart = dynamic(() => import("./candleChart"), {

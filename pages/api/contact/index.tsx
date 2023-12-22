@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-const db = require("../../db/db");
+const db = require("../../../config/db");
 export default function fetchPostData(
   req: NextApiRequest,
   res: NextApiResponse

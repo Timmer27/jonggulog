@@ -23,7 +23,7 @@ import {
 } from "@material-tailwind/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import Dropdown from "../../../components/dropdown";
+import Dropdown from "./dropdown";
 
 const TABLE_NAV = [
   {
