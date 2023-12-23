@@ -16,6 +16,9 @@ import { IndicatorTable } from "../../../components/indicatorTable";
 import dynamic from "next/dynamic";
 import { useQuery } from "react-query";
 import { fetchRsi } from "../../../stretegy/strategies";
+import { dummy } from "../../../data/dummy";
+import { apiFetchDummy } from "../../../data/apiFetchDummy";
+
 // import LineChart from "./test";
 const CandleChart = dynamic(() => import("./candleChart"), {
   ssr: false
@@ -32,20 +35,66 @@ const Programs = (Props) => {
         const result = res.json();
         return result;
       })
-      // fetch(`/api/trade/${}/${}`).then((res) => {
-      //   const result = res.json();
-      //   return result;
-      // })
+    // fetch(`/api/trade/${}/${}`).then((res) => {
+    //   const result = res.json();
+    //   return result;
+    // })
   });
 
-  const selecteTickerIntervalHandler = (selectedData) => {
-    console.log('selectedData', selectedData)
+  let yaxisOption = [
+    {
+      // show: false,
+      seriesName: "candle",
+      min: (min) => {
+        const chartData = !data?.originData
+          ? dummy
+          : data?.originData.slice(0, 100);
+        const result = chartData.reduce((acc, cur, idx) => {
+          const minValue = Math.min(...cur.y);
+          if (acc === 0 || acc > minValue) {
+            acc = minValue;
+          }
+          return acc;
+        }, 0);
+        return result;
+      },
+      max: (max) => {
+        const chartData = !data?.originData
+          ? dummy
+          : data?.originData.slice(0, 100);
+        const result = chartData.reduce((acc, cur, idx) => {
+          const minValue = Math.max(...cur.y);
+          if (acc === 0 || acc < minValue) {
+            acc = minValue;
+          }
+          return acc;
+        }, 0);
+        return result;
+      }
+    }
+  ];
 
-  }
+  let seriesData = [
+    {
+      name: "candle",
+      type: "candlestick",
+      data: !data?.originData ? dummy : data?.originData.slice(0, 100)
+    }
+  ];
+
+  const initialData = {
+    seriesData: seriesData,
+    yaxisOption: yaxisOption,
+    adjAnnotation: []
+  };
+
+  const selecteTickerIntervalHandler = (selectedData) => {
+    console.log("selectedData", selectedData);
+  };
 
   const calculateSignalHandler = () => {
     if (data) {
-      const test = data?.originData.slice(0, 100);
+      const test = !data.originData ? dummy : data?.originData.slice(0, 100);
       const [rsiData, rsiResult] = fetchRsi(test, 70, "up");
 
       const adj = test.map((val, idx) => {
@@ -56,9 +105,50 @@ const Programs = (Props) => {
         };
       });
 
-      // 결국 indicatort table에서 적용을 누르면 
+      // 결국 indicatort table에서 적용을 누르면
       // setSelectedIndicator에 담은 값으로(함수) 아래 adj를 계산해서 나한테 던져주고
       // 난 아래 실행해서 signal다시 받아서 차트에 넣어주면 됨
+      // 차트 series + option 값 지정해서 넣어주기
+
+      // 해당 함수를 array로 갖고와서 넣어준다는 임시 가정
+      const selectedTechs = ["rsi"];
+      console.log('adj', adj.map((val) => !val.rsi ? 1 : val.rsi))
+      
+      selectedTechs.map((val, idx) => {
+        const tmpSeries = {
+          name: val,
+          type: "line",
+          data: adj.map((ele) => !ele[`${val}`] ? 1 : ele[`${val}`])
+        };
+        console.log('tmpSeries', tmpSeries)
+        
+        const tmpAxis = {
+          show: false,
+          seriesName: val,
+          min: (min) => {
+            const result = adj[`${val}`].reduce((acc, cur, idx) => {
+              const minValue = Math.min(...cur.y);
+              if (acc === 0 || acc > minValue) {
+                acc = minValue;
+              }
+              return acc;
+            }, 0);
+            return result;
+          },
+          max: (max) => {
+            const result = adj[`${val}`].reduce((acc, cur, idx) => {
+              const minValue = Math.max(...cur.y);
+              if (acc === 0 || acc < minValue) {
+                acc = minValue;
+              }
+              return acc;
+            }, 0);
+            return result;
+          }
+        };
+        yaxisOption.push(tmpAxis);
+        seriesData.push(tmpSeries);
+      });
 
       const adjAnnotation = adj
         .filter((val) => val.signal !== -1)
@@ -84,7 +174,17 @@ const Programs = (Props) => {
             }
           };
         });
-      return adjAnnotation;
+
+      console.log("intialData prev", {
+        seriesData: seriesData,
+        yaxisOption: yaxisOption,
+        annotation: adjAnnotation
+      });
+      return {
+        seriesData: seriesData,
+        yaxisOption: yaxisOption,
+        annotation: adjAnnotation
+      };
     }
   };
 
@@ -98,7 +198,7 @@ const Programs = (Props) => {
         <div className="flex flex-col">
           {!isLoading && (
             <CandleChart
-              initialData={data}
+              initialData={initialData}
               calculateSignalHandler={calculateSignalHandler}
               selecteTickerIntervalHandler={selecteTickerIntervalHandler}
             />

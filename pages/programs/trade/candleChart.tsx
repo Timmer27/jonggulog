@@ -17,7 +17,7 @@ const CandlisticChart = ({
   const intervals = ["1d", "8h", "4h", "1h", "30m", "15m", "5m", "1m"];
   const ticker = ["BTCUSDT"];
 
-  const [annotation, setAnnotation] = useState();
+  const [data, setData] = useState(initialData);
   const [selectedData, setSelectedData] = useState({
     ticker: ticker[0],
     interval: intervals[0]
@@ -28,6 +28,8 @@ const CandlisticChart = ({
       // data: seriesDataLinear
     }
   ];
+
+  console.log("initialData--->", data);
 
   const optionsBar: any = {
     chart: {
@@ -83,92 +85,104 @@ const CandlisticChart = ({
         offsetX: 13
       }
     },
-    yaxis: {
-      labels: {
-        show: false
+    yaxis: [
+      {
+        // labels: {
+        //   show: false
+        // }
+        title: {
+          text: "Website Blog"
+        }
+      },
+      {
+        opposite: true,
+        title: {
+          text: "Social Media"
+        }
       }
-    }
+    ]
   };
-
+  const series = data.seriesData;
   const options: any = {
     chart: {
       height: 700,
-      type: "candlestick",
-      toolbar: {
-        show: true,
-        offsetX: 0,
-        offsetY: 0,
-        tools: {
-          download: true,
-          selection: true,
-          zoom: true,
-          zoomin: true,
-          zoomout: true,
-          pan: true,
-          // reset: true | '<img src="/static/icons/reset.png" width="20">',
-          customIcons: []
-        }
-      },
-      offsetX: 3
-      // events: {
-      //   mouseMove: function (event, chartContext, config) {
-      //     console.log("mouseMove mouseMove", event, chartContext, config);
-      //   },
-      //   scrolled: function (chartContext, config) {
-      //     console.log("Chart scrolled", chartContext, config);
-      //   },
-      //   brushScrolled: function (chartContext, config) {
-      //     console.log("brushScrolled scrolled", chartContext, config);
+      type: "candlestick"
+      // toolbar: {
+      //   show: true,
+      //   offsetX: 0,
+      //   offsetY: 0,
+      //   tools: {
+      //     download: true,
+      //     selection: true,
+      //     zoom: true,
+      //     zoomin: true,
+      //     zoomout: true,
+      //     pan: true,
+      //     // reset: true | '<img src="/static/icons/reset.png" width="20">',
+      //     customIcons: []
       //   }
-      // }
+      // },
+      // offsetX: 3
     },
-    zoom: {
-      enabled: true,
-      type: "xy", // Enable zooming in both x and y directions
-      autoScaleYaxis: true // Automatically scale the y-axis when zooming
+    // zoom: {
+    //   enabled: true,
+    // },
+    legend: {
+      // show: true,
+      // showForSingleSeries: false,
+      position: "top"
+      // horizontalAlign: "left",
+      // customLegendItems: ["Product A", "Product B"]
     },
     title: {
-      text: "CandleStick Chart - Category X-axis",
+      text: "백테스팅 차트",
       align: "left"
     },
     annotations: {
-      points: annotation
+      points: data.annotation
     },
     tooltip: {
       enabled: true
     },
+    // stroke: {
+    //   width: [3, 1]
+    // },
+    // dataLabels: {
+    //   enabled: true,
+    //   enabledOnSeries: [1]
+    // },
+
     xaxis: {
-      type: "category",
+      type: "datetime",
       labels: {
         formatter: function (val) {
           return dayjs(val).format("YYYY-MM-DD HH:mm:ss");
         }
       }
     },
-    yaxis: {
-      tooltip: {
-        enabled: true
-      }
-    }
+    yaxis: data.yaxisOption
   };
 
-  const series = [
-    {
-      data: !initialData ? dummy : initialData?.chartData?.slice(0, 100)
-      // data: dummy
-    }
-  ];
-
   useEffect(() => {
-    selecteTickerIntervalHandler(selectedData)
-  }, [selectedData])
+    selecteTickerIntervalHandler(selectedData);
+  }, [selectedData]);
 
   return (
     <div id="chart">
       <Button
         onClick={() => {
           const result = calculateSignalHandler();
-          setAnnotation(result);
+          console.log("result", result);
+
+          setData({
+            seriesData: result.seriesData,
+            yaxisOption: result.yaxisOption,
+            // annotation: []
+            annotation: result.annotation
+          });
+          // setData(result)
+
+          // setAnnotation(result.adjAnnotation);
         }}
       >
         적용 테스트

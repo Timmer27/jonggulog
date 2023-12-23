@@ -15,46 +15,68 @@ import {
 } from "@heroicons/react/24/solid";
 import Description from "./desciption";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 const Programs = (Props) => {
-  const cardShadowStyle =
-    "shadow-[0px_0px_9px_-1px_#b3b3b347] ease-in-out duration-500 hover:-translate-y-1.5 hover:shadow-[0px_0px_11px_3px_#49494947]";
   const router = useRouter();
 
   const data = [
     {
       label: "트레이딩 봇",
       value: "tradingBot",
+      src: "/bot.png",
+      alt: "bot",
       href: "/programs/trade"
     },
     {
       label: "서이추 봇",
       value: "naverProgram",
+      src: "/blog.png",
+      alt: "alt",
       href: "/programs/blog"
     },
     {
       label: "Settings",
       value: "settings",
+      src: "/question.png",
+      alt: "alt",
       href: "/setting"
     }
   ];
   return (
     <>
-      {data.map((val, idx) => (
-        <Card
-          key={idx}
-          className={`mt-6 flex-[1_0_21%] min-h-[12rem] ${cardShadowStyle}`}
-          onClick={() => router.push(`${val.href}`)}
-        >
-          <CardBody className={`h-full flex flex-col justify-between`}>
-            <div className="flex justify-between">
-              <div className="flex flex-col">
-                <div className="text-2xl font-bold text-black">{val.label}</div>
+      <div className="flex gap-4 lg:flex-row sm:flex-col sm:items-center col-span-4 mx-6 mt-5">
+        {data.map((val, idx) => (
+          <Card
+            key={idx}
+            className={`mt-6 flex-[1_0_21%] min-h-[12rem] lg:max-w-[17rem] sm:w-[70%] sm:mt-3 shadow-[0px_0px_9px_-1px_#b3b3b347] ease-in-out duration-500 hover:-translate-y-1.5 hover:shadow-[0px_0px_11px_3px_#49494947]`}
+            onClick={() => {
+              if (val.label !== "트레이딩 봇") {
+                alert("준비 중!");
+              } else {
+                router.push(`${val.href}`);
+              }
+            }}
+          >
+            <CardBody className={`h-full flex flex-col justify-between`}>
+              <div className="flex justify-between">
+                <div className="flex flex-col">
+                  <div className="lg:text-2xl md:text-xl sm:text-xl font-bold text-black">
+                    {val.label}
+                  </div>
+                </div>
+                <Image
+                  src={val.src}
+                  alt={val.alt}
+                  width={65}
+                  height={65}
+                  className="lg:w-[4rem] md:w-[3rem] sm: w-[3rem]"
+                />
               </div>
-            </div>
-          </CardBody>
-        </Card>
-      ))}
+            </CardBody>
+          </Card>
+        ))}
+      </div>
     </>
   );
 };
