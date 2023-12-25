@@ -25,7 +25,7 @@ const Dropdown = ({ listData, setFilteredIndicator, selectDataHandler }) => {
             selectDataHandler(item.key, listData);
             setIsOpen(false);
           }}
-          className="block px-4 py-2 text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer rounded-md"
+          className="text-sm block px-4 py-2 text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer rounded-md"
         >
           {item.name}
         </div>
@@ -36,10 +36,10 @@ const Dropdown = ({ listData, setFilteredIndicator, selectDataHandler }) => {
     <div className="flex items-center justify-center">
       <div className="relative group">
         <button
-          className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500"
+          className="w-48 inline-flex justify-between w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500"
           onClick={toggleDropdown}
         >
-          <span className="mr-2">Open Dropdown</span>
+          <span className="mr-2">조건식 리스트</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="w-5 h-5 ml-2 -mr-1"
@@ -61,9 +61,9 @@ const Dropdown = ({ listData, setFilteredIndicator, selectDataHandler }) => {
         >
           {/* Search input */}
           <input
-            className="block w-full px-4 py-2 text-gray-800 border rounded-md border-gray-300 focus:outline-none"
+            className="text-sm block w-full px-4 py-2 text-gray-800 border rounded-md border-gray-300 focus:outline-none"
             type="text"
-            placeholder="Search items"
+            placeholder="검색"
             autoComplete="off"
             value={searchTerm}
             onChange={handleInputChange}

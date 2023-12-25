@@ -28,31 +28,31 @@ const PageHeader = (props: Props) => {
     {
       href: "/",
       color: "blue-gray",
-      className: "p-1 text-lg",
+      className: "p-1 text-[15px]",
       name: "HOME"
     },
     {
       href: "/daily",
       color: "blue-gray",
-      className: "p-1 text-lg",
+      className: "p-1 text-[15px]",
       name: "일상"
     },
     {
       href: "/programs",
       color: "blue-gray",
-      className: "p-1 text-lg",
+      className: "p-1 text-[15px]",
       name: "프로그램"
     },
     {
       href: "/about",
       color: "blue-gray",
-      className: "p-1 text-lg",
+      className: "p-1 text-[15px]",
       name: "ABOUT"
     },
     {
       href: "/contact",
       color: "blue-gray",
-      className: "p-1 text-lg",
+      className: "p-1 text-[15px]",
       name: "CONTACT"
     }
   ];
@@ -82,14 +82,14 @@ const PageHeader = (props: Props) => {
     <div className="-m-6 max-h-[768px] w-[calc(100%+48px)]">
       {/* overflow-scroll */}
       <Navbar className="sticky top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4 shadow-none border-b-[#e3e3e3cf]">
-        <div className="flex items-center justify-between text-blue-gray-900 px-4 ml-4">
+        <div className="flex items-center justify-between text-blue-gray-900 px-4">
           <Link href="/" className="w-28">
             {/* <p>종구공방</p> */}
-            <img src="/web_logo.png" alt="tmp"/>
+            <img src="/web_logo1.png" alt="tmp"/>
           </Link>
           <div className="flex items-center gap-4">
             {/* navList */}
-            <div className="mr-4 hidden lg:block">{navList}</div>
+            <div className="mr-2 hidden lg:block">{navList}</div>
             <div className="flex items-center gap-x-1">
               <Menu
                 dismiss={{
@@ -97,7 +97,7 @@ const PageHeader = (props: Props) => {
                 }}
               >
                 <MenuHandler>
-                  <Button>관리자</Button>
+                  <Button variant="text" className='text-[10px]'>관리자</Button>
                 </MenuHandler>
                 <MenuList>
                   <Input

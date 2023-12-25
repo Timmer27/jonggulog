@@ -7,17 +7,13 @@ import {
   TabPanel,
   Typography
 } from "@material-tailwind/react";
-import {
-  Square3Stack3DIcon,
-  UserCircleIcon,
-  Cog6ToothIcon
-} from "@heroicons/react/24/solid";
 import { IndicatorTable } from "../../../components/indicatorTable";
 import dynamic from "next/dynamic";
 import { useQuery } from "react-query";
 import { fetchRsi } from "../../../stretegy/strategies";
 import { dummy } from "../../../data/dummy";
 import { apiFetchDummy } from "../../../data/apiFetchDummy";
+import { BanknotesIcon, BookOpenIcon, CurrencyDollarIcon } from "@heroicons/react/24/outline";
 
 // import LineChart from "./test";
 const CandleChart = dynamic(() => import("./candleChart"), {
@@ -28,76 +24,129 @@ const CandleChart = dynamic(() => import("./candleChart"), {
 // https://apexcharts.com/react-chart-demos/candlestick-charts/category-x-axis/
 
 const Programs = (Props) => {
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["repoData"],
-    queryFn: () =>
-      fetch("/api/trade/BTCUSDT/1d").then((res) => {
-        const result = res.json();
-        return result;
-      })
-    // fetch(`/api/trade/${}/${}`).then((res) => {
-    //   const result = res.json();
-    //   return result;
-    // })
-  });
-
-  let yaxisOption = [
-    {
-      // show: false,
-      seriesName: "candle",
-      min: (min) => {
-        const chartData = !data?.originData
-          ? dummy
-          : data?.originData.slice(0, 100);
-        const result = chartData.reduce((acc, cur, idx) => {
-          const minValue = Math.min(...cur.y);
-          if (acc === 0 || acc > minValue) {
-            acc = minValue;
-          }
-          return acc;
-        }, 0);
-        return result;
-      },
-      max: (max) => {
-        const chartData = !data?.originData
-          ? dummy
-          : data?.originData.slice(0, 100);
-        const result = chartData.reduce((acc, cur, idx) => {
-          const minValue = Math.max(...cur.y);
-          if (acc === 0 || acc < minValue) {
-            acc = minValue;
-          }
-          return acc;
-        }, 0);
-        return result;
-      }
-    }
-  ];
-
-  let seriesData = [
-    {
-      name: "candle",
-      type: "candlestick",
-      data: !data?.originData ? dummy : data?.originData.slice(0, 100)
-    }
-  ];
+  const intervals = ["1d", "8h", "4h", "1h", "30m", "15m", "5m", "1m"];
+  const ticker = ["BTCUSDT"];
 
   const [initialData, setInitialData] = useState({
-    seriesData: seriesData,
-    yaxisOption: yaxisOption,
+    ticker: ticker[0],
+    interval: intervals[0],
+    seriesData: [],
+    yaxisOption: [],
     adjAnnotation: []
   });
 
-  const selecteTickerIntervalHandler = (selectedData) => {
-    console.log("selectedData", selectedData);
-  };
+  const { isLoading, error, data, refetch } = useQuery({
+    queryKey: ["repoData"],
+    staleTime: 15000,
+    retry: 5,
+    retryDelay: (attemptIndex) => Math.min(attemptIndex * 1000, 1500),
+    queryFn: () =>
+      fetch(`/api/trade/${initialData.ticker}/${initialData.interval}`).then(
+        (res) => {
+          const result = res.json();
+          return result;
+        }
+      )
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [initialData.ticker, initialData.interval, refetch]);
+
+  useEffect(() => {
+    if (data) {
+      const chartData = data?.chartData.slice(
+        data?.chartData.length - 100,
+        data?.chartData.length
+      );
+      // const chartData = data?.chartData
+      let yaxisOption = [
+        {
+          // show: false,
+          seriesName: "candle",
+          min: (min) => {
+            const result = chartData.reduce((acc, cur, idx) => {
+              const minValue = Math.min(...cur.y);
+              if (acc === 0 || acc > minValue) {
+                acc = minValue;
+              }
+              return acc;
+            }, 0);
+            return result;
+          },
+          max: (max) => {
+            const result = chartData.reduce((acc, cur, idx) => {
+              const minValue = Math.max(...cur.y);
+              if (acc === 0 || acc < minValue) {
+                acc = minValue;
+              }
+              return acc;
+            }, 0);
+            return result;
+          }
+        }
+      ];
+
+      let seriesData = [
+        {
+          name: "candle",
+          type: "candlestick",
+          data: chartData
+        }
+      ];
+
+      setInitialData((prevState) => ({
+        ...prevState,
+        seriesData: seriesData,
+        yaxisOption: yaxisOption
+      }));
+    }
+  }, [data]);
 
   const calculateSignalHandler = () => {
     if (data) {
-      const test = !data.originData ? dummy : data?.originData.slice(0, 100);
-      const [rsiData, rsiResult] = fetchRsi(test, 70, "up");
+      const chartData = data?.chartData.slice(
+        data?.chartData.length - 100,
+        data?.chartData.length
+      );
+      // const chartData = data?.chartData
+      let seriesData = [
+        {
+          name: "candle",
+          type: "candlestick",
+          data: chartData
+        }
+      ];
+      let yaxisOption = [
+        {
+          // show: false,
+          seriesName: "candle",
+          min: (min) => {
+            const result = chartData.reduce((acc, cur, idx) => {
+              const minValue = Math.min(...cur.y);
+              if (acc === 0 || acc > minValue) {
+                acc = minValue;
+              }
+              return acc;
+            }, 0);
+            return result;
+          },
+          max: (max) => {
+            const result = chartData.reduce((acc, cur, idx) => {
+              const minValue = Math.max(...cur.y);
+              if (acc === 0 || acc < minValue) {
+                acc = minValue;
+              }
+              return acc;
+            }, 0);
+            return result;
+          }
+        }
+      ];
+      // fetchMA
+      const [rsiData, rsiResult] = fetchRsi(data.originData, 70, "up");
 
-      const adj = test.map((val, idx) => {
+      const adj = data.originData.map((val, idx) => {
         return {
           ...val,
           rsi: rsiData[idx],
@@ -111,49 +160,53 @@ const Programs = (Props) => {
       // 차트 series + option 값 지정해서 넣어주기
 
       // 해당 함수를 array로 갖고와서 넣어준다는 임시 가정
-      const selectedTechs = ["rsi"];
-      console.log(
-        "adj",
-        adj.map((val) => (!val.rsi ? 1 : val.rsi))
-      );
+      const tmpAdj = adj.slice(adj.length - 100, adj.length);
 
+      const selectedTechs = ["rsi"];
       selectedTechs.map((val, idx) => {
         const tmpSeries = {
           name: val,
           type: "line",
-          data: adj.map((ele) => (!ele[`${val}`] ? 1 : ele[`${val}`]))
+          data: tmpAdj.map((ele) =>
+            !ele[`${val}`]
+              ? { x: ele.Open_time, y: 1 }
+              : { x: ele.Open_time, y: ele[`${val}`] }
+          )
         };
-        console.log("tmpSeries", tmpSeries);
 
-        const tmpAxis = {
+        const tmpAxis: any = {
+          opposite: true,
           show: false,
-          seriesName: val,
-          min: (min) => {
-            const result = adj[`${val}`].reduce((acc, cur, idx) => {
-              const minValue = Math.min(...cur.y);
-              if (acc === 0 || acc > minValue) {
-                acc = minValue;
-              }
-              return acc;
-            }, 0);
-            return result;
+          title: {
+            text: val
           },
-          max: (max) => {
-            const result = adj[`${val}`].reduce((acc, cur, idx) => {
-              const minValue = Math.max(...cur.y);
-              if (acc === 0 || acc < minValue) {
-                acc = minValue;
-              }
-              return acc;
-            }, 0);
-            return result;
-          }
+          seriesName: val
+          // min: (min) => {
+          //   const result = tmpAdj.reduce((acc, cur, idx) => {
+          //     const minValue = Math.min(cur.y);
+          //     if (acc === 0 || acc > minValue) {
+          //       acc = minValue;
+          //     }
+          //     return acc;
+          //   }, 0);
+          //   return result;
+          // },
+          // max: (max) => {
+          //   const result = tmpAdj.reduce((acc, cur, idx) => {
+          //     const minValue = Math.max(cur.y);
+          //     if (acc === 0 || acc < minValue) {
+          //       acc = minValue;
+          //     }
+          //     return acc;
+          //   }, 0);
+          //   return result;
+          // }
         };
         yaxisOption.push(tmpAxis);
         seriesData.push(tmpSeries);
       });
 
-      const adjAnnotation = adj
+      const adjAnnotation = tmpAdj
         .filter((val) => val.signal !== -1)
         .map((val, idx) => {
           return {
@@ -178,32 +231,38 @@ const Programs = (Props) => {
           };
         });
 
-      console.log("intialData prev", {
+      console.log("seriesData", seriesData);
+
+      setInitialData((prevState) => ({
+        ...prevState,
         seriesData: seriesData,
         yaxisOption: yaxisOption,
         annotation: adjAnnotation
-      });
+      }));
+
       return {
         seriesData: seriesData,
         yaxisOption: yaxisOption,
         annotation: adjAnnotation
+        // annotation: []
       };
     }
   };
-
   const headerData = [
     {
       label: "백테스팅",
       value: "backtest",
-      icon: UserCircleIcon,
+      icon: BanknotesIcon,
       // <Image src={'/bot.png'} alt="bot" width={30} height={30} />
       desc: (
         <div className="flex flex-col">
           {!isLoading && (
             <CandleChart
               initialData={initialData}
+              setInitialData={setInitialData}
+              ticker={ticker}
+              intervals={intervals}
               calculateSignalHandler={calculateSignalHandler}
-              selecteTickerIntervalHandler={selecteTickerIntervalHandler}
             />
           )}
           <Typography variant="h4" className="mt-4 mb-2">
@@ -217,16 +276,14 @@ const Programs = (Props) => {
     {
       label: "자동매매 (업데이트 예정)",
       value: "autoTrade",
-      icon: Square3Stack3DIcon,
-      desc: "test"
+      icon: CurrencyDollarIcon,
+      desc: "업데이트 예정"
     },
     {
-      label: "Settings",
-      value: "settings",
-      icon: Cog6ToothIcon,
-      desc: `We're not always in the position that we want to be at.
-      We're constantly growing. We're constantly making mistakes. We're
-      constantly trying to express ourselves and actualize our dreams.`
+      label: "관리자 실제 투자 기록",
+      value: "history",
+      icon: BookOpenIcon,
+      desc: "업데이트 예정"
     }
   ];
   return (

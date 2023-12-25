@@ -16,10 +16,46 @@
 
 
 -- jonggulog 데이터베이스 구조 내보내기
+DROP DATABASE IF EXISTS `jonggulog`;
 CREATE DATABASE IF NOT EXISTS `jonggulog` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `jonggulog`;
 
+-- 테이블 jonggulog.coin_data 구조 내보내기
+DROP TABLE IF EXISTS `coin_data`;
+CREATE TABLE IF NOT EXISTS `coin_data` (
+  `ticker` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT ' ',
+  `interval` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT ' ',
+  `Open_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `Open` float DEFAULT NULL,
+  `High` float DEFAULT NULL,
+  `Low` float DEFAULT NULL,
+  `Close` float DEFAULT NULL,
+  `Volume` float DEFAULT NULL,
+  PRIMARY KEY (`ticker`,`interval`,`Open_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- 테이블 데이터 jonggulog.coin_data:~0 rows (대략적) 내보내기
+DELETE FROM `coin_data`;
+
+-- 테이블 jonggulog.contact 구조 내보내기
+DROP TABLE IF EXISTS `contact`;
+CREATE TABLE IF NOT EXISTS `contact` (
+  `id` int NOT NULL DEFAULT '0',
+  `type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'title',
+  `content` varchar(3000) NOT NULL DEFAULT '' COMMENT '내용 html',
+  `fileId` varchar(3000) NOT NULL DEFAULT '' COMMENT '파일ID',
+  `p_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성날짜',
+  `owner` varchar(100) NOT NULL COMMENT '작성자'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- 테이블 데이터 jonggulog.contact:~2 rows (대략적) 내보내기
+DELETE FROM `contact`;
+INSERT INTO `contact` (`id`, `type`, `content`, `fileId`, `p_date`, `owner`) VALUES
+	(1, 'improvement', 'a', '', '2023-12-25 07:51:46', 'tmp'),
+	(2, 'program', 'sdxzc12', '', '2023-12-25 07:51:51', 'tmp');
+
 -- 테이블 jonggulog.posting 구조 내보내기
+DROP TABLE IF EXISTS `posting`;
 CREATE TABLE IF NOT EXISTS `posting` (
   `id` int NOT NULL AUTO_INCREMENT,
   `title` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'title',
@@ -37,6 +73,7 @@ INSERT INTO `posting` (`id`, `title`, `content`, `p_date`, `owner`) VALUES
 	(9, '라우터테스트', '<p>ㅇㅇ</p>', '2023-12-19 07:44:44', '이종호');
 
 -- 테이블 jonggulog.posting_tags 구조 내보내기
+DROP TABLE IF EXISTS `posting_tags`;
 CREATE TABLE IF NOT EXISTS `posting_tags` (
   `id` int NOT NULL COMMENT 'posting_foriegn',
   `tags` varchar(30) NOT NULL COMMENT '포스팅 태그'
