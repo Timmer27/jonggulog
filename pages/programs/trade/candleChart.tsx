@@ -17,7 +17,6 @@ const CandlisticChart = ({
   const intervals = ["1d", "8h", "4h", "1h", "30m", "15m", "5m", "1m"];
   const ticker = ["BTCUSDT"];
 
-  const [data, setData] = useState(initialData);
   const [selectedData, setSelectedData] = useState({
     ticker: ticker[0],
     interval: intervals[0]
@@ -29,7 +28,7 @@ const CandlisticChart = ({
     }
   ];
 
-  console.log("initialData--->", data);
+  // console.log("initialData--->", initialData);
 
   const optionsBar: any = {
     chart: {
@@ -102,7 +101,7 @@ const CandlisticChart = ({
       }
     ]
   };
-  const series = data.seriesData;
+  const series = initialData?.seriesData;
   const options: any = {
     chart: {
       height: 700,
@@ -139,7 +138,7 @@ const CandlisticChart = ({
       align: "left"
     },
     annotations: {
-      points: data.annotation
+      points: initialData?.annotation
     },
     tooltip: {
       enabled: true
@@ -160,7 +159,7 @@ const CandlisticChart = ({
         }
       }
     },
-    yaxis: data.yaxisOption
+    yaxis: initialData?.yaxisOption
   };
 
   useEffect(() => {
@@ -174,12 +173,12 @@ const CandlisticChart = ({
           const result = calculateSignalHandler();
           console.log("result", result);
 
-          setData({
-            seriesData: result.seriesData,
-            yaxisOption: result.yaxisOption,
-            // annotation: []
-            annotation: result.annotation
-          });
+          // setData({
+          //   seriesData: result.seriesData,
+          //   yaxisOption: result.yaxisOption,
+          //   // annotation: []
+          //   annotation: result.annotation
+          // });
           // setData(result)
 
           // setAnnotation(result.adjAnnotation);

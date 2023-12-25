@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Tabs,
   TabsHeader,
@@ -82,11 +82,11 @@ const Programs = (Props) => {
     }
   ];
 
-  const initialData = {
+  const [initialData, setInitialData] = useState({
     seriesData: seriesData,
     yaxisOption: yaxisOption,
     adjAnnotation: []
-  };
+  });
 
   const selecteTickerIntervalHandler = (selectedData) => {
     console.log("selectedData", selectedData);
@@ -112,16 +112,19 @@ const Programs = (Props) => {
 
       // 해당 함수를 array로 갖고와서 넣어준다는 임시 가정
       const selectedTechs = ["rsi"];
-      console.log('adj', adj.map((val) => !val.rsi ? 1 : val.rsi))
-      
+      console.log(
+        "adj",
+        adj.map((val) => (!val.rsi ? 1 : val.rsi))
+      );
+
       selectedTechs.map((val, idx) => {
         const tmpSeries = {
           name: val,
           type: "line",
-          data: adj.map((ele) => !ele[`${val}`] ? 1 : ele[`${val}`])
+          data: adj.map((ele) => (!ele[`${val}`] ? 1 : ele[`${val}`]))
         };
-        console.log('tmpSeries', tmpSeries)
-        
+        console.log("tmpSeries", tmpSeries);
+
         const tmpAxis = {
           show: false,
           seriesName: val,
