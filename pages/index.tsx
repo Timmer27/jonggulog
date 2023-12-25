@@ -41,7 +41,7 @@ const MainPage = () => {
       href: "/programs/blog",
       src: "/blog.png",
       alt: "alt",
-      status: 1
+      status: 0
     },
     {
       key: 2,
@@ -171,29 +171,39 @@ const MainPage = () => {
       <section className="flex-1 flex gap-5 flex-row m-auto">
         <aside className="flex flex-wrap gap-6 w-full">
           {asideItems.map((val, idx) => {
-            const isReady = val.status === 1 ? "cursor-pointer" : "cursor-not-allowed opacity-80 pointer-events-none"
+            const isReady = "cursor-pointer";
             return (
               <Card
                 key={idx}
                 className={`mt-6 flex-[1_0_21%] min-h-[12rem] ${isReady} ${cardShadowStyle} ${
                   mounted ? `${fadeOut}` : `${fadeIn}`
                 }`}
-                onClick={() => routeToPagesHandler(`${val.href}`)}
+                onClick={() => {
+                  if (val.status === 0) {
+                    alert("준비 중!");
+                  } else {
+                    router.push(`${val.href}`);
+                  }
+                }}
+                // onClick={() =>  routeToPagesHandler(`${val.href}`)}
               >
                 <CardBody className="h-full flex flex-col justify-between ${isReady}">
                   <div className="flex justify-between">
                     <div className="flex flex-col">
-                      <p className="mb-2">{val.sub}</p>
-                      <div className="text-2xl font-bold text-black">{val.title}</div>
+                      <p className="mb-2 text-[1vw]">{val.sub}</p>
+                      <div className="lg:text-[1.2vw] md:text-[1.2vw] font-bold text-black">
+                        {val.title}
+                      </div>
                     </div>
                     <Image
                       src={val.src}
                       alt={val.alt}
                       width={65}
                       height={65}
+                      className="lg:w-[4vw] md:w-[4vw]"
                     ></Image>
                   </div>
-                  <Typography className="text-md">{val.content}</Typography>
+                  <Typography className="text-[1vw]">{val.content}</Typography>
                 </CardBody>
               </Card>
             );
