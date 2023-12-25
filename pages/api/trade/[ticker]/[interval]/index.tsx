@@ -21,7 +21,7 @@ export default function fetchPostData(
         Low,
         \`Close\`,
         Volume
-      FROM coindata WHERE ticker = ? AND \`interval\` = ?`,
+      FROM coin_data WHERE ticker = ? AND \`interval\` = ?`,
       [ticker, interval],
       function (err: any, result: any) {
         if (err) {

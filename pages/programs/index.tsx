@@ -13,7 +13,6 @@ import {
   UserCircleIcon,
   Cog6ToothIcon
 } from "@heroicons/react/24/solid";
-import Description from "./desciption";
 import { useRouter } from "next/router";
 import Image from "next/image";
 
@@ -26,21 +25,24 @@ const Programs = (Props) => {
       value: "tradingBot",
       src: "/bot.png",
       alt: "bot",
-      href: "/programs/trade"
+      href: "/programs/trade",
+      status: 1
     },
     {
       label: "서이추 봇",
       value: "naverProgram",
       src: "/blog.png",
       alt: "alt",
-      href: "/programs/blog"
+      href: "/programs/blog",
+      status: 1
     },
     {
-      label: "Settings",
-      value: "settings",
+      label: "준비 중",
+      value: "준비 중",
       src: "/question.png",
       alt: "alt",
-      href: "/setting"
+      href: "/setting",
+      status: 0
     }
   ];
   return (
@@ -49,9 +51,9 @@ const Programs = (Props) => {
         {data.map((val, idx) => (
           <Card
             key={idx}
-            className={`mt-6 flex-[1_0_21%] min-h-[12rem] lg:max-w-[17rem] sm:w-[70%] sm:mt-3 shadow-[0px_0px_9px_-1px_#b3b3b347] ease-in-out duration-500 hover:-translate-y-1.5 hover:shadow-[0px_0px_11px_3px_#49494947]`}
+            className={`cursor-pointer mt-6 flex-[1_0_21%] min-h-[12rem] lg:max-w-[17rem] sm:w-[70%] sm:mt-3 shadow-[0px_0px_9px_-1px_#b3b3b347] ease-in-out duration-500 hover:-translate-y-1.5 hover:shadow-[0px_0px_11px_3px_#49494947]`}
             onClick={() => {
-              if (val.label !== "트레이딩 봇") {
+              if (val.status !== 1) {
                 alert("준비 중!");
               } else {
                 router.push(`${val.href}`);

@@ -4,7 +4,7 @@ type Props = {};
 
 const About = (props: Props) => {
   return (
-    <>
+    <section>
       <div className="pt-11 pb-8 mb-10 w-full px-[10vw] m-auto bg-[#eeeeee]">
         <div>
           <sub>홈 / About</sub>
@@ -29,7 +29,7 @@ const About = (props: Props) => {
           <p>기록 예정!</p>
         </section>
       </div>
-    </>
+    </section>
   );
 };
 

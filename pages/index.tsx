@@ -41,7 +41,7 @@ const MainPage = () => {
       href: "/programs/blog",
       src: "/blog.png",
       alt: "alt",
-      status: 0
+      status: 1
     },
     {
       key: 2,

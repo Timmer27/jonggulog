@@ -1,5 +1,5 @@
 import { PencilIcon } from "@heroicons/react/24/solid";
-import { ArrowDownTrayIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
 import {
   Card,
   CardHeader,
@@ -16,6 +16,7 @@ import {
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Dropdown from "./dropdown";
+import { strategies } from "../stretegy/strategies";
 // import type { Testtest } from "../interfaces/indicator_interface";
 
 const TABLE_NAV = [
@@ -27,54 +28,19 @@ const TABLE_NAV = [
   }
 ];
 
-const TABLE_HEAD = ["지표명", "", "", ""];
-const MODAL_TABLE_HEAD = ["지표명", "", ""];
+const TABLE_HEAD = ["지표명", "", ""];
+const MODAL_TABLE_HEAD = ["지표명", ""];
 
 // export function IndicatorTable(indicatorData: Testtest[], postSelectedIndicatorHandler) {
 export function IndicatorTable() {
   const [open, setOpen] = useState<boolean>(false);
-  const [indicators, setIndicators] = useState([
-    {
-      key: 0,
-      name: "지표1",
-      desc: "이러한 지표다",
-      params: (
-        <div>
-          <Input crossOrigin={{}} color="blue" label="ema" />
-          <Input crossOrigin={{}} color="blue" label="ema" />
-        </div>
-      ),
-      icon: XMarkIcon
-    },
-    {
-      key: 1,
-      name: "지표2",
-      desc: "이러한 지표다",
-      params: <Input crossOrigin={{}} color="blue" label="ema" />,
-      icon: XMarkIcon
-    },
-    {
-      key: 2,
-      name: "지표3",
-      desc: "이러한 지표다",
-      params: <Input crossOrigin={{}} color="blue" label="ema" />,
-      icon: XMarkIcon
-    },
-    {
-      key: 3,
-      name: "지표4",
-      desc: "이러한 지표다",
-      params: <Input crossOrigin={{}} color="blue" label="ema" />,
-      icon: XMarkIcon
-    }
-  ]);
+  const [indicators, setIndicators] = useState(strategies);
   const [filteredIndicator, setFilteredIndicator] = useState([]);
   const [selectedIndicator, setSelectedIndicator] = useState([]);
   const handleOpen = () => setOpen(!open);
 
   const selectDataHandler = (key: number, listData: Array<any>) => {
     const filteredData = listData.filter((val) => val.key === key);
-    console.log("filteredData", filteredData);
     setFilteredIndicator(filteredData);
     return filteredData;
   };
@@ -107,7 +73,7 @@ export function IndicatorTable() {
             })}
             <Button variant="text">적용</Button>
           </ul>
-          <Dialog open={open} size="xl" handler={handleOpen}>
+          <Dialog open={open} size="xl" handler={handleOpen} className={"overflow-hidden overflow-y-auto min-h-[35rem] max-h-[35rem]"}>
             <DialogHeader>
               <Dropdown
                 listData={indicators}
@@ -115,7 +81,7 @@ export function IndicatorTable() {
                 selectDataHandler={selectDataHandler}
               />
             </DialogHeader>
-            <Card className="h-full w-full max-h-[35rem]">
+            <Card className="h-full w-full">
               <table className="w-full min-w-max table-auto text-left">
                 <thead>
                   <tr>
@@ -210,34 +176,26 @@ export function IndicatorTable() {
                 const classes = isLast
                   ? "p-4"
                   : "p-4 border-b border-blue-gray-50";
-
                 return (
                   <tr key={name}>
                     <td className={classes}>
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 w-full">
                         <Typography
                           variant="small"
                           color="blue-gray"
-                          className="font-bold"
+                          className="font-bold flex w-full items-center gap-2"
                         >
+                          <Tooltip content={desc} placement="top-start">
+                            <InformationCircleIcon className="w-[18px]" />
+                          </Tooltip>
                           {name}
                         </Typography>
                       </div>
                     </td>
-                    <td className={classes}>
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        {desc}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
+                    <td className={`${classes}`}>
                       {params}
-                      {/* <Tooltip content="Edit User">
-                      </Tooltip> */}
                     </td>
+                    {/* delete functions */}
                     <td className={classes}>
                       <IconButton
                         variant="text"
