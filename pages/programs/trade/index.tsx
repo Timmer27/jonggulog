@@ -10,10 +10,14 @@ import {
 import { IndicatorTable } from "../../../components/indicatorTable";
 import dynamic from "next/dynamic";
 import { useQuery } from "react-query";
-import { fetchRsi } from "../../../stretegy/strategies";
 import { dummy } from "../../../data/dummy";
-import { apiFetchDummy } from "../../../data/apiFetchDummy";
-import { BanknotesIcon, BookOpenIcon, CurrencyDollarIcon } from "@heroicons/react/24/outline";
+import {
+  BanknotesIcon,
+  BookOpenIcon,
+  CurrencyDollarIcon
+} from "@heroicons/react/24/outline";
+import { Button } from "@material-tailwind/react";
+import Indicator from "../../../stretegy/strategy";
 
 // import LineChart from "./test";
 const CandleChart = dynamic(() => import("./candleChart"), {
@@ -26,6 +30,7 @@ const CandleChart = dynamic(() => import("./candleChart"), {
 const Programs = (Props) => {
   const intervals = ["1d", "8h", "4h", "1h", "30m", "15m", "5m", "1m"];
   const ticker = ["BTCUSDT"];
+  const {fetchRsi} = Indicator()
 
   const [initialData, setInitialData] = useState({
     ticker: ticker[0],
@@ -37,9 +42,9 @@ const Programs = (Props) => {
 
   const { isLoading, error, data, refetch } = useQuery({
     queryKey: ["repoData"],
-    staleTime: 15000,
+    // staleTime: 15000,
     retry: 5,
-    retryDelay: (attemptIndex) => Math.min(attemptIndex * 1000, 1500),
+    // retryDelay: (attemptIndex) => Math.min(attemptIndex * 1000, 1500),
     queryFn: () =>
       fetch(`/api/trade/${initialData.ticker}/${initialData.interval}`).then(
         (res) => {
@@ -231,8 +236,6 @@ const Programs = (Props) => {
           };
         });
 
-      console.log("seriesData", seriesData);
-
       setInitialData((prevState) => ({
         ...prevState,
         seriesData: seriesData,
@@ -262,13 +265,13 @@ const Programs = (Props) => {
               setInitialData={setInitialData}
               ticker={ticker}
               intervals={intervals}
-              calculateSignalHandler={calculateSignalHandler}
             />
           )}
+          <hr />
           <Typography variant="h4" className="mt-4 mb-2">
-            backtesting
+            조건식 추가하기
           </Typography>
-          <IndicatorTable />
+          <IndicatorTable calculateSignalHandler={calculateSignalHandler} />
         </div>
       )
       //   desc: <Description />,

@@ -1,4 +1,4 @@
-import { PencilIcon } from "@heroicons/react/24/solid";
+import { PencilIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { XMarkIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
 import {
   Card,
@@ -14,9 +14,9 @@ import {
   IconButton
 } from "@material-tailwind/react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Dropdown from "./dropdown";
-import { strategies } from "../stretegy/strategies";
+import Indicator from "../stretegy/strategy";
 // import type { Testtest } from "../interfaces/indicator_interface";
 
 const TABLE_NAV = [
@@ -29,12 +29,15 @@ const TABLE_NAV = [
 ];
 
 const TABLE_HEAD = ["지표명", "", ""];
-const MODAL_TABLE_HEAD = ["지표명", ""];
+const INDICATOR_TABLE_HEAD = ["지표명", ""];
 
 // export function IndicatorTable(indicatorData: Testtest[], postSelectedIndicatorHandler) {
-export function IndicatorTable() {
+export function IndicatorTable({ calculateSignalHandler }) {
   const [open, setOpen] = useState<boolean>(false);
-  const [indicators, setIndicators] = useState(strategies);
+  const ref = useRef<HTMLInputElement>();
+
+  const { strategy, fetchRsi, fetchMA } = Indicator();
+
   const [filteredIndicator, setFilteredIndicator] = useState([]);
   const [selectedIndicator, setSelectedIndicator] = useState([]);
   const handleOpen = () => setOpen(!open);
@@ -46,111 +49,102 @@ export function IndicatorTable() {
   };
 
   useEffect(() => {
-    setFilteredIndicator(indicators);
+    setFilteredIndicator(strategy);
   }, []);
 
   return (
-    indicators && (
-      <Card className="flex w-full m-auto mt-4 mb-4">
-        <CardHeader floated={false} shadow={false} className="rounded-none">
-          <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-            {TABLE_NAV.map((val) => {
-              return (
-                <div
-                  onClick={handleOpen}
-                  className="flex items-center cursor-pointer"
-                >
-                  <Image
-                    src={val.href}
-                    alt=""
-                    width={20}
-                    height={20}
-                    title="지표 추가"
-                  />
-                  <span className="text-sm pl-2">지표 추가</span>
-                </div>
-              );
-            })}
-            <Button variant="text">적용</Button>
-          </ul>
-          <Dialog open={open} size="xl" handler={handleOpen} className={"overflow-hidden overflow-y-auto min-h-[35rem] max-h-[35rem]"}>
-            <DialogHeader>
-              <Dropdown
-                listData={indicators}
-                setFilteredIndicator={setFilteredIndicator}
-                selectDataHandler={selectDataHandler}
-              />
-            </DialogHeader>
-            <Card className="h-full w-full">
-              <table className="w-full min-w-max table-auto text-left">
-                <thead>
-                  <tr>
-                    {MODAL_TABLE_HEAD.map((head) => (
-                      <th
-                        key={head}
-                        className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
+    strategy && (
+      <div className="flex">
+        <Card className="min-w-[20rem] max-w-[20rem] mr-5 mt-4 mb-4 max-h-80 overflow-auto">
+        {/* {strategy[1].html} */}
+        {/* <Button onClick={() => { console.log(strategy[1].values[1].map((val) => val.value))}}>tests</Button> */}
+          <table className="text-left ">
+            <thead className="rounded-t-sm">
+              <tr>
+                <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="font-normal leading-none opacity-70"
+                  >
+                    지표명
+                  </Typography>
+                </th>
+                <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+                  {/* <Dropdown
+                    listData={indicators}
+                    setFilteredIndicator={setFilteredIndicator}
+                    selectDataHandler={selectDataHandler}
+                  /> */}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredIndicator.map(({ key, name, desc, onPrint }, index) => (
+                <tr key={key} className="even:bg-blue-gray-50/50">
+                  <Tooltip content={desc}>
+                    <td className="p-4 w-[90%]">
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal"
                       >
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal leading-none opacity-70"
-                        >
-                          {head}
-                        </Typography>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredIndicator.map(
-                    ({ key, name, desc, isChecked }, index) => (
-                      <tr key={key} className="even:bg-blue-gray-50/50">
-                        <Tooltip content={desc}>
-                          <td className="p-4 w-[90%]">
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-normal"
-                            >
-                              {name}
-                            </Typography>
-                          </td>
-                        </Tooltip>
-                        <td className="p-4">
-                          <Checkbox
-                            color="blue"
-                            defaultChecked={selectedIndicator
-                              .map((val) => val.key)
-                              .includes(key)}
-                            onChange={(e) => {
-                              const status = e.currentTarget.checked;
-                              if (status) {
-                                const filtered = filteredIndicator.filter(
-                                  (val) => val.key === key
-                                );
-                                setSelectedIndicator([
-                                  ...selectedIndicator,
-                                  ...filtered
-                                ]);
-                              } else {
-                                const filtered = selectedIndicator.filter(
-                                  (val) => val.key !== key
-                                );
-                                setSelectedIndicator(filtered);
-                              }
-                            }}
-                            crossOrigin={{}}
-                          />
-                        </td>
-                      </tr>
-                    )
-                  )}
-                </tbody>
-              </table>
-            </Card>
-          </Dialog>
-        </CardHeader>
-        <CardBody className="overflow-y-scroll px-0 min-h-48">
+                        {name}
+                      </Typography>
+                    </td>
+                  </Tooltip>
+                  <td className="p-4">
+                    <Button
+                      variant="text"
+                      onClick={() => {
+                        const filtered = filteredIndicator.filter(
+                          (val) => val.name === name
+                        );
+                        const addItem = filtered.map((val) => {
+                          return { ...val, key: selectedIndicator.length };
+                        });
+                        setSelectedIndicator([
+                          ...selectedIndicator,
+                          ...addItem
+                        ]);
+                      }}
+                    >
+                      <PlusIcon className="w-4" />
+                    </Button>
+                    <div />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </Card>
+
+        <Card className="flex w-full m-auto mt-4 mb-4 max-h-80 overflow-auto">
+          <Button
+            className="w-28 self-end mt-4 mr-2"
+            // variant="text"
+            onClick={(val) => {
+              {
+                console.log(selectedIndicator);
+                // calculateSignalHandler();
+              }
+            }}
+          >
+            차트 적용
+          </Button>
+          {/* <CardHeader floated={false} shadow={false} className="rounded-none">
+            <ul className="place-content-end mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6"></ul>
+            <Dialog
+              open={open}
+              size="xl"
+              handler={handleOpen}
+              // className={
+              //   "overflow-hidden overflow-y-auto min-h-[35rem] max-h-[35rem]"
+              // }
+            >
+              <DialogHeader></DialogHeader>
+            </Dialog>
+          </CardHeader> */}
           <table className="w-full min-w-max table-auto text-left">
             <thead>
               <tr>
@@ -171,8 +165,8 @@ export function IndicatorTable() {
               </tr>
             </thead>
             <tbody>
-              {selectedIndicator.map(({ key, name, desc, params }, index) => {
-                const isLast = index === indicators.length - 1;
+              {selectedIndicator.map(({ key, name, desc, values, ref, html, icon }, index) => {
+                const isLast = index === strategy.length - 1;
                 const classes = isLast
                   ? "p-4"
                   : "p-4 border-b border-blue-gray-50";
@@ -192,9 +186,7 @@ export function IndicatorTable() {
                         </Typography>
                       </div>
                     </td>
-                    <td className={`${classes}`}>
-                      {params}
-                    </td>
+                    <td className={`${classes}`}>{html}</td>
                     {/* delete functions */}
                     <td className={classes}>
                       <IconButton
@@ -206,7 +198,7 @@ export function IndicatorTable() {
                           setSelectedIndicator(filtered);
                         }}
                       >
-                        <XMarkIcon className="h-4 w-4" />
+                        {icon}
                       </IconButton>
                     </td>
                   </tr>
@@ -214,8 +206,8 @@ export function IndicatorTable() {
               })}
             </tbody>
           </table>
-        </CardBody>
-      </Card>
+        </Card>
+      </div>
     )
   );
 }

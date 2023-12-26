@@ -78,8 +78,8 @@ const MainPage = () => {
 
   return (
     <main className="mt-15 mb-10 w-[68%] m-auto">
-      <section className="flex gap-5 flex-row mt-11">
-        <div className="flex w-[80%]">
+      <section className="flex gap-5 mt-11 lg:flex-row md:flex-col sm:flex-col">
+        <div className="flex lg:w-[80%] md:w-full sm:w-full">
           <Card
             className={`w-full h-full justify-between ${cardShadowStyle} ${
               mounted ? fadeOut : `delay-[200ms] ${fadeIn}`
@@ -87,10 +87,10 @@ const MainPage = () => {
           >
             <CardBody>
               <Typography variant="h3" color="blue-gray" className="mb-2 pb-2">
-                {/* 종구공방 */}에 오신 것을 환영합니다
+                종구공방에 오신 것을 환영합니다!
               </Typography>
               <Typography className="font-bold text-[2vh]">
-                {/* 자동화 프로그램 무료배포  */} 플랫폼
+                프로그램 무료배포 플랫폼
               </Typography>
               {/* <Typography>유튜브 구독 좋아요 감사감사</Typography> */}
             </CardBody>
@@ -113,6 +113,15 @@ const MainPage = () => {
               >
                 <img src="/naver.svg" alt="naver" className="w-10" />
               </a>
+              <a
+                href="#"
+                target="_blank"
+                onClick={() => {
+                  alert("카카오!");
+                }}
+              >
+                <img src="/kakao.png" alt="kakao" className="w-10" />
+              </a>
               <a href="https://github.com/Timmer27" target="_blank">
                 <img src="/github.svg" alt="github" className="w-10" />
               </a>
@@ -120,7 +129,7 @@ const MainPage = () => {
             </CardFooter>
           </Card>
         </div>
-        <div className="gap-4 flex flex-col w-[40%]">
+        <div className="gap-4 flex lg:flex-col lg:w-[40%] md:flex-row sm:flex-row">
           <Card
             className={`flex-1 cursor-pointer ${cardShadowStyle} bg-[#193e4b]  ${
               mounted ? `${fadeOut}` : `delay-[400ms] ${fadeIn}`
@@ -168,8 +177,8 @@ const MainPage = () => {
         <strong className="text-3xl">공방 무료 컨텐츠</strong>
         </div>
       </section> */}
-      <section className="flex-1 flex gap-5 flex-row m-auto">
-        <aside className="flex flex-wrap gap-6 w-full">
+      <section className="flex gap-5 m-auto">
+        <aside className="flex lg:flex-wrap lg:flex-row md:flex-col sm:flex-col  gap-6 w-full">
           {asideItems.map((val, idx) => {
             const isReady = "cursor-pointer";
             return (
@@ -190,8 +199,8 @@ const MainPage = () => {
                 <CardBody className="h-full flex flex-col justify-between ${isReady}">
                   <div className="flex justify-between">
                     <div className="flex flex-col">
-                      <p className="mb-2 text-[1vw]">{val.sub}</p>
-                      <div className="lg:text-[1.2vw] md:text-[1.2vw] font-bold text-black">
+                      <p className="mb-2 lg:text-[1vw] md:text-[15px]">{val.sub}</p>
+                      <div className="lg:text-[1.2vw] md:text-[2vw] font-bold text-black">
                         {val.title}
                       </div>
                     </div>
@@ -200,10 +209,10 @@ const MainPage = () => {
                       alt={val.alt}
                       width={65}
                       height={65}
-                      className="lg:w-[4vw] md:w-[4vw]"
+                      className="lg:w-[4vw] md:w-[4rem]"
                     ></Image>
                   </div>
-                  <Typography className="text-[1vw]">{val.content}</Typography>
+                  <Typography className="lg:text-[1vw] md:text-[15px]">{val.content}</Typography>
                 </CardBody>
               </Card>
             );

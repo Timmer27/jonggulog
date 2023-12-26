@@ -10,6 +10,8 @@ import React, { useRef, useState } from "react";
 
 export default function Contact({}) {
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>();
+  const [fileName, setFileName] = useState<string>("");
   const [selectType, setSelectType] = useState<string>(undefined);
   const [selectText, setSelectText] = useState<string>(undefined);
 
@@ -33,6 +35,8 @@ export default function Contact({}) {
     { value: "improvement", label: "개선사항" },
     { value: "etc", label: "기타" }
   ];
+
+  console.log('fileInputRef', fileInputRef?.current?.files[0])
 
   return (
     <section>
@@ -68,31 +72,43 @@ export default function Contact({}) {
             />
           </div>
           <div className="flex w-full justify-between py-1.5">
-            <IconButton variant="text" color="blue-gray" size="sm">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-                className="h-4 w-4"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"
-                />
-              </svg>
-            </IconButton>
-            <div className="flex gap-2">
-              {/* <Button
-                size="sm"
-                color="red"
+            <div>
+              <IconButton
                 variant="text"
-                className="rounded-md"
+                color="blue-gray"
+                size="sm"
+                onClick={() => {
+                  fileInputRef.current.click();
+                }}
               >
-                Cancel
-              </Button> */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  className="h-4 w-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"
+                  />
+                </svg>
+              </IconButton>
+              <span className="ml-2">{fileName.split('\\').slice(-1) || fileName}</span>
+            </div>
+            <input
+              type="file"
+              id="file"
+              ref={fileInputRef}
+              className="hidden"
+              accept="image/png, image/jpeg"
+              onChange={(val) => {
+                setFileName(val.currentTarget.value);
+              }}
+            />
+            <div className="flex gap-2">
               <Button
                 size="sm"
                 className="rounded-md"

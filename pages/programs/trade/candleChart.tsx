@@ -10,7 +10,6 @@ const CandlisticChart = ({
   setInitialData,
   ticker,
   intervals,
-  calculateSignalHandler
 }) => {
   const ReactApexChart = dynamic(() => import("react-apexcharts"), {
     ssr: false
@@ -154,14 +153,6 @@ const CandlisticChart = ({
   return (
     initialData && (
       <div id="chart">
-        <Button
-          onClick={() => {
-            const result = calculateSignalHandler();
-            console.log("result", result);
-          }}
-        >
-          적용 테스트
-        </Button>
         <div className="flex w-full gap-3 ml-3 mb-4 mt-2">
           <div>
             <Select

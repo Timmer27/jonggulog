@@ -159,7 +159,7 @@ export default function Daily({}) {
           <TabPanel
             key={value}
             value={value}
-            className="grid lg:grid-cols-5 md:grid-cols-4 gap-4"
+            className="grid lg:grid-cols-5 md:grid-cols-3 gap-4"
           >
             {desc}
           </TabPanel>
