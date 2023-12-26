@@ -35,7 +35,7 @@ export function PostCard({ postCardInfo }) {
           className="w-full"
         />
       </CardHeader>
-      <CardBody className="p-3 lg:min-h-[12rem] lg:max-h-[10rem] md:min-h-[7rem] md:max-h-[7rem]">
+      <CardBody className="p-3 lg:min-h-[12rem] lg:max-h-[10rem] md:min-h-[11rem] md:max-h-[7rem]">
         <div className="flex gap-2 items-center min-h-[5rem]">
             <Avatar
               size="md"

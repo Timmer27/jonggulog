@@ -34,9 +34,9 @@ const Dropdown = ({ listData, setFilteredIndicator, selectDataHandler }) => {
 
   return (
     <div className="flex items-center justify-center">
-      <div className="relative group">
+      <div className="relative group w-52">
         <button
-          className="w-48 inline-flex justify-between w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500"
+          className="inline-flex justify-between w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500"
           onClick={toggleDropdown}
         >
           <span className="mr-2">조건식 리스트</span>

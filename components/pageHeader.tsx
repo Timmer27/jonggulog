@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Navbar,
   MobileNav,
@@ -57,7 +57,7 @@ const PageHeader = (props: Props) => {
     }
   ];
   const navList = (
-    <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-4 px-4">
+    <ul className="mt-2 mb-4 flex gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-4 px-4">
       {navItems.map((val, idx) => {
         const classNames = `${val.className} ${
           "/" + asPath.split("/")[1] === val.href
@@ -85,11 +85,12 @@ const PageHeader = (props: Props) => {
         <div className="flex items-center justify-between text-blue-gray-900 px-4">
           <Link href="/" className="w-28">
             {/* <p>종구공방</p> */}
-            <img src="/web_logo1.png" alt="tmp"/>
+            <img src="/web_logo1.png" alt="tmp" />
           </Link>
           <div className="flex items-center gap-4">
             {/* navList */}
-            <div className="mr-2 hidden lg:block">{navList}</div>
+            <div className="mr-2 hidden lg:block md:block w-fit">{navList}</div>
+
             <div className="flex items-center gap-x-1">
               <Menu
                 dismiss={{
@@ -97,7 +98,9 @@ const PageHeader = (props: Props) => {
                 }}
               >
                 <MenuHandler>
-                  <Button variant="text" className='text-[10px]'>관리자</Button>
+                  <Button variant="text" className="text-[10px]">
+                    관리자
+                  </Button>
                 </MenuHandler>
                 <MenuList>
                   <Input

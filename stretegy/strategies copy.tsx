@@ -127,20 +127,20 @@ export const strategies = [
       </div>
     ),
     icon: XMarkIcon
+  },
+  {
+    key: 3,
+    name: "지표4",
+    desc: "이러한 지표다",
+    params: (
+      <div className="flex gap-2">
+        <div className="w-[30%]">
+          <Input crossOrigin={{}} color="blue" label="rsi" type="number" />
+        </div>
+      </div>
+    ),
+    icon: XMarkIcon
   }
-  // {
-  //   key: 3,
-  //   name: "지표4",
-  //   desc: "이러한 지표다",
-  //   params: (
-  //     <div className="flex gap-2">
-  //       <div className="w-[30%]">
-  //         <Input crossOrigin={{}} color="blue" label="rsi" type="number" />
-  //       </div>
-  //     </div>
-  //   ),
-  //   icon: XMarkIcon
-  // },
   // {
   //   key: 3,
   //   name: "지표4",
@@ -198,7 +198,7 @@ export const strategies = [
 export const fetchRsi = (data: ohlcObj[], range: number, type: string) => {
   const closings = data?.map((val) => val.Close);
   const dates = data?.map((val) => val.Open_time);
-  const rsiData = rsi(closings)
+  const rsiData = rsi(closings);
   if (type === "up") {
     const result = rsiData.map((val, idx) => {
       if (val > range) {

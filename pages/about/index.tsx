@@ -16,8 +16,8 @@ const About = (props: Props) => {
       </div>
       <div className="px-[10vw] leading-8">
         <section>
-          <p>유튜브에서 소개한 프로그램들을 좀더 간편하게 받을 수 있는</p>
-          <p>웹사이트를 하나 만들었습니다</p>
+          <p>유튜브에서 소개한 프로그램들을</p>
+          <p>좀더 간편하게 받을 수 있는 웹사이트를 하나 만들었습니다</p>
           <br />
           <p>그 외에도,</p>
           <ul className="list-decimal ml-6">

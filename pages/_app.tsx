@@ -2,7 +2,8 @@ import type { AppProps } from "next/app";
 import { ThemeProvider } from "@material-tailwind/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "../styles/globals.css";
 import PageHeader from "../components/pageHeader";
 
@@ -27,7 +28,10 @@ const App = ({ Component, pageProps }: AppProps) => {
         <Component {...pageProps} />
         {/* <PageFooter /> */}
       </ThemeProvider>
-      <Analytics />
+      {/* visitor analytics */}
+      <Analytics /> 
+      {/* speed insight */}
+      <SpeedInsights />
     </QueryClientProvider>
   );
 };
