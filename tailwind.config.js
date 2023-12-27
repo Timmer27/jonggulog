@@ -9,6 +9,12 @@ module.exports = withMT({
     "./src/**/*.{js,ts,jsx,tsx,mdx}"
   ],
   theme: {
+    screens: {
+      'lg': '960px',
+      'md': '720px',
+      'sm': '540px',
+      'xxs': '320px', // min-width
+    },
     extend: {},
     fontFamily: {
       // sans: ['DoHyeon', 'sans-serif'],
