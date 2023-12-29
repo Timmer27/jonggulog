@@ -2,14 +2,14 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 import { Input, Option, Select } from "@material-tailwind/react";
 import React, { useRef, useState } from "react";
 import { ohlcObj } from "../interfaces/ohlcData_interface";
-import { ema, rsi, sma } from "indicatorts";
+import { customRsi, ema, rsi, sma } from "indicatorts";
 
 export default function Indicator() {
  
-  const fetchRsi = (data: ohlcObj[], range: number, type: string) => {
+  const fetchRsi = (data: ohlcObj[], span:number, range: number, type: string) => {
     const closings = data?.map((val) => val.Close);
     // const dates = data?.map((val) => val.Open_time);
-    const rsiData = rsi(closings);
+    const rsiData = customRsi(span, closings);
     if (type === "up") {
       const result = rsiData.map((val, idx) => {
         if (val > range) {

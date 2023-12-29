@@ -108,8 +108,10 @@ const Programs = (Props) => {
     }
   }, [data]);
 
+  // 차트 적용 함수
   const calculateSignalHandler = (IndicatorValues) => {
     if (data) {
+      // 기본 값
       const chartData = data?.chartData.slice(
         data?.chartData.length - 100,
         data?.chartData.length
@@ -148,17 +150,20 @@ const Programs = (Props) => {
           }
         }
       ];
+
       const fetchValues = IndicatorValues.reduce((acc, cur, idx) => {
-        const name = cur.name.split('_')[0]
-        if (name === "RSI") {
+        // const name = cur.name.split('_')[0]
+        const name = cur.name;
+        if (name.startsWith("RSI")) {
           const [rsiData, rsiResult] = fetchRsi(
             data.originData,
             cur.values[0],
-            cur.values[1]
+            cur.values[1],
+            cur.values[2]
           );
-          acc.rsi = rsiData;
-          acc.rsi_signal = rsiResult;
-        } else if (name === "SMA") {
+          acc[name] = rsiData;
+          acc[`${name}_signal`] = rsiResult;
+        } else if (name.startsWith("SMA")) {
           const [smaData, smaResult] = fetchMA(
             data.originData,
             cur.values[0],
@@ -166,9 +171,9 @@ const Programs = (Props) => {
             cur.values[2],
             "sma"
           );
-          acc.sma = smaData;
-          acc.sma_signal = smaResult;
-        } else if (name === "EMA") {
+          acc[name] = smaData;
+          acc[`${name}_signal`] = smaResult;
+        } else if (name.startsWith("EMA")) {
           // Handle EMA logic if needed
         }
         return acc;
@@ -182,23 +187,23 @@ const Programs = (Props) => {
 
         // Update data.originData with the indicator data
         data.originData.forEach((val, idx) => {
-            val[indicatorName] = indicatorData[idx];
+          val[indicatorName] = indicatorData[idx];
         });
       });
 
       // 모든 signal 이 1일때
       data.originData.forEach((obj) => {
         const allSignalsEqualToOne = Object.keys(obj)
-          .filter((key) => key.endsWith('_signal'))
+          .filter((key) => key.endsWith("_signal"))
           .every((key) => obj[key] === 1);
-      
+
         const allSignalsEqualToZero = Object.keys(obj)
-          .filter((key) => key.endsWith('_signal'))
+          .filter((key) => key.endsWith("_signal"))
           .every((key) => obj[key] === 0);
-      
-        obj.signal = allSignalsEqualToOne ? 1 : (allSignalsEqualToZero ? 0 : -1);
+
+        obj.signal = allSignalsEqualToOne ? 1 : allSignalsEqualToZero ? 0 : -1;
       });
-      
+
       // console.log("fetchValues", fetchValues, Object.keys(fetchValues));
       // 결국 indicatort table에서 적용을 누르면
       // setSelectedIndicator에 담은 값으로(함수) 아래 adj를 계산해서 나한테 던져주고
@@ -206,13 +211,16 @@ const Programs = (Props) => {
       // 차트 series + option 값 지정해서 넣어주기
 
       // 해당 함수를 array로 갖고와서 넣어준다는 임시 가정
-      const tmpAdj = data.originData.slice(data.originData.length - 100, data.originData.length);
-      
+      const tmpAdj = data.originData.slice(
+        data.originData.length - 100,
+        data.originData.length
+      );
+
       // const selectedTechs = ["rsi"];
-      const seriesNames = Object.keys(data.originData[0]).filter((key) => key !== 'signal')
-      console.log(Object.keys(data.originData[0]), data.originData, seriesNames);
+      // const seriesNames = Object.keys(data.originData[0]).filter((key) => key !== 'signal')
+      // console.log(Object.keys(data.originData[0]), data.originData, seriesNames);
       indicatorNames.map((val, idx) => {
-        if(!val.endsWith('signal')){
+        if (!val.endsWith("signal")) {
           const tmpSeries = {
             name: val,
             type: "line",
@@ -222,7 +230,7 @@ const Programs = (Props) => {
                 : { x: ele.Open_time, y: ele[`${val}`] }
             )
           };
-  
+
           const tmpAxis: any = {
             opposite: true,
             show: false,
@@ -280,6 +288,8 @@ const Programs = (Props) => {
             }
           };
         });
+
+      console.log("adjAnnotation", adjAnnotation);
 
       setInitialData((prevState) => ({
         ...prevState,

@@ -22,6 +22,7 @@ interface userLogin {
 type Props = {};
 const PageHeader = (props: Props) => {
   const { asPath, pathname } = useRouter();
+  const [openNav, setOpenNav] = useState<boolean>(false);
   const idRef = useRef<HTMLInputElement>();
   const pwRef = useRef<HTMLInputElement>();
   const navItems = [
@@ -78,6 +79,15 @@ const PageHeader = (props: Props) => {
     console.log("_id, _pw", _id, _pw);
   };
 
+  useEffect(() => {
+    // Set mounted to true after the component is mounted
+    console.log("window.innerWidth ========>", window.innerWidth);
+    // window.innerWidth
+    window.innerWidth < 550 && setOpenNav(true);
+  }, []);
+
+  console.log("openNav", openNav);
+
   return (
     <div className="-m-6 max-h-[768px] w-[calc(100%+48px)]">
       {/* overflow-scroll */}
@@ -87,9 +97,26 @@ const PageHeader = (props: Props) => {
             {/* <p>종구공방</p> */}
             <img src="/web_logo1.png" alt="tmp" />
           </Link>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center lg:gap-4 md:gap-4 sm:gap-0">
             {/* navList */}
-            <div className="mr-2 hidden lg:block md:block w-fit">{navList}</div>
+            {
+              !openNav && (
+                <div className="mr-2 hidden lg:block md:block w-fit">
+                  {navList}
+                </div>
+              )
+              // <MobileNav className="mb-52">
+              //   {navList}
+              //   <div className="flex items-center gap-x-1">
+              //     <Button fullWidth variant="text" size="sm" className="">
+              //       <span>Log In</span>
+              //     </Button>
+              //     <Button fullWidth variant="gradient" size="sm" className="">
+              //       <span>Sign in</span>
+              //     </Button>
+              //   </div>
+              // </MobileNav>
+            }
 
             <div className="flex items-center gap-x-1">
               <Menu
@@ -130,6 +157,25 @@ const PageHeader = (props: Props) => {
                 </MenuList>
               </Menu>
             </div>
+            {openNav && (
+              <Button variant="text">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+                <div className="lg:flex"></div>
+              </Button>
+            )}
           </div>
         </div>
       </Navbar>

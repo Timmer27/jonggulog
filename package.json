@@ -6,6 +6,7 @@
     "start": "next start --port 3002"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.2.6",
     "@ckeditor/ckeditor5-build-classic": "^40.2.0",
     "@ckeditor/ckeditor5-react": "^6.2.0",
     "@heroicons/react": "^2.0.18",
@@ -15,6 +16,7 @@
     "@tiptap/pm": "^2.1.13",
     "@vercel/analytics": "^1.1.1",
     "@vercel/speed-insights": "^1.0.2",
+    "antd": "^5.12.5",
     "apexcharts": "^3.45.0",
     "axios": "^1.6.2",
     "bullmq": "^5.1.0",

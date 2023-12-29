@@ -22,7 +22,6 @@ import Indicator from "../../../stretegy/strategy";
 // import type { Testtest } from "../interfaces/indicator_interface";
 
 const TABLE_HEAD = ["지표명", "", ""];
-const INDICATOR_TABLE_HEAD = ["지표명", ""];
 
 // export function IndicatorTable(indicatorData: Testtest[], postSelectedIndicatorHandler) {
 export function IndicatorTable({ calculateSignalHandler }) {
@@ -44,10 +43,20 @@ export function IndicatorTable({ calculateSignalHandler }) {
       values: [rsiRef, rsiSelectRef],
       html: (
         <div className="flex gap-2">
-          <div className="w-[100%]">
+          <div className="w-[50%]">
             <Input
               crossOrigin={{}}
               inputRef={(ref) => (rsiRef.current[0] = ref)}
+              color="blue"
+              defaultValue={14}
+              label="rsi span"
+              type="number"
+            />
+          </div>
+          <div className="w-[100%]">
+            <Input
+              crossOrigin={{}}
+              inputRef={(ref) => (rsiRef.current[1] = ref)}
               color="blue"
               label="rsi"
               type="number"
@@ -56,10 +65,10 @@ export function IndicatorTable({ calculateSignalHandler }) {
           <div className="self-center w-[10%] min-w-10 ml-2">보다</div>
           <select className="w-[30%]" ref={rsiSelectRef}>
             <option key={"up"} value={"up"}>
-              크다 {"<"}
+              크다
             </option>
             <option key={"down"} value={"down"}>
-              작다 {">"}
+              작다
             </option>
           </select>
         </div>
@@ -97,10 +106,10 @@ export function IndicatorTable({ calculateSignalHandler }) {
           <div className="self-center w-[10%] ml-2">이</div>
           <select className="w-[30%]" ref={smaSelectRef}>
             <option key={"up"} value={"up"}>
-              크다 {"<"}
+              크다
             </option>
             <option key={"down"} value={"down"}>
-              작다 {">"}
+              작다
             </option>
           </select>
         </div>
@@ -139,10 +148,10 @@ export function IndicatorTable({ calculateSignalHandler }) {
           <div className="self-center w-[10%] ml-2">이</div>
           <select className="w-[30%]" ref={emaSelectRef}>
             <option key={"up"} value={"up"}>
-              크다 {"<"}
+              크다
             </option>
             <option key={"down"} value={"down"}>
-              작다 {">"}
+              작다
             </option>
           </select>
         </div>
@@ -238,6 +247,7 @@ export function IndicatorTable({ calculateSignalHandler }) {
           <Button
             className="w-28 self-end mt-4 mr-2"
             // variant="text"
+            // 차트 적용 함수 전처리 단계
             onClick={() => {
               const IndicatorValues = selectedIndicator.map((val, idx) => {
                 const [name, refValues] = [val.name, val.values];
@@ -260,7 +270,6 @@ export function IndicatorTable({ calculateSignalHandler }) {
                 alert("모든 칸에 값을 입력해주세요");
               } else {
               }
-              
               console.log(IndicatorValues);
               calculateSignalHandler(IndicatorValues);
             }}
