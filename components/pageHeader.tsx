@@ -80,13 +80,18 @@ const PageHeader = (props: Props) => {
   };
 
   useEffect(() => {
-    // Set mounted to true after the component is mounted
-    console.log("window.innerWidth ========>", window.innerWidth);
     // window.innerWidth
     window.innerWidth < 550 && setOpenNav(true);
-  }, []);
 
-  console.log("openNav", openNav);
+    console.log(
+      "process.env.DB_HOST",
+      process.env.DB_HOST,
+      `${process.env.DB_PORT}`,
+      `${process.env.DB_USER}`,
+      `${process.env.DB_PW}`,
+      `${process.env.DB_NAME}`
+    );
+  }, []);
 
   return (
     <div className="-m-6 max-h-[768px] w-[calc(100%+48px)]">
