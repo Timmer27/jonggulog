@@ -21,7 +21,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "pages/admin/index.tsx", "config/db.ts"  ],
+, "pages/admin/index.tsx", "config/db.ts", "radis/server.js"  ],
   "exclude": [
     "node_modules"
   ]

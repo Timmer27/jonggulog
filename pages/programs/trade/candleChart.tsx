@@ -101,18 +101,15 @@ const CandlisticChart = ({
       }
     ]
   };
-  // const series = [...initialData?.seriesData, ...[{
-  //     name: "candle",
-  //     type: "candlestick",
-  //     data: initialData?.seriesData[0].data
-  //     .slice(0, 100)
-  //   }]]
+
   const series = initialData?.seriesData;
   // const series = {
   //   name: "candle",
   //   type: "candlestick",
   //   data: initialData?.originData.slice(0, 100)
   // }
+  
+  console.log('initialData', initialData)
   const options: any = {
     chart: {
       height: 700,

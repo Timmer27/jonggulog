@@ -78,7 +78,7 @@ const MainPage = () => {
 
   return (
     <main className="mt-15 mb-10 w-[68%] m-auto">
-      <section className="flex gap-5 mt-11 lg:flex-row md:flex-col sm:flex-col">
+      <section className="flex gap-5 mt-11 flex-row lg:flex-row md:flex-col sm:flex-col">
         <div className="flex lg:w-[80%] md:w-full sm:w-full">
           <Card
             className={`w-full h-full justify-between ${cardShadowStyle} ${
@@ -129,7 +129,7 @@ const MainPage = () => {
             </CardFooter>
           </Card>
         </div>
-        <div className="gap-4 flex lg:flex-col lg:w-[40%] md:flex-row sm:flex-row">
+        <div className="gap-4 flex lg:flex-col lg:w-[40%] md:flex-row sm:flex-col">
           <Card
             className={`flex-1 cursor-pointer ${cardShadowStyle} bg-[#193e4b]  ${
               mounted ? `${fadeOut}` : `delay-[400ms] ${fadeIn}`
