@@ -7,10 +7,8 @@ import {
   TabPanel,
   Typography
 } from "@material-tailwind/react";
-import { IndicatorTable } from "./indicatorTable";
 import dynamic from "next/dynamic";
 import { useQuery } from "react-query";
-import { dummy } from "../../../data/dummy";
 import {
   BanknotesIcon,
   BookOpenIcon,
@@ -326,7 +324,7 @@ const Programs = (Props) => {
           <Typography variant="h4" className="mt-4 mb-2">
             조건식 추가하기
           </Typography>
-          <IndicatorTable calculateSignalHandler={calculateSignalHandler} />
+          {/* <IndicatorTable calculateSignalHandler={calculateSignalHandler} /> */}
         </div>
       )
       //   desc: <Description />,
