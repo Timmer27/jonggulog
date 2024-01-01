@@ -82,14 +82,13 @@ const PageHeader = (props: Props) => {
   useEffect(() => {
     // window.innerWidth
     window.innerWidth < 550 && setOpenNav(true);
-
     console.log(
       "process.env.DB_HOST",
-      process.env.DB_HOST,
-      `${process.env.DB_PORT}`,
-      `${process.env.DB_USER}`,
-      `${process.env.DB_PW}`,
-      `${process.env.DB_NAME}`
+      process.env.NEXT_PUBLIC_DB_HOST,
+      `${process.env.NEXT_PUBLIC_DB_PORT}`,
+      `${process.env.NEXT_PUBLIC_DB_USER}`,
+      `${process.env.NEXT_PUBLIC_DB_PW}`,
+      `${process.env.NEXT_PUBLIC_DB_NAME}`
     );
   }, []);
 
