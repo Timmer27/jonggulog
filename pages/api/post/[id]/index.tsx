@@ -64,7 +64,7 @@ export default function fetchPostData(
         function (err: any, result: any) {
           if (err) {
             console.error(err);
-            res.status(500).json({ error: "Internal Server Error" });
+            res.status(500).json({ error: "Internal Server Error", log: err});
           } else {
             console.log(result);
             res.json(result);
