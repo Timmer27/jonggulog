@@ -109,7 +109,6 @@ const CandlisticChart = ({
   //   data: initialData?.originData.slice(0, 100)
   // }
   
-  console.log('initialData', initialData)
   const options: any = {
     chart: {
       height: 700,
