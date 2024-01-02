@@ -37,7 +37,8 @@
     "react-ellipsis-text": "^1.2.1",
     "react-query": "^3.39.3",
     "react-quill": "^2.0.0",
-    "redis": "^4.6.12"
+    "redis": "^4.6.12",
+    "vercel": "^33.0.1"
   },
   "engines": {
     "node": ">=18"

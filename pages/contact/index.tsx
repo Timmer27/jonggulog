@@ -36,7 +36,7 @@ export default function Contact({}) {
     { value: "etc", label: "기타" }
   ];
 
-  console.log('fileInputRef', fileInputRef?.current?.files[0])
+  // console.log('fileInputRef', fileInputRef?.current?.files[0])
 
   return (
     <section>
