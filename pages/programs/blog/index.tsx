@@ -47,6 +47,14 @@ const Blog = () => {
               {/* <Typography variant="lead">asdsa</Typography> */}
             </CardBody>
           </Card>
+          <Card className="mt-3 mb-3">
+            <CardBody>
+            <p className="pb-3 font-bold text-black">
+                커피값 후원은 사랑입니다~
+              </p>
+              <img src="/code.png" alt="kakao_pay" />
+            </CardBody>
+          </Card>
         </div>
       )
     },
