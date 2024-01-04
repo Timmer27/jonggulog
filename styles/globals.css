@@ -13,6 +13,10 @@ body {
   min-height: 40rem;
 }
 
+.action.action--ADD-GROUP {
+  display : none
+} 
+
 @font-face {
   font-family: "DoHyeon";
   font-weight: 200;

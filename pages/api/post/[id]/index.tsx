@@ -27,7 +27,6 @@ export default function fetchPostData(
           const insertTags = tags.split(",").map((val) => {
             return `(${insertId}, '${val.trim()}')`;
           });
-          console.log(insertTags);
           db.query(
             `INSERT INTO posting_tags (id, tags) VALUES ${insertTags}`,
             function (err: any, result: any) {
@@ -35,7 +34,7 @@ export default function fetchPostData(
                 console.error(err);
                 res.status(500).json({ error: "Internal Server Error" });
               } else {
-                res.status(200).json(result);
+                res.status(200).send(result);
               }
             }
           );
@@ -60,13 +59,14 @@ export default function fetchPostData(
             END AS p_date,
             p.owner,
             t.tags
-          FROM posting p LEFT JOIN tmp t ON p.id = t.id;`,
+          FROM posting p LEFT JOIN tmp t ON p.id = t.id
+            ORDER BY p.p_date DESC
+          `,
         function (err: any, result: any) {
           if (err) {
             console.error(err);
             res.status(500).json({ error: "Internal Server Error", log: err});
           } else {
-            console.log(result);
             res.json(result);
           }
         }
@@ -94,11 +94,12 @@ export default function fetchPostData(
             console.error(err);
             res.status(500).json({ error: "Internal Server Error" });
           } else {
-            console.log(result);
             res.json(result);
           }
         }
       );
     }
+  }else{
+    res.status(200).send({ error: "Method not allowed." });
   }
 }

@@ -30,8 +30,9 @@ export function PostCard({ postCardInfo }) {
       >
         {/* posting banner */}
         <img
-          src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80"
-          alt="ui/ux review check"
+          // src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80"
+          src="/bot_update_banner.png"
+          alt="bot_update_banner"
           className="w-full"
         />
       </CardHeader>
@@ -48,7 +49,7 @@ export function PostCard({ postCardInfo }) {
           </Tooltip> */}
           <div className="">
             <Typography variant="h5" color="blue-gray">
-              <EllipsisText text={title} length={"18"} />
+              <EllipsisText text={title} length={"22"} />
             </Typography>
             <p color="blue-gray">{owner}</p>
           </div>

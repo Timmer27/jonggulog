@@ -5,7 +5,9 @@ import {
   TabsBody,
   Tab,
   TabPanel,
-  Typography
+  Typography,
+  Card,
+  CardBody
 } from "@material-tailwind/react";
 import dynamic from "next/dynamic";
 import { useQuery } from "react-query";
@@ -14,8 +16,8 @@ import {
   BookOpenIcon,
   CurrencyDollarIcon
 } from "@heroicons/react/24/outline";
-import { Button } from "@material-tailwind/react";
 import Indicator from "../../../stretegy/strategy";
+import { BeakerIcon } from "@heroicons/react/24/solid";
 
 // import LineChart from "./test";
 const CandleChart = dynamic(() => import("./candleChart"), {
@@ -306,6 +308,70 @@ const Programs = (Props) => {
   };
   const headerData = [
     {
+      label: "프로그램 설치하기",
+      value: "download",
+      icon: BeakerIcon,
+      desc: (
+        <div>
+          <Card className="mt-3 mb-3">
+            <CardBody>
+              <Typography variant="h4" className="pb-3">
+                1. 아래 파일 다운받기
+              </Typography>
+              <li>
+                <a
+                  target="_blank"
+                  className="text-blue-700 font-bold underline"
+                  href="https://drive.google.com/file/d/19yDOOouLyyTJzK7GK-49moFUSV3K-Vdi/view?usp=sharing"
+                  rel="noopener noreferrer"
+                >
+                  다운로드 링크
+                </a>
+              </li>
+              {/* <Typography variant="lead">asdsa</Typography> */}
+            </CardBody>
+          </Card>
+          <Card className="mt-3 mb-3">
+            <CardBody>
+              <Typography variant="h4" className="pb-3">
+                2. 파일 압축 해제하기
+              </Typography>
+              <p>
+                해당{" "}
+                <a
+                  target="_blank"
+                  className="text-blue-700 font-bold underline"
+                  href="https://blog.naver.com/eerony/223281891412"
+                  rel="noopener noreferrer"
+                >
+                  네이버 블로그
+                </a>
+                에 기재되어있는 설명서를 통해 자동매매 세팅하기
+              </p>
+              {/* <Typography variant="lead">asdsa</Typography> */}
+            </CardBody>
+          </Card>
+          <Card className="mt-3 mb-3">
+            <CardBody>
+              <Typography variant="h4" className="pb-3">
+                3. 프로그램 버그 제보 및 보완 아이디어
+              </Typography>
+              <p>
+                <a
+                  className="text-blue-700 font-bold underline"
+                  href="/contact"
+                >
+                  여기
+                </a>
+                {"<- "}로 문의주세요~
+              </p>
+              {/* <Typography variant="lead">asdsa</Typography> */}
+            </CardBody>
+          </Card>
+        </div>
+      )
+    },
+    {
       label: "백테스팅",
       value: "backtest",
       icon: BanknotesIcon,
@@ -344,7 +410,7 @@ const Programs = (Props) => {
   ];
   return (
     <Tabs
-      value="backtest"
+      value="download"
       orientation="vertical"
       className="w-[95%] m-auto mt-12"
     >
