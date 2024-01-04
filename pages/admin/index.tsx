@@ -32,7 +32,7 @@ export default function MyEditor({ props }: any) {
           title: titleValue,
           content: contentData,
           tags: tagValue,
-          owner: "이종호"
+          owner: "갓생종구"
         })
         .then((res) => {
           if (res.status === 200) {

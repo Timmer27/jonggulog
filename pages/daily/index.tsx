@@ -6,7 +6,8 @@ import {
   Tab,
   TabPanel,
   Button,
-  Input
+  Input,
+  Spinner
 } from "@material-tailwind/react";
 import { PostCard } from "../../components/postCard";
 import axios from "axios";
@@ -22,7 +23,8 @@ export interface postInfo {
 
 export default function Daily({}) {
   const inputRef = useRef<HTMLInputElement>();
-  const [activeTab, setActiveTab] = React.useState<string>("latest");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<string>("latest");
   const [postCardInfo, setPostCardInfo] = useState<postInfo[] | undefined>([]);
   const [filteredInfo, setFilteredInfo] = useState<postInfo[] | undefined>([]);
   // const [postCardInfo, setPostCardInfo] = useState<postInfo[] | undefined>([]);
@@ -51,6 +53,7 @@ export default function Daily({}) {
   ];
 
   useEffect(() => {
+    setIsLoading(true);
     axios.get("/api/post/all").then((res) => {
       const data = res.data.map((val) => {
         return {
@@ -62,6 +65,7 @@ export default function Daily({}) {
           owner: val.owner
         };
       });
+      setIsLoading(false);
       setPostCardInfo(data);
       setFilteredInfo(data);
     });
@@ -77,6 +81,12 @@ export default function Daily({}) {
 
   return (
     <Tabs value={activeTab} className="mt-10 ml-7">
+      {isLoading && (
+        <div className="absolute z-10 w-[10%] h-[10%] p-[12px] top-[40%] left-[50%] bg-[#093f4f69] flex flex-col place-items-center place-content-center rounded-xl">
+          <Spinner color="blue" className="h-12 w-12 mb-2" />
+          <div className="text-white">로딩 중...</div>
+        </div>
+      )}
       <div className="flex gap-5 px-4 pt-4 pb-5">
         <TabsHeader
           className="w-56"
@@ -159,7 +169,7 @@ export default function Daily({}) {
           <TabPanel
             key={value}
             value={value}
-            className="grid lg:grid-cols-5 md:grid-cols-3 gap-4"
+            className="grid lg:grid-cols-4 md:grid-cols-3 gap-4"
           >
             {desc}
           </TabPanel>
