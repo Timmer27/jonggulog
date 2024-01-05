@@ -148,8 +148,6 @@ export default function ConditionTable() {
 
   const deleteConditionHandler = (key: string) => {
     const filteredData = selectedConditions.filter((val) => val.key !== key);
-
-    console.log("filteredData", filteredData);
     setSelectedConditions(filteredData);
   };
 
