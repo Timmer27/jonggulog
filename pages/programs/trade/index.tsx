@@ -7,17 +7,25 @@ import {
   TabPanel,
   Typography,
   Card,
-  CardBody
+  CardBody,
+  Stepper,
+  Step
 } from "@material-tailwind/react";
 import dynamic from "next/dynamic";
 import { useQuery } from "react-query";
 import {
   BanknotesIcon,
   BookOpenIcon,
-  CurrencyDollarIcon
+  CalculatorIcon,
+  CurrencyDollarIcon,
+  DocumentArrowUpIcon
 } from "@heroicons/react/24/outline";
 import Indicator from "../../../stretegy/strategy";
-import { BeakerIcon } from "@heroicons/react/24/solid";
+import {
+  BeakerIcon,
+  CogIcon,
+} from "@heroicons/react/24/solid";
+import ConditionTable from "./conditionTable";
 
 // import LineChart from "./test";
 const CandleChart = dynamic(() => import("./candleChart"), {
@@ -28,6 +36,8 @@ const CandleChart = dynamic(() => import("./candleChart"), {
 // https://apexcharts.com/react-chart-demos/candlestick-charts/category-x-axis/
 
 const Programs = (Props) => {
+  const [activeStep, setActiveStep] = React.useState(0);
+
   const intervals = ["1d", "8h", "4h", "1h", "30m", "15m", "5m", "1m"];
   const ticker = ["BTCUSDT"];
   const { fetchRsi, fetchMA } = Indicator();
@@ -107,6 +117,8 @@ const Programs = (Props) => {
       }));
     }
   }, [data]);
+
+  //
 
   // 차트 적용 함수
   const calculateSignalHandler = (IndicatorValues) => {
@@ -377,8 +389,34 @@ const Programs = (Props) => {
       icon: BanknotesIcon,
       // <Image src={'/bot.png'} alt="bot" width={30} height={30} />
       desc: (
+        // 나중에 stepper 추가하기
+        // https://www.material-tailwind.com/docs/html/stepper
         <div className="flex flex-col">
-          {!isLoading && (
+          <Stepper
+            activeStep={activeStep}
+            className="mb-6 w-[80%] flex mx-auto"
+          >
+            <Step onClick={() => setActiveStep(0)}>
+              <div className="absolute -bottom-[1.5rem] w-max text-center">
+                <div className="text-sm text-black">조건식 추가</div>
+              </div>
+              <CogIcon className="h-5 w-5" />
+            </Step>
+            <Step onClick={() => setActiveStep(1)}>
+              <CalculatorIcon className="h-5 w-5" />
+              <div className="absolute -bottom-[1.5rem] w-max text-center">
+                <div className="text-sm text-black">백테스팅</div>
+              </div>
+            </Step>
+            <Step onClick={() => setActiveStep(2)}>
+              <DocumentArrowUpIcon className="h-5 w-5" />
+              <div className="absolute -bottom-[1.5rem] w-max text-center">
+                <div className="text-sm text-black">자동매매 조건식 추출</div>
+              </div>
+            </Step>
+          </Stepper>
+
+          {!isLoading && activeStep === 1 && (
             <CandleChart
               initialData={initialData}
               setInitialData={setInitialData}
@@ -386,10 +424,14 @@ const Programs = (Props) => {
               intervals={intervals}
             />
           )}
-          <hr />
-          <Typography variant="h4" className="mt-4 mb-2">
-            조건식 추가하기
-          </Typography>
+          {activeStep === 0 && (
+            <>
+              <Typography variant="h5" className="mt-4 mb-4">
+                조건식 추가하기
+              </Typography>
+              <ConditionTable />
+            </>
+          )}
           {/* <IndicatorTable calculateSignalHandler={calculateSignalHandler} /> */}
         </div>
       )

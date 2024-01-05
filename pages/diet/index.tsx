@@ -122,7 +122,6 @@ function index() {
     setSelectedDate(date.getDate());
   }, []);
 
-  console.log("postDates", postDates);
   // useEffect(() => {
   //   const date = new Date();
   //   const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
