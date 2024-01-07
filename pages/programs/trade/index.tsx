@@ -9,7 +9,8 @@ import {
   Card,
   CardBody,
   Stepper,
-  Step
+  Step,
+  Button
 } from "@material-tailwind/react";
 import dynamic from "next/dynamic";
 import { useQuery } from "react-query";
@@ -21,11 +22,9 @@ import {
   DocumentArrowUpIcon
 } from "@heroicons/react/24/outline";
 import Indicator from "../../../stretegy/strategy";
-import {
-  BeakerIcon,
-  CogIcon,
-} from "@heroicons/react/24/solid";
+import { BeakerIcon, CogIcon } from "@heroicons/react/24/solid";
 import ConditionTable from "./conditionTable";
+import DownloadButton from "../../../components/jsonDownloadButton";
 
 // import LineChart from "./test";
 const CandleChart = dynamic(() => import("./candleChart"), {
@@ -37,6 +36,7 @@ const CandleChart = dynamic(() => import("./candleChart"), {
 
 const Programs = (Props) => {
   const [activeStep, setActiveStep] = React.useState(0);
+  const [conditionJsonObj, setConditionJsonObj] = React.useState({});
 
   const intervals = ["1d", "8h", "4h", "1h", "30m", "15m", "5m", "1m"];
   const ticker = ["BTCUSDT"];
@@ -120,6 +120,10 @@ const Programs = (Props) => {
 
   //
 
+  const onPrint = (value) => {
+    console.log(value);
+  };
+
   // 차트 적용 함수
   const calculateSignalHandler = (IndicatorValues) => {
     if (data) {
@@ -167,29 +171,45 @@ const Programs = (Props) => {
         // const name = cur.name.split('_')[0]
         const name = cur.name;
         if (name.startsWith("RSI")) {
+          const [rsiSpan, rsiValue] = Object.values<number>(cur.inputValues);
+          const type = cur.selectValue;
           const [rsiData, rsiResult] = fetchRsi(
             data.originData,
-            cur.values[0],
-            cur.values[1],
-            cur.values[2]
+            rsiSpan,
+            rsiValue,
+            type
           );
-          acc[name] = rsiData;
+          acc[`${name}_${rsiSpan}`] = rsiData;
           acc[`${name}_signal`] = rsiResult;
         } else if (name.startsWith("SMA")) {
-          const [smaData, smaResult] = fetchMA(
+          const [maSpan, maSpan2] = Object.values<number>(cur.inputValues);
+          const type = cur.selectValue;
+          const [smaData1, smaData2, smaResult] = fetchMA(
             data.originData,
-            cur.values[0],
-            cur.values[1],
-            cur.values[2],
+            maSpan,
+            maSpan2,
+            type,
             "sma"
           );
-          acc[name] = smaData;
+          acc[`${name}_${maSpan2}`] = smaData2;
           acc[`${name}_signal`] = smaResult;
         } else if (name.startsWith("EMA")) {
-          // Handle EMA logic if needed
+          const [maSpan, maSpan2] = Object.values<number>(cur.inputValues);
+          const type = cur.selectValue;
+          const [smaData1, smaData2, smaResult] = fetchMA(
+            data.originData,
+            maSpan,
+            maSpan2,
+            type,
+            "ema"
+          );
+          acc[`${name}_${maSpan2}`] = smaData2;
+          acc[`${name}_signal`] = smaResult;
         }
         return acc;
       }, {});
+
+      console.log(fetchValues, "fetchValues");
 
       // fetchMA
       const indicatorNames = Object.keys(fetchValues);
@@ -280,7 +300,7 @@ const Programs = (Props) => {
         .filter((val) => val.signal !== -1)
         .map((val, idx) => {
           return {
-            x: val.Open_time,
+            x: new Date(val.Open_time).getTime(),
             y: val.signal === 1 ? val.Low : val.High,
             marker: {
               size: 4,
@@ -318,6 +338,21 @@ const Programs = (Props) => {
       };
     }
   };
+
+  const downloadJson = (jsonArray, fileName) => {
+    const jsonString = JSON.stringify(jsonArray, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName || "data.json";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   const headerData = [
     {
       label: "프로그램 설치하기",
@@ -389,50 +424,63 @@ const Programs = (Props) => {
       icon: BanknotesIcon,
       // <Image src={'/bot.png'} alt="bot" width={30} height={30} />
       desc: (
-        // 나중에 stepper 추가하기
-        // https://www.material-tailwind.com/docs/html/stepper
         <div className="flex flex-col">
           <Stepper
             activeStep={activeStep}
-            className="mb-6 w-[80%] flex mx-auto"
+            className="mb-8 w-[80%] flex mx-auto"
           >
-            <Step onClick={() => setActiveStep(0)}>
+            <Step>
               <div className="absolute -bottom-[1.5rem] w-max text-center">
                 <div className="text-sm text-black">조건식 추가</div>
               </div>
               <CogIcon className="h-5 w-5" />
             </Step>
-            <Step onClick={() => setActiveStep(1)}>
+            <Step>
               <CalculatorIcon className="h-5 w-5" />
               <div className="absolute -bottom-[1.5rem] w-max text-center">
                 <div className="text-sm text-black">백테스팅</div>
               </div>
             </Step>
-            <Step onClick={() => setActiveStep(2)}>
+            <Step>
               <DocumentArrowUpIcon className="h-5 w-5" />
               <div className="absolute -bottom-[1.5rem] w-max text-center">
                 <div className="text-sm text-black">자동매매 조건식 추출</div>
               </div>
             </Step>
           </Stepper>
-
+          {activeStep === 0 && (
+            <>
+              <Typography variant="h5" className="mt-4 mb-4">
+                조건식 추가하기
+              </Typography>
+              <ConditionTable
+                setActiveStep={setActiveStep}
+                calculateSignalHandler={calculateSignalHandler}
+                setConditionJsonObj={setConditionJsonObj}
+              />
+            </>
+          )}
           {!isLoading && activeStep === 1 && (
             <CandleChart
               initialData={initialData}
               setInitialData={setInitialData}
               ticker={ticker}
               intervals={intervals}
+              setActiveStep={setActiveStep}
             />
           )}
-          {activeStep === 0 && (
-            <>
-              <Typography variant="h5" className="mt-4 mb-4">
-                조건식 추가하기
-              </Typography>
-              <ConditionTable />
-            </>
+          {!isLoading && activeStep === 2 && (
+            <Card>
+              <CardBody>
+                통계 페이지 넣기
+                <DownloadButton
+                  jsonArray={conditionJsonObj}
+                  fileName="settings.json"
+                />
+              </CardBody>
+              <Button onClick={() => {setActiveStep(0)}}>돌아가기</Button>
+            </Card>
           )}
-          {/* <IndicatorTable calculateSignalHandler={calculateSignalHandler} /> */}
         </div>
       )
       //   desc: <Description />,

@@ -10,7 +10,7 @@ export default function Indicator() {
     const closings = data?.map((val) => val.Close);
     // const dates = data?.map((val) => val.Open_time);
     const rsiData = customRsi(span, closings);
-    if (type === "up") {
+    if (type === "higher") {
       const result = rsiData.map((val, idx) => {
         if (val > range) {
           return 1;
@@ -45,24 +45,24 @@ export default function Indicator() {
     const data2 =
       dataType === "ema" ? ema(range2, closings2) : sma(range2, closings2);
 
-    if (type === "up") {
-      const result = data1.map((val, idx) => {
-        if (val > data2[idx]) {
+    if (type === "higher") {
+      const result = data2.map((val, idx) => {
+        if (val > data1[idx]) {
           return 1;
         } else {
           return 0;
         }
       });
-      return [data1, result];
+      return [data1, data2, result];
     } else {
-      const result = data1.map((val, idx) => {
-        if (val < data2[idx]) {
+      const result = data2.map((val, idx) => {
+        if (val < data1[idx]) {
           return 1;
         } else {
           return 0;
         }
       });
-      return [data2, result];
+      return [data1, data2, result];
     }
   };
 
