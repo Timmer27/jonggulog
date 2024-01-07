@@ -25,6 +25,7 @@ import Indicator from "../../../stretegy/strategy";
 import { BeakerIcon, CogIcon } from "@heroicons/react/24/solid";
 import ConditionTable from "./conditionTable";
 import DownloadButton from "../../../components/jsonDownloadButton";
+import MetaHead from "../../../components/metaHead";
 
 // import LineChart from "./test";
 const CandleChart = dynamic(() => import("./candleChart"), {
@@ -339,20 +340,6 @@ const Programs = (Props) => {
     }
   };
 
-  const downloadJson = (jsonArray, fileName) => {
-    const jsonString = JSON.stringify(jsonArray, null, 2);
-    const blob = new Blob([jsonString], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = fileName || "data.json";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
-
   const headerData = [
     {
       label: "프로그램 설치하기",
@@ -478,7 +465,13 @@ const Programs = (Props) => {
                   fileName="settings.json"
                 />
               </CardBody>
-              <Button onClick={() => {setActiveStep(0)}}>돌아가기</Button>
+              <Button
+                onClick={() => {
+                  setActiveStep(0);
+                }}
+              >
+                돌아가기
+              </Button>
             </Card>
           )}
         </div>
@@ -504,6 +497,12 @@ const Programs = (Props) => {
       orientation="vertical"
       className="w-[95%] m-auto mt-12"
     >
+      <MetaHead
+        title="비트코인 자동매매"
+        description="코인매매 백테스팅하고 자동매매까지. 무료 자동화프로그램"
+        image="/bot_update_banner.png"
+        url="https://jonggulog.vercel.app/programs/trade"
+      />
       <TabsHeader className="w-64">
         {headerData.map(({ label, value, icon }) => (
           <Tab key={value} value={value} className="justify-start">
