@@ -33,6 +33,7 @@ export default function Daily({}) {
     {
       label: "최신",
       value: "latest",
+      size: "sm",
       desc:
         filteredInfo &&
         filteredInfo.map((val) => {
@@ -109,7 +110,7 @@ export default function Daily({}) {
             </Tab>
           ))}
         </TabsHeader>
-        <div className="hidden items-center gap-x-2 lg:flex">
+        <div className=" items-center gap-x-2 flex">
           <div className="relative flex w-full gap-2 md:w-max">
             <Input
               crossOrigin={{}}
@@ -117,7 +118,7 @@ export default function Daily({}) {
               type="search"
               placeholder="Search"
               containerProps={{
-                className: "min-w-[288px]"
+                className: "min-w-[160px]"
               }}
               className=" !border-t-blue-gray-300 pl-9 placeholder:text-blue-gray-300 focus:!border-blue-gray-300"
               labelProps={{
@@ -157,8 +158,8 @@ export default function Daily({}) {
           </div>
           <Button
             onClick={() => searchHandler(inputRef.current.value)}
-            size="md"
-            className="rounded-lg bg-blue-gray-500"
+            size="sm"
+            className="rounded-lg bg-blue-gray-500 w-[65px]"
           >
             검색
           </Button>
@@ -169,7 +170,7 @@ export default function Daily({}) {
           <TabPanel
             key={value}
             value={value}
-            className="grid lg:grid-cols-4 md:grid-cols-3 gap-4"
+            className="grid lg:grid-cols-4 md:grid-cols-2 gap-4"
           >
             {desc}
           </TabPanel>

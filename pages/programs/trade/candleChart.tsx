@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 // import ReactApexChart from 'react-apexcharts';
 import dayjs from "dayjs";
 import dynamic from "next/dynamic";
-import { dummy } from "../../../data/dummy";
 import { Button, Option, Select } from "@material-tailwind/react";
 
 const CandlisticChart = ({
@@ -10,18 +9,11 @@ const CandlisticChart = ({
   setInitialData,
   ticker,
   intervals,
+  setActiveStep
 }) => {
   const ReactApexChart = dynamic(() => import("react-apexcharts"), {
     ssr: false
   });
-
-  // const intervals = ["1d", "8h", "4h", "1h", "30m", "15m", "5m", "1m"];
-  // const ticker = ["BTCUSDT"];
-
-  // const [selectedData, setSelectedData] = useState({
-  //   ticker: ticker[0],
-  //   interval: intervals[0]
-  // });
 
   const seriesBar = [
     {
@@ -103,12 +95,7 @@ const CandlisticChart = ({
   };
 
   const series = initialData?.seriesData;
-  // const series = {
-  //   name: "candle",
-  //   type: "candlestick",
-  //   data: initialData?.originData.slice(0, 100)
-  // }
-  
+
   const options: any = {
     chart: {
       height: 700,
@@ -126,13 +113,18 @@ const CandlisticChart = ({
       align: "left"
     },
     annotations: {
-      points: initialData?.adjAnnotation
+      points: initialData?.annotation
     },
     tooltip: {
       enabled: true
     },
     xaxis: {
       type: "datetime",
+      // labels: {
+      //   formatter: function (val) {
+      //     return "2023-11-16 09:00:00"
+      //   }
+      // }
       labels: {
         formatter: function (val) {
           return dayjs(val).format("YYYY-MM-DD HH:mm:ss");
@@ -142,66 +134,36 @@ const CandlisticChart = ({
     yaxis: initialData?.yaxisOption
   };
 
-  // useEffect(() => {
-  //   selecteTickerIntervalHandler(selectedData);
-  // }, [selectedData]);
-
   return (
     initialData && (
       <div id="chart">
-        <div className="flex w-full gap-3 ml-3 mb-4 mt-2">
-          <div>
-            <Select
-              variant="outlined"
-              label="ticker"
-              value={initialData.ticker}
-              onChange={(value) => {
-                setInitialData((prevState) => ({
-                  ...prevState,
-                  ticker: ticker
-                }));
-              }}
-            >
-              {/*  */}
-              {ticker.map((val, idx) => {
-                return (
-                  <Option key={val} value={val}>
-                    {val}
-                  </Option>
-                );
-              })}
-            </Select>
-          </div>
-          <div>
-            <Select
-              variant="outlined"
-              label="interval"
-              value={initialData.interval}
-              onChange={(value) => {
-                setInitialData((prevState) => ({
-                  ...prevState,
-                  interval: value
-                }));
-              }}
-            >
-              {/*  */}
-              {intervals.map((val, idx) => {
-                return (
-                  <Option key={val} value={val}>
-                    {val}
-                  </Option>
-                );
-              })}
-            </Select>
-          </div>
-        </div>
+        
         {ReactApexChart ? (
-          <ReactApexChart
-            options={options}
-            series={series}
-            type="candlestick"
-            height={700}
-          />
+          <>
+            <ReactApexChart
+              options={options}
+              series={series}
+              type="candlestick"
+              height={700}
+            />
+            <div className="flex justify-between mb-12">
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  setActiveStep(0);
+                }}
+              >
+                뒤로가기
+              </Button>
+              <Button
+                onClick={() => {
+                  setActiveStep(2);
+                }}
+              >
+                조건식 추출하기
+              </Button>
+            </div>
+          </>
         ) : (
           <p>Loading chart...</p>
         )}

@@ -49,37 +49,56 @@ interface conditionObj {
   selectValue: string;
 }
 
-function createData(
-  name: string,
-  conditions: string[] = [],
-  selects: string[]
-) {
-  const inputValues = {};
-  const selectValue = "higher";
-  conditions.forEach((key) => {
-    inputValues[key] = "";
-  });
-  return { name, conditions, inputValues, selects, selectValue };
-}
-
 const CustomTableCell = ({ row, onChange, onSelect }) => {
   return (
     <>
+    {/* <div className="flex w-full gap-3 ml-3 mb-4 mt-2">
+          <div>
+            <Select
+              variant="outlined"
+              label="ticker"
+              value={initialData.ticker}
+              onChange={(value) => {
+                setInitialData((prevState) => ({
+                  ...prevState,
+                  ticker: ticker
+                }));
+              }}
+            >
+              {ticker.map((val, idx) => {
+                return (
+                  <Option key={val} value={val}>
+                    {val}
+                  </Option>
+                );
+              })}
+            </Select>
+          </div>
+          <div>
+            <Select
+              variant="outlined"
+              label="interval"
+              value={initialData.interval}
+              onChange={(value) => {
+                setInitialData((prevState) => ({
+                  ...prevState,
+                  interval: value
+                }));
+              }}
+            >
+              {intervals.map((val, idx) => {
+                return (
+                  <Option key={val} value={val}>
+                    {val}
+                  </Option>
+                );
+              })}
+            </Select>
+          </div>
+        </div> */}
       <TableCell align="left">
         {row.conditions.map((key, index) => {
-          const defaultValue =
-            row.name === "RSI" && key === "기간"
-              ? 14
-              : row.name.includes("MA") && key === "기간"
-              ? 20
-              : row.name === "RSI" && key === "값"
-              ? 30
-              : row.name === "RSI" && key === "값"
-              ? 30
-              : row.name === "RSI" && key === "값"
-              ? 30
-              : 1;
-          row.inputValues[key] = defaultValue;
+          // row.inputValues[key] = 3
           return (
             <TextField
               size="small"
@@ -87,9 +106,12 @@ const CustomTableCell = ({ row, onChange, onSelect }) => {
               label={key}
               key={index}
               type="number"
-              style={{ width: 100 }}
-              defaultValue={defaultValue}
-              onChange={(e) => onChange(e, key, row)}
+              // value={row.inputValues[key]}
+              style={{ width: 150 }}
+              // defaultValue={defaultValue}
+              onChange={(e) => {
+                onChange(e, key, row);
+              }}
             />
           );
         })}
@@ -115,15 +137,28 @@ const CustomTableCell = ({ row, onChange, onSelect }) => {
   );
 };
 
-const rows = [
-  createData("RSI", ["기간", "값"], ["크다", "작다"]),
-  createData("SMA (이동평균선)-종가기준", ["기간"], ["크다", "작다"]),
-  createData("SMA (지수이동평균선)-종가기준", ["기간"], ["크다", "작다"]),
-  createData("스토캐스틱", ["input1"], ["크다", "작다"])
-];
+function createData(
+  name: string,
+  conditions: string[] = [],
+  selects: string[]
+) {
+  const inputValues = {};
+  const selectValue = "higher";
+  conditions.forEach((key) => {
+    inputValues[key] = "";
+  });
+  return { name, conditions, inputValues, selects, selectValue };
+}
 
-export default function ConditionTable() {
-  const [selectedConditions, setSelectedConditions] = React.useState(undefined);
+export default function ConditionTable({ setActiveStep, calculateSignalHandler, setConditionJsonObj }) {
+  let [selectedConditions, setSelectedConditions] = React.useState(undefined);
+
+  const rows = [
+    createData("RSI", ["기간", "값"], ["크다", "작다"]),
+    createData("SMA (이동평균선)", ["해당 기간보다", "해당 기간이"], ["크다", "작다"]),
+    createData("EMA (지수이동평균선)", ["해당 기간보다", "해당 기간이"], ["크다", "작다"]),
+    createData("스토캐스틱", ["input1"], ["크다", "작다"])
+  ];
 
   const addConditionHandler = (row) => {
     const isEmpty =
@@ -133,17 +168,22 @@ export default function ConditionTable() {
     const conditionObj = {
       key: Math.floor(Date.now()),
       name: row.name,
-      selectValue: row.selectValue,
-      inputValues: row.inputValues
+      inputValues: row.inputValues,
+      selectValue: row.selectValue
     };
+    console.log("row", row);
     if (isEmpty) {
       alert("조건식 설정 내 빈칸을 채워주세요");
     } else if (!selectedConditions) {
       setSelectedConditions([conditionObj]);
     } else {
-      const tmp = [...selectedConditions, ...[conditionObj]];
-      setSelectedConditions(tmp);
+      setSelectedConditions((prevConditions) => [
+        ...prevConditions,
+        conditionObj
+      ]);
     }
+
+    console.log("sekeceted", selectedConditions);
   };
 
   const deleteConditionHandler = (key: string) => {
@@ -197,7 +237,10 @@ export default function ConditionTable() {
                   onSelect={onSelectHandler}
                 />
                 <TableCell align="right">
-                  <Button className="flex" onClick={() => addConditionHandler(row)}>
+                  <Button
+                    className="flex"
+                    onClick={() => addConditionHandler(row)}
+                  >
                     조건 추가
                   </Button>
                 </TableCell>
@@ -229,7 +272,7 @@ export default function ConditionTable() {
                 <p className="font-bold pl-5">
                   {val.selectValue === "higher"
                     ? "종가 기준으로 클 때"
-                    : "작을 때"}
+                    : "종가 기준으로 작을 때"}
                 </p>
                 <ListItemSuffix>
                   <IconButton
@@ -255,7 +298,16 @@ export default function ConditionTable() {
         </Card>
       )}
       <div className="flex place-content-end mb-12">
-        <Bt disabled={!selectedConditions} onClick={() => {console.log('terst', selectedConditions)}}>백테스트 실행</Bt>
+        <Bt
+          disabled={!selectedConditions}
+          onClick={() => {
+            setActiveStep(1);
+            setConditionJsonObj(selectedConditions)
+            calculateSignalHandler(selectedConditions)
+          }}
+        >
+          백테스트 실행
+        </Bt>
       </div>
     </>
   );
