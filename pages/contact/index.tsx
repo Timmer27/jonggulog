@@ -1,12 +1,10 @@
-import { Option } from "@material-tailwind/react";
-import { Select } from "@material-tailwind/react";
-import { Button } from "@material-tailwind/react";
-import { Textarea } from "@material-tailwind/react";
-import { IconButton } from "@material-tailwind/react";
-import { Input } from "@material-tailwind/react";
+import { Button, Spinner } from "@material-tailwind/react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { CustomeCell } from "./customeCell";
+import Link from "next/link";
+import { useQuery } from "react-query";
 
 export default function Contact({}) {
   const router = useRouter();
@@ -15,31 +13,27 @@ export default function Contact({}) {
   const [selectType, setSelectType] = useState<string>(undefined);
   const [selectText, setSelectText] = useState<string>(undefined);
 
-  const submitContactHandler = () => {
-    if (selectType === "") {
-      alert("문의내용을 등록해주세요");
-    } else if (selectText.length >= 3000) {
-      alert("문의사항은 3000자 미만으로 적어주세요");
-    } else {
-      axios
-        .post("/api/contact", { type: selectType, content: selectText })
-        .then((res) => {
-          alert("등록 완료. 빠른 시일내로 답변 드리겠습니다!");
-          router.push("/");
-        });
-    }
-  };
+  const { isLoading, error, data, refetch } = useQuery({
+    queryKey: ["contactData"],
+    retry: 5,
+    queryFn: () =>
+      fetch(`/api/contact`, {
+        method: "GET",
+      }).then((res) => res.json()),
+  });
 
-  const selectValues = [
-    { value: "program", label: "프로그램 오류" },
-    { value: "improvement", label: "개선사항" },
-    { value: "etc", label: "기타" }
-  ];
-
-  // console.log('fileInputRef', fileInputRef?.current?.files[0])
-
+  useEffect(() => {
+    refetch();
+  }, []);
+  
   return (
-    <section>
+    <div>
+      {isLoading && (
+        <div className="absolute z-10 w-[10%] h-[10%] p-[12px] top-[40%] left-[50%] bg-[#093f4f69] flex flex-col place-items-center place-content-center rounded-xl">
+          <Spinner color="blue" className="h-12 w-12 mb-2" />
+          <div className="text-white">로딩 중...</div>
+        </div>
+      )}
       <div className="pt-11 pb-8 mb-10 w-full px-[10vw] m-auto bg-[#eeeeee]">
         <div>
           <sub>홈 / Contact</sub>
@@ -49,79 +43,34 @@ export default function Contact({}) {
           <p className="text-gray-800">문의</p>
         </div>
       </div>
-      <div className="px-[10vw] leading-8">
-        <aside>
-          {/* <p>홈페이지 피드백이나</p>
-          <p>프로그램 버그 등을 등록해주세요</p>
-          <br /> */}
-          <Select
-            variant="standard"
-            label="분류"
-            onChange={(val) => setSelectType(val)}
+      <div className="w-[80%] m-auto mb-3 flex place-content-end">
+        <Link href={"/contact/submit"}>
+          <Button
+            size="sm"
+            className="rounded-md"
+            // }}
           >
-            {selectValues.map((ele) => {
-              return <Option value={ele.value}>{ele.label}</Option>;
-            })}
-          </Select>
-          <div className="mt-4">
-            <Textarea
-              onChange={(value) => setSelectText(value.target.value)}
-              // variant="static"
-              label="문의사항을 적어주세요 (최대 3000자)"
-              rows={8}
-            />
-          </div>
-          <div className="flex w-full justify-between py-1.5">
-            <div>
-              <IconButton
-                variant="text"
-                color="blue-gray"
-                size="sm"
-                onClick={() => {
-                  fileInputRef.current.click();
-                }}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  className="h-4 w-4"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"
-                  />
-                </svg>
-              </IconButton>
-              <span className="ml-2">{fileName.split('\\').slice(-1) || fileName}</span>
-            </div>
-            <input
-              type="file"
-              id="file"
-              ref={fileInputRef}
-              className="hidden"
-              accept="image/png, image/jpeg"
-              onChange={(val) => {
-                setFileName(val.currentTarget.value);
-              }}
-            />
-            <div className="flex gap-2">
-              <Button
-                size="sm"
-                className="rounded-md"
-                onClick={() => {
-                  submitContactHandler();
-                }}
-              >
-                등록하기
-              </Button>
-            </div>
-          </div>
-        </aside>
+            등록하기
+          </Button>
+        </Link>
       </div>
-    </section>
+      {!isLoading && (
+        <table className="table-auto w-[80%] m-auto">
+          <tbody>
+            {data.map((val) => {
+              return (
+                <CustomeCell
+                  id={val.id}
+                  title={val.content}
+                  date={val.p_date.split('T')[0]}
+                  name={val.owner}
+                  status={val.status}
+                />
+              );
+            })}
+          </tbody>
+        </table>
+      )}
+    </div>
   );
 }

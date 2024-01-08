@@ -498,7 +498,7 @@ const Programs = (Props) => {
       className="w-[95%] m-auto mt-12"
     >
       <MetaHead
-        title="비트코인 자동매매"
+        title="종구공방 - 비트코인 자동매매"
         description="코인매매 백테스팅하고 자동매매까지. 무료 자동화프로그램"
         image="/bot_update_banner.png"
         url="https://jonggulog.vercel.app/programs/trade"
