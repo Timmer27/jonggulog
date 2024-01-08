@@ -169,7 +169,7 @@ const Blog = () => {
       className="w-[95%] m-auto mt-12"
     >
       <MetaHead
-        title="서이추 자동화 무료 프로그램"
+        title="종구공방 - 서이추 자동화 무료 프로그램"
         description="귀찮은 서이추. 클릭 한번으로 쉽게 신청하자"
         // image=""
         url="https://jonggulog.vercel.app/programs/blog"
