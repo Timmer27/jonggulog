@@ -42,6 +42,7 @@
     "react-query": "^3.39.3",
     "react-quill": "^2.0.0",
     "redis": "^4.6.12",
+    "shortid": "^2.2.16",
     "uuid": "^9.0.1",
     "vercel": "^33.0.1"
   },

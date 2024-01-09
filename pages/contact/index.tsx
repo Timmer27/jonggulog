@@ -1,31 +1,43 @@
-import { Button, Spinner } from "@material-tailwind/react";
-import axios from "axios";
-import { useRouter } from "next/router";
+import {
+  Button,
+  IconButton,
+  Spinner,
+  Typography
+} from "@material-tailwind/react";
 import React, { useEffect, useRef, useState } from "react";
-import CustomeCell from "./customeCell";
+import CustomeCell, { cellProps } from "./customeCell";
 import Link from "next/link";
 import { useQuery } from "react-query";
+import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 
-export default function Contact({}) {
-  const router = useRouter();
-  const fileInputRef = useRef<HTMLInputElement>();
-  const [fileName, setFileName] = useState<string>("");
-  const [selectType, setSelectType] = useState<string>(undefined);
-  const [selectText, setSelectText] = useState<string>(undefined);
-
+export default function Contact() {
+  const [active, setActive] = useState<number>(1);
+  const maxNumPerPage = 7;
   const { isLoading, error, data, refetch } = useQuery({
     queryKey: ["contactData"],
     retry: 5,
     queryFn: () =>
       fetch(`/api/contact`, {
-        method: "GET",
-      }).then((res) => res.json()),
+        method: "GET"
+      }).then((res) => res.json())
   });
 
+  const next = () => {
+    if (active === Math.ceil(data?.length / maxNumPerPage)) return;
+    setActive(active + 1);
+  };
+
+  const prev = () => {
+    if (active === 1) return;
+    setActive(active - 1);
+  };
+
   useEffect(() => {
+    // https://cs310.hashnode.dev/3-ways-to-upload-files-to-google-cloud-storage-with-nextjs-and-formidable
+    // 나중에 파일 업로드 참고하기
     refetch();
   }, []);
-  
+
   return (
     <div>
       {isLoading && (
@@ -55,21 +67,51 @@ export default function Contact({}) {
         </Link>
       </div>
       {!isLoading && (
-        <table className="table-auto w-[80%] m-auto">
-          <tbody>
-            {data.map((val) => {
-              return (
-                <CustomeCell
-                  id={val.id}
-                  title={val.content}
-                  date={val.p_date.split('T')[0]}
-                  name={val.owner}
-                  status={val.status}
-                />
-              );
-            })}
-          </tbody>
-        </table>
+        <>
+          <table className="table-auto w-[80%] m-auto">
+            <tbody>
+              {data
+                .slice((active - 1) * maxNumPerPage, active * maxNumPerPage)
+                .map((val) => {
+                  console.log("val", val);
+                  return (
+                    <CustomeCell
+                      id={val.id}
+                      title={val.content}
+                      type={val.type}
+                      date={val.p_date.split("T")[0]}
+                      name={val.owner}
+                      status={val.status}
+                    />
+                  );
+                })}
+            </tbody>
+          </table>
+          <div className="flex items-center justify-center gap-8 w-[80%] mx-auto my-4">
+            <IconButton
+              size="sm"
+              variant="outlined"
+              onClick={prev}
+              disabled={active === 1}
+            >
+              <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" />
+            </IconButton>
+            <Typography color="gray" className="font-normal">
+              Page <strong className="text-gray-900">{active}</strong> of{" "}
+              <strong className="text-gray-900">
+                {Math.ceil(data?.length / maxNumPerPage)}
+              </strong>
+            </Typography>
+            <IconButton
+              size="sm"
+              variant="outlined"
+              onClick={next}
+              disabled={active === Math.ceil(data?.length / maxNumPerPage)}
+            >
+              <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
+            </IconButton>
+          </div>
+        </>
       )}
     </div>
   );
