@@ -4,8 +4,7 @@ import {
   CardBody,
   CardFooter,
   Typography,
-  Avatar,
-  Tooltip
+  Avatar
 } from "@material-tailwind/react";
 import { useRouter } from "next/router";
 import EllipsisText from "react-ellipsis-text";
@@ -13,6 +12,13 @@ import EllipsisText from "react-ellipsis-text";
 export function PostCard({ postCardInfo }) {
   const router = useRouter();
   const { id, tags, title, content, publishedDate, owner } = postCardInfo;
+
+  const bannerUrl = tags.includes("개발일지")
+    ? "/study.jpg"
+    : tags.includes("비트코인")
+    ? "/bot_update_banner.png"
+    : "/study.jpg";
+  console.log(";tags", tags, "bannerUrl", bannerUrl);
 
   return (
     <Card
@@ -29,22 +35,17 @@ export function PostCard({ postCardInfo }) {
         className="m-0 rounded-none lg:max-h-[10rem]"
       >
         {/* posting banner */}
-        <img
-          // src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80"
-          src="/bot_update_banner.png"
-          alt="bot_update_banner"
-          className="w-full"
-        />
+        <img src={bannerUrl} alt="bot_update_banner" className="w-full" />
       </CardHeader>
       <CardBody className="p-3 lg:min-h-[12rem] lg:max-h-[10rem] md:min-h-[11rem] md:max-h-[7rem]">
         <div className="flex gap-2 items-center min-h-[5rem]">
-            <Avatar
-              size="md"
-              variant="circular"
-              alt="tania andrew"
-              src="/profile2.png"
-              className="border-2 border-white hover:z-10"
-            />
+          <Avatar
+            size="md"
+            variant="circular"
+            alt="profile"
+            src="/profile2.png"
+            className="border-2 border-white hover:z-10"
+          />
           {/* <Tooltip content="프로필">
           </Tooltip> */}
           <div className="">
