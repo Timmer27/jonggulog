@@ -2,7 +2,7 @@ import { Button, Spinner } from "@material-tailwind/react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
-import { CustomeCell } from "./customeCell";
+import CustomeCell from "./customeCell";
 import Link from "next/link";
 import { useQuery } from "react-query";
 

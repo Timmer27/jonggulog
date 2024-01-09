@@ -1,3 +1,4 @@
+import React from "react";
 import { useRouter } from "next/router";
 import EllipsisText from "react-ellipsis-text";
 
@@ -12,7 +13,7 @@ export type cellProps = {
   status: number;
 };
 
-export const CustomeCell = (props: cellProps) => {
+const CustomeCell = (props: cellProps) => {
   const router = useRouter();
   const cellColor = "text-[#4b4b4b]";
   const statusName = props.status === 0 ? "대기 중" : "답변 완료";
@@ -34,7 +35,8 @@ export const CustomeCell = (props: cellProps) => {
               width={25}
             />
             <p className="text-md">
-              <EllipsisText text={props.title} length={"22"} />{" "}
+              {props.title}{" "}
+              {/* <EllipsisText text={props.title} length={"22"} />{" "} */}
             </p>
           </div>
           <div className="flex items-center">
@@ -51,3 +53,5 @@ export const CustomeCell = (props: cellProps) => {
     </tr>
   );
 };
+
+export default CustomeCell;
