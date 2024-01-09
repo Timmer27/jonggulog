@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "plugins": [
+      {
+        "name": "typescript-tslint-plugin"
+      }
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -20,9 +21,10 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "pages/admin/index.tsx", "config/db.ts", "radis/server.js"  ],
-  "exclude": [
-    "node_modules"
-  ]
+    "**/*.tsx",
+    "pages/admin/index.tsx",
+    "config/db.ts",
+    "radis/server.js"
+  ],
+  "exclude": ["node_modules"]
 }
