@@ -34,10 +34,10 @@ export default function fetchPostData(
     }
   }
   if (req.method === "POST") {
-    const { type, content } = req.body;
+    const { type, content, pw, owner } = req.body;
     db.query(
-      "INSERT INTO contact (type, content, owner) VALUES (?, ?, ?)",
-      [type, content, "tmp"],
+      "INSERT INTO contact (type, content, pw, owner) VALUES (?, ?, ?, ?)",
+      [type, content, pw, owner],
       function (err: any, result: any) {
         if (err) {
           console.error(err);

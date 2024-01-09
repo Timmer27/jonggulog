@@ -1,9 +1,10 @@
-import { Button, Chip, IconButton } from "@material-tailwind/react";
+import { Avatar, Button, Chip, IconButton } from "@material-tailwind/react";
 import type { cellProps } from "./customeCell";
 import { useRouter } from "next/router";
 import { useQuery, QueryCache } from "react-query";
 import Link from "next/link";
 import { useEffect } from "react";
+import CustomeReply from "./CustomReply";
 
 export default function ContactPost(props: cellProps) {
   const router = useRouter();
@@ -27,12 +28,16 @@ export default function ContactPost(props: cellProps) {
   return (
     !isLoading && (
       <div className="px-[10vw] leading-8 mt-20">
-        <aside>
+        <aside className="mb-2">
           <Link href={"/contact"} className="mt-7">
             <Button className="w-fit mb-10">뒤로 가기</Button>
           </Link>
-          <p className="mb-1 pb-4 text-2xl border-[#e5e5e5] border-b-[1px]">
-            {data.content}
+          <p className="mb-1 pb-4 text-2xl font-bold border-[#e5e5e5] border-b-[1px]">
+            {data.type === "program"
+              ? "프로그램 오류 건"
+              : data.type === "improvement"
+              ? "개선사항 문의"
+              : "기타 문의"}
           </p>
 
           <div className="w-fit text-center">
@@ -49,9 +54,8 @@ export default function ContactPost(props: cellProps) {
               }
             />
           </div>
-
           <div className="mt-4 mb-6 pt-2">{data.content}</div>
-          <div>
+          <div className="">
             <IconButton variant="text" color="blue-gray" size="sm">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -74,17 +78,12 @@ export default function ContactPost(props: cellProps) {
               {/* {fileName.split("\\").slice(-1) || fileName} */}
             </span>
           </div>
-          {/* <div className="flex w-full py-1.5 justify-end">
-            <div className="flex gap-2">
-              <Button
-                size="sm"
-                className="rounded-md"
-              >
-                저장
-              </Button>
-            </div>
-          </div> */}
         </aside>
+        <div className="flex border-b-[1px] border-[#e5e5e5] mt-8 mb-4">
+          <p>댓글</p>
+          <p className="text-red-400 ml-2">0</p>
+        </div>
+        {/* <CustomeReply name="갓생종구" date="2024-01-01" content="남김 내용" /> */}
       </div>
     )
   );

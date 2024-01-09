@@ -40,7 +40,7 @@ export default function Post({}) {
           <Avatar
             size="md"
             variant="circular"
-            alt="tania andrew"
+            alt="profile"
             src="/profile.png"
             className="border-2 border-white mr-4"
           />

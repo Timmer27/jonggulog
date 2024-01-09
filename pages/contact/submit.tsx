@@ -6,22 +6,32 @@ import { IconButton } from "@material-tailwind/react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
+import shortid from "shortid";
 
 export default function Contact({}) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>();
+  const pwInputRef = useRef<HTMLInputElement>();
   const [fileName, setFileName] = useState<string>("");
   const [selectType, setSelectType] = useState<string>(undefined);
   const [selectText, setSelectText] = useState<string>(undefined);
 
   const submitContactHandler = () => {
-    if (selectType === "") {
+    const pw = pwInputRef.current.value
+    if (!selectText || !selectType) {
       alert("문의내용을 등록해주세요");
     } else if (selectText.length >= 3000) {
       alert("문의사항은 3000자 미만으로 적어주세요");
+    } else if (!pw) {
+      alert("게시글 비밀번호를 적어주세요 (삭제/수정 시 필요)");
     } else {
       axios
-        .post("/api/contact", { type: selectType, content: selectText })
+        .post("/api/contact", {
+          type: selectType,
+          content: selectText,
+          pw: pw,
+          owner: shortid.generate()
+        })
         .then((res) => {
           alert("등록 완료. 빠른 시일내로 답변 드리겠습니다!");
           router.push("/");
@@ -107,6 +117,13 @@ export default function Contact({}) {
               }}
             />
             <div className="flex gap-2">
+              <input
+                type="number"
+                id="pw"
+                placeholder="비밀번호"
+                ref={pwInputRef}
+                className="border border-[#b0bec5] rounded-md pl-3 w-24"
+              />
               <Button
                 size="sm"
                 className="rounded-md"
