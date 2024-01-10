@@ -7,6 +7,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import KakaoAdfit from "../components/kakaoAdfit";
 
 
 export type imgFile = {
@@ -176,6 +177,7 @@ const MainPage = () => {
         <strong className="text-3xl">공방 무료 컨텐츠</strong>
         </div>
       </section> */}
+      <KakaoAdfit />
       <section className="flex gap-5 m-auto">
         <aside className="flex lg:flex-wrap lg:flex-row md:flex-col sm:flex-col  gap-6 w-full">
           {asideItems.map((val, idx) => {
