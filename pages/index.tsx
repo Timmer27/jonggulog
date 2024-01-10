@@ -1,14 +1,13 @@
 import {
-  Button,
   Card,
   CardBody,
   CardFooter,
   Typography
 } from "@material-tailwind/react";
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
+
 
 export type imgFile = {
   src: string;
