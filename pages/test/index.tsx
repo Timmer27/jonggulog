@@ -79,7 +79,8 @@ const Backtest = ({
   const [orders, setOrders] = useState([]);
 
   const calculateIndicators = () => {
-    indicators.forEach((indicator) => {
+    let minNum = -1;
+    const indicatorObj = indicators.map((indicator) => {
       const period = indicator.period || defaultIndicatorPeriod;
       const indicatorKey = indicator.name + period;
       const inputCandles = candleData.map((candle) => candle.close);
@@ -96,25 +97,53 @@ const Backtest = ({
 
       const calculatedIndicator =
         TechnicalIndicators[indicator.name](indicatorInput);
-      const indicatorObj = [
+      const fillNaData = [
         ...fillBlankIndicatorValues(period),
         ...calculatedIndicator
       ];
 
-      const newCandleData = candleData.map((val, idx) => {
-        return({
-            ...val,
-            [indicatorKey]: indicatorObj[idx]
-        })
-      })
+      const arrNum = fillNaData.length;
+      minNum = minNum === -1 ? arrNum : arrNum < minNum ? arrNum : minNum;
+      return { [indicatorKey]: fillNaData };
 
-      console.log("indicatorObj ============>", newCandleData);
-      setCandleData((data) => ({
-        ...data,
-        ...newCandleData
-      }));
+      // const newCandleData = candleData.map((val, idx) => {
+      //   return({
+      //       ...val,
+      //       [indicatorKey]: indicatorObj[idx]
+      //   })
+      // })
+
+      // console.log("indicatorObj ============>", newCandleData);
+      // setCandleData((data) => ({
+      //   ...data,
+      //   ...newCandleData
+      // }));
     });
+    // const maxVal = Math.min()
+    // const maxVal = indicatorObj.map((val) => {return (Object.values(val))})
+    const flattenedData = Object.assign({}, ...indicatorObj);
+    const slicedCandleData = candleData.slice(candleData.length - minNum);
+    const newCandleData = Object.keys(flattenedData).map((key) => {
+      const indicatorData = flattenedData[key]
+        .slice(flattenedData[key].length - minNum)
+        .map((val, idx) => {
+          const newValue =
+            typeof val === "number"
+              ? { ...{[key]: val}, ...slicedCandleData[idx] }
+              : { ...val, ...slicedCandleData[idx] };
+          return newValue;
+        });
+      console.log(
+        "indicatorData",
+        indicatorData,
+        key,
+        flattenedData[key].slice(flattenedData[key].length - minNum)
+      );
+    });
+    // console.log(flattenedData, Object.keys(flattenedData), candleData.slice(-minNum));
+    // console.log('indicatorObj', indicatorObj, maxVal)
   };
+
   const fillBlankIndicatorValues = (period = defaultIndicatorPeriod) =>
     Array(period).fill(0);
 
@@ -345,7 +374,7 @@ const Backtest = ({
 
     start();
   }, []); // The empty dependency array ensures that this useEffect runs once, similar to componentDidMount
-  console.log("candleData 22+++++++++>", candleData);
+  // console.log("candleData 22+++++++++>", candleData);
   // console.log("state", state);
 
   return <div>{/* JSX for your component goes here */}</div>;

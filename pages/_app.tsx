@@ -24,7 +24,7 @@ const App = ({ Component, pageProps }: AppProps) => {
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
       <ThemeProvider>
-        <PageHeader />
+        {/* <PageHeader /> */}
         <Component {...pageProps} />
         {/* <PageFooter /> */}
       </ThemeProvider>
