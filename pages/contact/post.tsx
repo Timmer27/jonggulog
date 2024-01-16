@@ -5,9 +5,9 @@ import { useQuery, QueryCache } from "react-query";
 import Link from "next/link";
 import { useEffect } from "react";
 import CustomeReply from "./CustomReply";
+import CustomeComment from "./CustomeComment";
 
 export default function ContactPost(props: cellProps) {
-  const router = useRouter();
   const { asPath, pathname } = useRouter();
   const id = asPath.split("/contact/post?id=")[1];
 
@@ -33,9 +33,9 @@ export default function ContactPost(props: cellProps) {
             <Button className="w-fit mb-10">뒤로 가기</Button>
           </Link>
           <p className="mb-1 pb-4 text-2xl font-bold border-[#e5e5e5] border-b-[1px]">
-            {data.type === "program"
+            {data[0].type === "program"
               ? "프로그램 오류 건"
-              : data.type === "improvement"
+              : data[0].type === "improvement"
               ? "개선사항 문의"
               : "기타 문의"}
           </p>
@@ -46,15 +46,15 @@ export default function ContactPost(props: cellProps) {
               className="text-sm"
               color="teal"
               value={
-                data.type === "program"
+                data[0].type === "program"
                   ? "프로그램 오류"
-                  : data.type === "improvement"
+                  : data[0].type === "improvement"
                   ? "개선사항"
                   : "기타"
               }
             />
           </div>
-          <div className="mt-4 mb-6 pt-2">{data.content}</div>
+          <div className="mt-4 mb-6 pt-2">{data[0].content}</div>
           <div className="">
             <IconButton variant="text" color="blue-gray" size="sm">
               <svg
@@ -83,7 +83,18 @@ export default function ContactPost(props: cellProps) {
           <p>댓글</p>
           <p className="text-red-400 ml-2">0</p>
         </div>
-        {/* <CustomeReply name="갓생종구" date="2024-01-01" content="남김 내용" /> */}
+        {/* 댓글 존재 시 */}
+        {data[0].replyComment &&
+          data.map((val, idx) => (
+            <CustomeReply
+              key={idx}
+              name={val.replyOwner}
+              date={val.replyDate}
+              content={val.replyComment}
+            />
+          ))}
+
+        <CustomeComment id={id} />
       </div>
     )
   );

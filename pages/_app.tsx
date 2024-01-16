@@ -19,7 +19,7 @@ const queryClient = new QueryClient({
     }
   }
 });
-const App = ({ Component, pageProps }: AppProps) => {
+const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
@@ -29,7 +29,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         {/* <PageFooter /> */}
       </ThemeProvider>
       {/* visitor analytics */}
-      <Analytics /> 
+      <Analytics />
       {/* speed insight */}
       <SpeedInsights />
     </QueryClientProvider>

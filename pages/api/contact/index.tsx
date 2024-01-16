@@ -8,20 +8,36 @@ export default function fetchPostData(
     const id = req.query.id;
     if (id) {
       db.query(
-        "SELECT * FROM contact WHERE id = ?",
+        `SELECT
+          c.*,
+          r.content AS replyComment,
+          r.fileId AS replyFile,
+          r.p_date AS replyDate,
+          r.owner AS replyOwner
+        FROM contact c LEFT JOIN replies r ON c.id = r.id
+          WHERE c.id = ?
+          ORDER BY p_date DESC`,
         [id],
         function (err: any, result: any) {
           if (err) {
             console.error(err);
             res.status(500).json({ error: "Internal Server Error" });
           } else {
-            res.status(200).json(result[0]);
+            res.status(200).json(result);
           }
         }
       );
     } else {
       db.query(
-        "SELECT * FROM contact ORDER BY p_date DESC",
+        `SELECT
+          c.*,
+          r.content AS replyComment,
+          r.fileId AS replyFile,
+          r.p_date AS replyDate,
+          r.owner AS replyOwner
+        FROM contact c LEFT JOIN replies r ON c.id = r.id 
+          GROUP BY c.id
+          ORDER BY p_date DESC`,
         function (err: any, result: any) {
           if (err) {
             console.error(err);

@@ -3,8 +3,8 @@
   "scripts": {
     "build-test": "next build && next-sitemap --debug",
     "build": "next build && next-sitemap",
-    "dev": "next dev --port 3002",
-    "start": "next start --port 3002"
+    "dev": "next dev --port 3004",
+    "start": "next start --port 3004"
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
