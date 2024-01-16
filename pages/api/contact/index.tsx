@@ -9,10 +9,25 @@ export default function fetchPostData(
     if (id) {
       db.query(
         `SELECT
-          c.*,
+          c.id,
+          c.type,
+          c.content,
+          c.fileId,
+          c.pw,
+          (CASE
+                WHEN INSTR(DATE_FORMAT(c.p_date, '%Y-%m-%d %p %h:%i'), 'PM') > 0
+                THEN REPLACE(DATE_FORMAT(c.p_date, '%Y-%m-%d %p %h:%i'), 'PM', '오후')
+                ELSE REPLACE(DATE_FORMAT(c.p_date, '%Y-%m-%d %p %h:%i'), 'AM', '오전')    
+                END) AS p_date,
+          c.owner,
+          c.status,
           r.content AS replyComment,
           r.fileId AS replyFile,
-          r.p_date AS replyDate,
+          (CASE
+            WHEN INSTR(DATE_FORMAT(r.p_date, '%Y-%m-%d %p %h:%i'), 'PM') > 0
+            THEN REPLACE(DATE_FORMAT(r.p_date, '%Y-%m-%d %p %h:%i'), 'PM', '오후')
+            ELSE REPLACE(DATE_FORMAT(r.p_date, '%Y-%m-%d %p %h:%i'), 'AM', '오전')    
+            END) AS replyDate,
           r.owner AS replyOwner
         FROM contact c LEFT JOIN replies r ON c.id = r.id
           WHERE c.id = ?
@@ -30,14 +45,22 @@ export default function fetchPostData(
     } else {
       db.query(
         `SELECT
-          c.*,
-          r.content AS replyComment,
-          r.fileId AS replyFile,
-          r.p_date AS replyDate,
-          r.owner AS replyOwner
-        FROM contact c LEFT JOIN replies r ON c.id = r.id 
+          c.id,
+          c.type,
+          c.content,
+          c.fileId,
+          c.pw,
+          (CASE
+                WHEN INSTR(DATE_FORMAT(c.p_date, '%Y-%m-%d %p %h:%i'), 'PM') > 0
+                THEN REPLACE(DATE_FORMAT(c.p_date, '%Y-%m-%d %p %h:%i'), 'PM', '오후')
+                ELSE REPLACE(DATE_FORMAT(c.p_date, '%Y-%m-%d %p %h:%i'), 'AM', '오전')    
+                END) AS p_date,
+          c.owner,
+          c.status,
+          COUNT(r.content) AS replyCnt
+        FROM contact c LEFT OUTER JOIN replies r ON c.id = r.id 
           GROUP BY c.id
-          ORDER BY p_date DESC`,
+          ORDER BY p_date DESC;`,
         function (err: any, result: any) {
           if (err) {
             console.error(err);

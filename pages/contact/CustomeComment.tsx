@@ -6,12 +6,12 @@ import React, { useRef, useState } from "react";
 export default function CustomeComment({ id }) {
   // id, content, fileId, owner
   const router = useRouter();
-  const fileInputRef = useRef<HTMLInputElement>();
-  const textRef = useRef<HTMLTextAreaElement>();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const textRef = useRef<HTMLTextAreaElement>(null);
   const [fileName, setFileName] = useState<string>("");
 
   const submitCommentHandler = () => {
-    const content = textRef.current.value;
+    const content = textRef.current?.value;
     if (!content) {
       alert("댓글을 적어주세요");
     } else {
@@ -40,14 +40,14 @@ export default function CustomeComment({ id }) {
         placeholder="내용을 입력해주세요."
         className="p-5 w-full border mt-6 border-[#dadada] hover:border-[#acacac] focus:border-[#dadada] focus:outline-none rounded-md"
       />
-      <div className="flex justify-between">
+      <div className="flex justify-between mb-24">
         <div>
           <IconButton
             variant="text"
             color="blue-gray"
             size="sm"
             onClick={() => {
-              fileInputRef.current.click();
+              fileInputRef.current?.click();
             }}
           >
             <svg

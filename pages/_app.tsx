@@ -1,9 +1,11 @@
+import React from 'react'
 import type { AppProps } from "next/app";
 import { ThemeProvider } from "@material-tailwind/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { SessionProvider } from "next-auth/react";
 import "../styles/globals.css";
 import PageHeader from "../components/pageHeader";
 
@@ -23,11 +25,13 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
-      <ThemeProvider>
-        <PageHeader />
-        <Component {...pageProps} />
-        {/* <PageFooter /> */}
-      </ThemeProvider>
+      <SessionProvider session={session}>
+        <ThemeProvider>
+          <PageHeader />
+          <Component {...pageProps} />
+          {/* <PageFooter /> */}
+        </ThemeProvider>
+      </SessionProvider>
       {/* visitor analytics */}
       <Analytics />
       {/* speed insight */}

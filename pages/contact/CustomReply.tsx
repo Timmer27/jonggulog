@@ -11,7 +11,7 @@ export type replyProps = {
 
 const CustomeReply = (props: replyProps) => {
   return (
-    <div className="flex my-2">
+    <div className="flex my-6">
       <Avatar
         size="md"
         variant="circular"
