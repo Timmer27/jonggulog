@@ -14,6 +14,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSession, signIn, signOut } from "next-auth/react";
+import LoginButton from "./loginButton";
 
 interface userLogin {
   id: string;
@@ -117,23 +118,7 @@ const PageHeader = (props: Props) => {
             }
 
             <div className="flex items-center gap-x-1">
-              <Button
-                variant="text"
-                className="text-[10px]"
-                onClick={() => {
-                  console.log("status", status);
-
-                  if (status === "authenticated") {
-                    signOut();
-                  } else {
-                    signIn()
-                  }
-                }}
-              >
-                {status === "authenticated" ? "관리자 LOGOUT" : "관리자 LOGIN"}
-              </Button>
-              {/* 
-               */}
+              <LoginButton />
             </div>
             {openNav && (
               <Button variant="text">

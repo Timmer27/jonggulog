@@ -14,14 +14,14 @@ export const authOptions = {
   // pages: {
   //   signIn: '/auth/login',	// 로그인 페이지 경로
   // },
-  callbacks: {
-    session: async ({ session, token, user }) => {
-      if (session.user) {
-        session.user.id = user.id;	// 세션에 사용자 ID를 저장함
-      }
-      return session;
-    },
-  },
+  // callbacks: {
+  //   session: async ({ session, token, user }) => {
+  //     if (session.user) {
+  //       session.user.id = user.id;	// 세션에 사용자 ID를 저장함
+  //     }
+  //     return session;
+  //   },
+  // },
 };
 
 export default NextAuth(authOptions);

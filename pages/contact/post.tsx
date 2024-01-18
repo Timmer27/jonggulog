@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { Avatar, Button, Chip, IconButton } from "@material-tailwind/react";
 import type { cellProps } from "./customeCell";
 import { useRouter } from "next/router";
@@ -7,10 +7,17 @@ import Link from "next/link";
 import { useEffect } from "react";
 import CustomeReply from "./CustomReply";
 import CustomeComment from "./CustomeComment";
-import { ArrowLeftCircleIcon, ArrowLeftIcon } from '@heroicons/react/24/outline';
+import {
+  ArrowLeftCircleIcon,
+  ArrowLeftIcon
+} from "@heroicons/react/24/outline";
+import { useSession } from "next-auth/react";
 
 export default function ContactPost(props: cellProps) {
   const { asPath, pathname } = useRouter();
+  const session = useSession();
+
+  console.log("testset", session, "useSession()", useSession());
   const id = asPath.split("/contact/post?id=")[1];
 
   const { isLoading, error, data, refetch } = useQuery({
@@ -32,15 +39,15 @@ export default function ContactPost(props: cellProps) {
       <div className="px-[10vw] leading-8 mt-20">
         <aside className="mb-2">
           <Link href={"/contact"} className="mt-7">
-            <ArrowLeftIcon width={35} className='mb-6'/>
+            <ArrowLeftIcon width={35} className="mb-6" />
           </Link>
           <p className="mb-1 pb-4 text-2xl font-bold border-[#e5e5e5] border-b-[1px]">
             <div>
-            {data[0].type === "program"
-              ? "프로그램 오류 건"
-              : data[0].type === "improvement"
-              ? "개선사항 문의"
-              : "기타 문의"}
+              {data[0].type === "program"
+                ? "프로그램 오류 건"
+                : data[0].type === "improvement"
+                ? "개선사항 문의"
+                : "기타 문의"}
             </div>
           </p>
 
@@ -76,17 +83,17 @@ export default function ContactPost(props: cellProps) {
                 />
               </svg>
             </IconButton>
-            <span className="ml-2 m-4">
-              file
-            </span>
-            <span className='text-sm font-normal text-[#9c9999]'>
+            <span className="ml-2 m-4">file</span>
+            <span className="text-sm font-normal text-[#9c9999]">
               {data[0].p_date}
-              </span>
+            </span>
           </div>
         </aside>
         <div className="flex border-b-[1px] border-[#e5e5e5] mt-8 mb-4">
           <p>댓글</p>
-          <p className="text-red-400 ml-2">{data[0].replyComment ? data.length : 0}</p>
+          <p className="text-red-400 ml-2">
+            {data[0].replyComment ? data.length : 0}
+          </p>
         </div>
         {/* 댓글 존재 시 */}
         {data[0].replyComment &&
@@ -98,8 +105,10 @@ export default function ContactPost(props: cellProps) {
               content={val.replyComment}
             />
           ))}
-
-        <CustomeComment id={id} />
+        {session.status === "authenticated" &&
+          session.data.user.email === "whdghtpgml@gmail.com" && (
+            <CustomeComment id={id} />
+          )}
       </div>
     )
   );
