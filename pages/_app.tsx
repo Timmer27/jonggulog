@@ -27,7 +27,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
       <SessionProvider session={session}>
         <ThemeProvider>
-          {/* <PageHeader /> */}
+          <PageHeader />
           <Component {...pageProps} />
           {/* <PageFooter /> */}
         </ThemeProvider>
