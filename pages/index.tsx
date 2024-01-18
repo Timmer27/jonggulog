@@ -8,7 +8,6 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 
-
 export type imgFile = {
   src: string;
   alt: string;
@@ -73,6 +72,13 @@ const MainPage = () => {
   useEffect(() => {
     // Set mounted to true after the component is mounted
     setMounted(true);
+
+    console.log(
+      "NEXT_PUBLIC_GITHUB_ID",
+      process.env.NEXT_PUBLIC_GITHUB_ID,
+      "NEXT_PUBLIC_GITHUB_SECRET",
+      process.env.NEXT_PUBLIC_GITHUB_SECRET
+    );
   }, []);
 
   return (
@@ -198,7 +204,9 @@ const MainPage = () => {
                 <CardBody className="h-full flex flex-col justify-between ${isReady}">
                   <div className="flex justify-between">
                     <div className="flex flex-col">
-                      <p className="mb-2 lg:text-[1vw] md:text-[15px]">{val.sub}</p>
+                      <p className="mb-2 lg:text-[1vw] md:text-[15px]">
+                        {val.sub}
+                      </p>
                       <div className="lg:text-[1.2vw] md:text-[2vw] font-bold text-black">
                         {val.title}
                       </div>
@@ -211,7 +219,9 @@ const MainPage = () => {
                       className="lg:w-[4vw] md:w-[4rem]"
                     ></Image>
                   </div>
-                  <Typography className="lg:text-[1vw] md:text-[15px]">{val.content}</Typography>
+                  <Typography className="lg:text-[1vw] md:text-[15px]">
+                    {val.content}
+                  </Typography>
                 </CardBody>
               </Card>
             );
