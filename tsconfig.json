@@ -25,6 +25,6 @@
     "pages/admin/index.tsx",
     "config/db.ts",
     "radis/server.js"
-  ],
+, "pages/auth/[...nextauth].tsx"  ],
   "exclude": ["node_modules"]
 }

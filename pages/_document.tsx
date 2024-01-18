@@ -1,4 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
+import MetaHead from "../components/metaHead";
 
 class MyDocument extends Document {
   render() {
@@ -14,6 +15,11 @@ class MyDocument extends Document {
         <meta
           name="naver-site-verification"
           content="4c7049efad60cdc78b96269784680cad9b4d0ce2"
+        />
+        <MetaHead
+          title="종구공방 - 인생 자동화 프로젝트"
+          description="각종 자동화 프로그램 무료 유지보수 및 배포"
+          url="https://jonggulog.vercel.app/"
         />
         <Head />
         <body>

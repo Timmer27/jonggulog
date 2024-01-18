@@ -12,6 +12,7 @@ export type cellProps = {
   name: string;
   date: string;
   status: number;
+  replyCnt: number;
 };
 
 const CustomeCell = (props: cellProps) => {
@@ -23,8 +24,8 @@ const CustomeCell = (props: cellProps) => {
       : props.type === "improvement"
       ? "개선사항 문의"
       : "기타 문의";
-  const statusName = props.status === 0 ? "답변 대기 중" : "답변 완료";
-  const statusColor = props.status === 0 ? "bg-[#7a91ff]" : "bg-[darkgrey]";
+  const statusName = props.replyCnt === 0 ? "답변 대기 중" : "답변 완료";
+  const statusColor = props.replyCnt === 0 ? "bg-[#7a91ff]" : "bg-[darkgrey]";
   return (
     <tr
       onClick={() => {
@@ -43,7 +44,9 @@ const CustomeCell = (props: cellProps) => {
             />
             <p className="text-md ">
               {/* {typeName} */}
-              {props.title && <EllipsisText text={props.title} length={22} />}{" "}
+              {props.title && (
+                <EllipsisText text={props.title} length={22} />
+              )}{" "}
             </p>
           </div>
           {/* <p className="text-sm mb-2 text-[#919191]">{props.title} </p> */}

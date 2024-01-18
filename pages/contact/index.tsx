@@ -79,9 +79,10 @@ export default function Contact() {
                       id={val.id}
                       title={val.content}
                       type={val.type}
-                      date={val.p_date.split("T")[0]}
+                      date={val.p_date}
                       name={val.owner}
                       status={val.status}
+                      replyCnt={val.replyCnt}
                     />
                   );
                 })}

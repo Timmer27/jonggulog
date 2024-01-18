@@ -13,6 +13,8 @@ import {
 } from "@material-tailwind/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useSession, signIn, signOut } from "next-auth/react";
+import LoginButton from "./loginButton";
 
 interface userLogin {
   id: string;
@@ -22,6 +24,7 @@ interface userLogin {
 type Props = {};
 const PageHeader = (props: Props) => {
   const { asPath, pathname } = useRouter();
+  const { data: session, status } = useSession();
   const [openNav, setOpenNav] = useState<boolean>(false);
   const idRef = useRef<HTMLInputElement>();
   const pwRef = useRef<HTMLInputElement>();
@@ -74,10 +77,10 @@ const PageHeader = (props: Props) => {
     </ul>
   );
 
-  const loginHandler = () => {
-    const [_id, _pw] = [idRef.current.value, pwRef.current.value];
-    console.log("_id, _pw", _id, _pw);
-  };
+  // const loginHandler = () => {
+  //   const [_id, _pw] = [idRef.current.value, pwRef.current.value];
+  //   console.log("_id, _pw", _id, _pw);
+  // };
 
   useEffect(() => {
     // window.innerWidth
@@ -115,43 +118,7 @@ const PageHeader = (props: Props) => {
             }
 
             <div className="flex items-center gap-x-1">
-              <Menu
-                dismiss={{
-                  itemPress: false
-                }}
-              >
-                <MenuHandler>
-                  <Button variant="text" className="text-[10px]">
-                    관리자
-                  </Button>
-                </MenuHandler>
-                <MenuList>
-                  <Input
-                    inputRef={idRef}
-                    crossOrigin={{}}
-                    label="ID"
-                    containerProps={{
-                      className: "mb-4"
-                    }}
-                  />
-                  <Input
-                    inputRef={pwRef}
-                    crossOrigin={{}}
-                    label="PW"
-                    type="password"
-                    containerProps={{
-                      className: "mb-4"
-                    }}
-                  />
-                  <Button
-                    onClick={() => {
-                      loginHandler();
-                    }}
-                  >
-                    로그인
-                  </Button>
-                </MenuList>
-              </Menu>
+              <LoginButton />
             </div>
             {openNav && (
               <Button variant="text">

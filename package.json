@@ -3,8 +3,8 @@
   "scripts": {
     "build-test": "next build && next-sitemap --debug",
     "build": "next build && next-sitemap",
-    "dev": "next dev --port 3002",
-    "start": "next start --port 3002"
+    "dev": "next dev --port 3004",
+    "start": "next start --port 3004"
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
@@ -34,12 +34,14 @@
     "mysql2": "^3.6.5",
     "net": "^1.0.2",
     "next": "latest",
+    "next-auth": "^4.24.5",
     "next-sitemap": "^4.2.3",
     "react": "^18.2.0",
     "react-adfit-web-component": "^1.0.2",
     "react-apexcharts": "^1.4.1",
     "react-dom": "^18.2.0",
     "react-ellipsis-text": "^1.2.1",
+    "react-modal": "^3.16.1",
     "react-query": "^3.39.3",
     "react-quill": "^2.0.0",
     "redis": "^4.6.12",

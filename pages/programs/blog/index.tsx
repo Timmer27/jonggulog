@@ -12,6 +12,7 @@ import {
 import { BeakerIcon, CodeBracketIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import MetaHead from "../../../components/metaHead";
+import KakaoAdfit from "../../../components/kakaoAdfit";
 
 const Blog = () => {
   const headerData = [
@@ -21,6 +22,7 @@ const Blog = () => {
       icon: BeakerIcon,
       desc: (
         <div>
+          <KakaoAdfit />
           <Card className="mt-3 mb-3">
             <CardBody>
               <Typography variant="h5" className="pb-3 text-black">
