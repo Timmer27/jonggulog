@@ -111,11 +111,11 @@ const Programs = (Props) => {
         }
       ];
 
-      setInitialData((prevState) => ({
-        ...prevState,
-        seriesData: seriesData,
-        yaxisOption: yaxisOption
-      }));
+      // setInitialData((prevState) => ({
+      //   ...prevState,
+      //   seriesData: seriesData,
+      //   yaxisOption: yaxisOption
+      // }));
     }
   }, [data]);
 
@@ -324,12 +324,12 @@ const Programs = (Props) => {
 
       console.log("adjAnnotation", adjAnnotation);
 
-      setInitialData((prevState) => ({
-        ...prevState,
-        seriesData: seriesData,
-        yaxisOption: yaxisOption,
-        annotation: adjAnnotation
-      }));
+      // setInitialData((prevState) => ({
+      //   ...prevState,
+      //   seriesData: seriesData,
+      //   yaxisOption: yaxisOption,
+      //   annotation: adjAnnotation
+      // }));
 
       return {
         seriesData: seriesData,
