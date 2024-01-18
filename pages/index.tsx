@@ -78,7 +78,10 @@ const MainPage = () => {
       "NEXT_PUBLIC_GITHUB_ID",
       process.env.NEXT_PUBLIC_GITHUB_ID,
       "NEXT_PUBLIC_GITHUB_SECRET",
-      process.env.NEXT_PUBLIC_GITHUB_SECRET
+      process.env.NEXT_PUBLIC_GITHUB_SECRET,
+      "NEXT_PUBLIC_SECRET",
+      process.env.NEXT_PUBLIC_SECRET,
+      
     );
   }, []);
 

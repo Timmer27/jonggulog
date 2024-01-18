@@ -2,8 +2,8 @@ import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 
 export const authOptions = {
-  // secret: process.env.NextAuth_SECRET,
   // Configure one or more authentication providers
+  secret: process.env.NEXT_PUBLIC_SECRET,
   providers: [
     GithubProvider({
       clientId: process.env.NEXT_PUBLIC_GITHUB_ID || "",
