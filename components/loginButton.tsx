@@ -20,7 +20,7 @@ export default function LoginButton() {
       <div
         className={`${
           isAuthInfoVisible ? "block" : "hidden"
-        } absolute top-10 left-0 bg-white p-2`}
+        } absolute top-10 left-[-12rem] bg-white`}
       >
         <div className="px-3 py-2 shadow-lg rounded-lg border border-gray-200 w-56">
           <div className="text-md font-bold">{session.user.name}</div>
@@ -35,6 +35,6 @@ export default function LoginButton() {
       </div>
     </div>
   ) : (
-    <button onClick={() => signIn()}>관리자 LOGIN</button>
+    <Button className="p-2 bg-blue-gray-900 " onClick={() => signIn()}>LOGIN</Button>
   );
 }

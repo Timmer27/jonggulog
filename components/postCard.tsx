@@ -22,7 +22,7 @@ export function PostCard({ postCardInfo }) {
 
   return (
     <Card
-      className="lg:w-[95%] lg:max-w-[24rem] md:w-[95%] md:max-w-[24rem] sm:w-[97%] overflow-hidden h-fit hover:scale-105 transition-all ease-in-out duration-400 cursor-pointer"
+      className="min-h-[24rem] max-h-[24rem] justify-between lg:w-[95%] lg:max-w-[24rem] md:w-[95%] md:max-w-[24rem] sm:w-[97%] overflow-hidden h-fit hover:scale-105 transition-all ease-in-out duration-400 cursor-pointer"
       onClick={() => {
         // router.push(`/daily/post/${id}`);
         router.push(`/daily/post?no=${id}`);
