@@ -1,0 +1,8 @@
+pydantic>=1.8.0,<2.0.0
+uvicorn>=0.15.0,<0.16.0
+fastapi==0.104.1
+fastapi-cache2==0.2.1
+fastapi-limiter==0.1.5
+PyMySQL==1.1.0
+slowapi==0.1.8
+starlette==0.27.0
