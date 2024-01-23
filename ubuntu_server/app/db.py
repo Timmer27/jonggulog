@@ -1,11 +1,11 @@
 import pymysql
 
 def dbConnector():
-    host = '112.169.16.65'
-    port = 8855
-    user = 'root'
-    password = '7786'
-    database = 'binance'
+    host = process.env.HOST
+    port = process.env.PORT
+    user = process.env.USER
+    password = process.env.PW
+    database = process.env.DB
     conn = pymysql.connect(host=host, port=port, user=user,
                             password=password, database=database)
     return conn
