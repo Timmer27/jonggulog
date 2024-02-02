@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
-export default function Post({}) {
+export default function ProgramPost() {
   const searchParams = useSearchParams();
   const id = searchParams.get("no");
   const [postCardInfo, setPostCardInfo] = useState<postInfo | undefined>();

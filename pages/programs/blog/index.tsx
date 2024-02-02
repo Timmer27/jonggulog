@@ -168,7 +168,7 @@ const Blog = () => {
     <Tabs
       value="install"
       orientation="vertical"
-      className="w-[95%] m-auto mt-12"
+      className="w-[95%] m-auto mt-12 lg:flex lg:flex-row lg:items-start md:flex-col sm:flex-col"
     >
       <MetaHead
         title="종구공방 - 서이추 자동화 무료 프로그램"
@@ -176,7 +176,7 @@ const Blog = () => {
         // image=""
         url="https://jonggulog.vercel.app/programs/blog"
       />
-      <TabsHeader className="w-64">
+      <TabsHeader className="lg:w-64 md:w-[95%] md:m-auto sm:w-[95%] sm:m-auto">
         {headerData.map(({ label, value, icon }) => (
           <Tab key={value} value={value} className="justify-start">
             <div className="flex items-center gap-2">

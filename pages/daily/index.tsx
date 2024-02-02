@@ -11,15 +11,7 @@ import {
 } from "@material-tailwind/react";
 import { PostCard } from "../../components/postCard";
 import axios from "axios";
-
-export interface postInfo {
-  id: Number;
-  title: string;
-  tags: Array<string>;
-  content: string;
-  publishedDate: Date;
-  owner: string;
-}
+import type { postInfo } from "../../interfaces/post_interface"
 
 export default function Daily({}) {
   const inputRef = useRef<HTMLInputElement>();

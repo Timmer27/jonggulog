@@ -34,6 +34,16 @@ const MainPage = () => {
     },
     {
       key: 1,
+      title: "그리드 봇",
+      sub: "비트코인",
+      content: "그리드 자동화 봇",
+      href: "/programs/grid",
+      src: "/grid_bot.png",
+      alt: "alt",
+      status: 1
+    },
+    {
+      key: 2,
       title: "서이추 봇",
       sub: "네이버",
       content: "블로그 서이추 자동화 봇",
@@ -41,16 +51,6 @@ const MainPage = () => {
       src: "/blog.png",
       alt: "alt",
       status: 1
-    },
-    {
-      key: 2,
-      title: "준비 중",
-      sub: "",
-      content: "",
-      href: "/programs/tmp",
-      src: "/question.png",
-      alt: "alt",
-      status: 0
     },
     {
       key: 3,
@@ -204,7 +204,6 @@ const MainPage = () => {
                     router.push(`${val.href}`);
                   }
                 }}
-                // onClick={() =>  routeToPagesHandler(`${val.href}`)}
               >
                 <CardBody className="h-full flex flex-col justify-between ${isReady}">
                   <div className="flex justify-between">

@@ -405,97 +405,97 @@ const Programs = (Props) => {
         </div>
       )
     },
-    {
-      label: "백테스팅",
-      value: "backtest",
-      icon: BanknotesIcon,
-      // <Image src={'/bot.png'} alt="bot" width={30} height={30} />
-      desc: (
-        <div className="flex flex-col">
-          <Stepper
-            activeStep={activeStep}
-            className="mb-8 w-[80%] flex mx-auto"
-          >
-            <Step>
-              <div className="absolute -bottom-[1.5rem] w-max text-center">
-                <div className="text-sm text-black">조건식 추가</div>
-              </div>
-              <CogIcon className="h-5 w-5" />
-            </Step>
-            <Step>
-              <CalculatorIcon className="h-5 w-5" />
-              <div className="absolute -bottom-[1.5rem] w-max text-center">
-                <div className="text-sm text-black">백테스팅</div>
-              </div>
-            </Step>
-            <Step>
-              <DocumentArrowUpIcon className="h-5 w-5" />
-              <div className="absolute -bottom-[1.5rem] w-max text-center">
-                <div className="text-sm text-black">자동매매 조건식 추출</div>
-              </div>
-            </Step>
-          </Stepper>
-          {activeStep === 0 && (
-            <>
-              <Typography variant="h5" className="mt-4 mb-4">
-                조건식 추가하기
-              </Typography>
-              <ConditionTable
-                setActiveStep={setActiveStep}
-                calculateSignalHandler={calculateSignalHandler}
-                setConditionJsonObj={setConditionJsonObj}
-              />
-            </>
-          )}
-          {!isLoading && activeStep === 1 && (
-            <CandleChart
-              initialData={initialData}
-              setInitialData={setInitialData}
-              ticker={ticker}
-              intervals={intervals}
-              setActiveStep={setActiveStep}
-            />
-          )}
-          {!isLoading && activeStep === 2 && (
-            <Card>
-              <CardBody>
-                통계 페이지 넣기
-                <DownloadButton
-                  jsonArray={conditionJsonObj}
-                  fileName="settings.json"
-                />
-              </CardBody>
-              <Button
-                onClick={() => {
-                  setActiveStep(0);
-                }}
-              >
-                돌아가기
-              </Button>
-            </Card>
-          )}
-        </div>
-      )
-      //   desc: <Description />,
-    },
-    {
-      label: "자동매매 (업데이트 예정)",
-      value: "autoTrade",
-      icon: CurrencyDollarIcon,
-      desc: "업데이트 예정"
-    },
-    {
-      label: "관리자 실제 투자 기록",
-      value: "history",
-      icon: BookOpenIcon,
-      desc: "업데이트 예정"
-    }
+    // {
+    //   label: "백테스팅",
+    //   value: "backtest",
+    //   icon: BanknotesIcon,
+    //   // <Image src={'/bot.png'} alt="bot" width={30} height={30} />
+    //   desc: (
+    //     <div className="flex flex-col">
+    //       <Stepper
+    //         activeStep={activeStep}
+    //         className="mb-8 w-[80%] flex mx-auto"
+    //       >
+    //         <Step>
+    //           <div className="absolute -bottom-[1.5rem] w-max text-center">
+    //             <div className="text-sm text-black">조건식 추가</div>
+    //           </div>
+    //           <CogIcon className="h-5 w-5" />
+    //         </Step>
+    //         <Step>
+    //           <CalculatorIcon className="h-5 w-5" />
+    //           <div className="absolute -bottom-[1.5rem] w-max text-center">
+    //             <div className="text-sm text-black">백테스팅</div>
+    //           </div>
+    //         </Step>
+    //         <Step>
+    //           <DocumentArrowUpIcon className="h-5 w-5" />
+    //           <div className="absolute -bottom-[1.5rem] w-max text-center">
+    //             <div className="text-sm text-black">자동매매 조건식 추출</div>
+    //           </div>
+    //         </Step>
+    //       </Stepper>
+    //       {activeStep === 0 && (
+    //         <>
+    //           <Typography variant="h5" className="mt-4 mb-4">
+    //             조건식 추가하기
+    //           </Typography>
+    //           <ConditionTable
+    //             setActiveStep={setActiveStep}
+    //             calculateSignalHandler={calculateSignalHandler}
+    //             setConditionJsonObj={setConditionJsonObj}
+    //           />
+    //         </>
+    //       )}
+    //       {!isLoading && activeStep === 1 && (
+    //         <CandleChart
+    //           initialData={initialData}
+    //           setInitialData={setInitialData}
+    //           ticker={ticker}
+    //           intervals={intervals}
+    //           setActiveStep={setActiveStep}
+    //         />
+    //       )}
+    //       {!isLoading && activeStep === 2 && (
+    //         <Card>
+    //           <CardBody>
+    //             통계 페이지 넣기
+    //             <DownloadButton
+    //               jsonArray={conditionJsonObj}
+    //               fileName="settings.json"
+    //             />
+    //           </CardBody>
+    //           <Button
+    //             onClick={() => {
+    //               setActiveStep(0);
+    //             }}
+    //           >
+    //             돌아가기
+    //           </Button>
+    //         </Card>
+    //       )}
+    //     </div>
+    //   )
+    //   //   desc: <Description />,
+    // },
+    // {
+    //   label: "자동매매 (업데이트 예정)",
+    //   value: "autoTrade",
+    //   icon: CurrencyDollarIcon,
+    //   desc: "업데이트 예정"
+    // },
+    // {
+    //   label: "관리자 실제 투자 기록",
+    //   value: "history",
+    //   icon: BookOpenIcon,
+    //   desc: "업데이트 예정"
+    // }
   ];
   return (
     <Tabs
       value="download"
       orientation="vertical"
-      className="w-[95%] m-auto mt-12"
+      className="w-[95%] m-auto mt-12 lg:flex lg:flex-row lg:items-start md:flex-col sm:flex-col"
     >
       <MetaHead
         title="종구공방 - 비트코인 자동매매"
@@ -503,7 +503,7 @@ const Programs = (Props) => {
         image="/bot_update_banner.png"
         url="https://jonggulog.vercel.app/programs/trade"
       />
-      <TabsHeader className="w-64">
+      <TabsHeader className="lg:w-64 md:w-[95%] md:m-auto sm:w-[95%] sm:m-auto">
         {headerData.map(({ label, value, icon }) => (
           <Tab key={value} value={value} className="justify-start">
             <div className="flex items-center gap-2">

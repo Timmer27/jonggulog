@@ -1,22 +1,16 @@
 import dynamic from "next/dynamic";
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useRef, useMemo, useLayoutEffect } from "react";
 import { Button, Input, Typography } from "@material-tailwind/react";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/router";
-// import transactionHandler from "../db/pool";
-// import selectFetchHandler from "../db/pool";
-
-interface postObj {
-  type: string;
-  title: string;
-  content: string;
-}
+import { useSession } from "next-auth/react";
 
 export default function MyEditor({ props }: any) {
   const router = useRouter();
+  const { data: session } = useSession();
   const titleRef = useRef<HTMLInputElement>();
   const tagRef = useRef<HTMLInputElement>();
   const [contentData, setContentData] = useState<string>();
@@ -46,6 +40,13 @@ export default function MyEditor({ props }: any) {
         });
     }
   };
+
+  useLayoutEffect(() => {
+    if(!session || session?.user.email !== "whdghtpgml@gmail.com"){
+      alert('승인된 사용자가 아닙니다.')
+      router.push('/')
+      }
+  }, [])
 
   return (
     <div className="mt-12 m-auto w-[80%]">

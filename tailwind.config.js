@@ -18,8 +18,7 @@ module.exports = withMT({
     extend: {},
     fontFamily: {
       // sans: ['DoHyeon', 'sans-serif'],
-      sans: ['Orbit-Regular', 'sans-serif'],
-      
+      // sans: ['Orbit-Regular', 'sans-serif'],
       // serif: ['Merriweather', 'serif'],
     }
   },

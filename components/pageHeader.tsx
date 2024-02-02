@@ -1,33 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   Navbar,
-  MobileNav,
-  Typography,
   Button,
-  IconButton,
-  Menu,
-  MenuHandler,
-  MenuList,
-  MenuItem,
-  Input
 } from "@material-tailwind/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSession, signIn, signOut } from "next-auth/react";
 import LoginButton from "./loginButton";
 
-interface userLogin {
-  id: string;
-  pw: string;
-}
-
-type Props = {};
-const PageHeader = (props: Props) => {
+const PageHeader = () => {
   const { asPath, pathname } = useRouter();
-  const { data: session, status } = useSession();
+  const session = useSession();
   const [openNav, setOpenNav] = useState<boolean>(false);
-  const idRef = useRef<HTMLInputElement>();
-  const pwRef = useRef<HTMLInputElement>();
+  // const idRef = useRef<HTMLInputElement>();
+  // const pwRef = useRef<HTMLInputElement>();
   const navItems = [
     {
       href: "/",
@@ -74,16 +60,16 @@ const PageHeader = (props: Props) => {
           </Link>
         );
       })}
+      {session.status === "authenticated" &&
+        session.data.user.email === "whdghtpgml@gmail.com" && (
+          <Link href="/admin" color="blue-gray" className={"p-1 text-[15px]"}>
+            글쓰기
+          </Link>
+        )}
     </ul>
   );
 
-  // const loginHandler = () => {
-  //   const [_id, _pw] = [idRef.current.value, pwRef.current.value];
-  //   console.log("_id, _pw", _id, _pw);
-  // };
-
   useEffect(() => {
-    // window.innerWidth
     window.innerWidth < 550 && setOpenNav(true);
   }, []);
 

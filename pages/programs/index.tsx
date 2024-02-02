@@ -1,18 +1,8 @@
 import React from "react";
 import {
-  Tabs,
-  TabsHeader,
-  TabsBody,
-  Tab,
-  TabPanel,
   Card,
   CardBody
 } from "@material-tailwind/react";
-import {
-  Square3Stack3DIcon,
-  UserCircleIcon,
-  Cog6ToothIcon
-} from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
 import Image from "next/image";
 
@@ -26,6 +16,14 @@ const Programs = (Props) => {
       src: "/bot.png",
       alt: "bot",
       href: "/programs/trade",
+      status: 1
+    },
+    {
+      label: "그리드 봇",
+      value: "gridBot",
+      src: "/grid_bot.png",
+      alt: "alt",
+      href: "/programs/grid",
       status: 1
     },
     {
